@@ -3,7 +3,6 @@ package fgenejfx.models;
 import java.io.Serializable;
 
 public class LifeStats implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	private Integer seasons = 0;

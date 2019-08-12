@@ -1,41 +1,52 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
+import java.util.NoSuchElementException;
 
+import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.utils.Utils;
 
 public class Pilot implements Serializable, StatsMonitorable {
-
 	private static final long serialVersionUID = 1L;
 
 	private String name;
 	private Integer AI;
 	private Double xp = 0.0;
-	private Integer rookieYear;
-	
-	public Integer getRookieYear() {
-		return rookieYear;
-	}
-
-	public void setRookieYear(Integer rookieYear) {
-		this.rookieYear = rookieYear;
-	}
-
+	private Integer rookieYear = League.get().getYear();
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 	
-	public Pilot() {
+	//=========================================================================================== operations
+	public Boolean isRookie() {
+		return League.get().getYear().equals(rookieYear);
 	}
 	
+	public Boolean isActive() {
+		return 18 > (League.get().getYear()-rookieYear);
+	}
+	
+	//=========================================================================================== get singleton
+	
+	public static Pilot get(String name) {
+		try {
+			return League.get().getPilot(name);
+		} catch (NoSuchElementException e) {
+			Pilot p = new Pilot(name);
+			League.get().addPilot(p);
+			return p;
+		}
+	}
+	
+	//=========================================================================================== crud
 	public Pilot(String name) {
 		this.name = name;
 		this.AI = Utils.genGaussian(103, 3);
 	}
 	
-//	public Integer getCareerLeft() {
-//		return 18 - this.stats.size();
-//	}
+	public Integer getRookieYear() {
+		return rookieYear;
+	}
 	
 	public String getName() {
 		return name;
@@ -76,31 +87,6 @@ public class Pilot implements Serializable, StatsMonitorable {
 
 	public void setStats(Stats stats) {
 		this.stats = stats;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pilot other = (Pilot) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
 	}
 
 }

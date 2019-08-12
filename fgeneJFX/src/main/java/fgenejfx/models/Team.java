@@ -6,7 +6,6 @@ import java.util.EnumMap;
 import fgenejfx.interfaces.StatsMonitorable;
 
 public class Team implements Serializable, StatsMonitorable{
-
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
@@ -16,6 +15,9 @@ public class Team implements Serializable, StatsMonitorable{
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
 	
 	public Team() {
+	}
+	public Team(String name) {
+		this.name = name;
 	}
 
 	public String getName() {

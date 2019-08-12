@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import fgenejfx.controllers.League;
 import fgenejfx.exceptions.CopyException;
 import fgenejfx.utils.Utils;
 
@@ -22,9 +23,9 @@ public class PilotHistory implements Serializable {
 	public Integer getAiByYear(Integer year) {
 		return ais.get(year);
 	}
-	public void save(Integer year, Pilot p, Stats s) throws CopyException {
-		ais.put(year, p.getAI());
-		stats.put(year, Utils.copy(s));
+	public void save(Pilot p, Stats s) throws CopyException {
+		ais.put(League.get().getYear(), p.getAI());
+		stats.put(League.get().getYear(), Utils.copy(s));
 	}
 	
 }

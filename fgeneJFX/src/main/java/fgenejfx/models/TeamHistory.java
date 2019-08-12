@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import fgenejfx.controllers.League;
 import fgenejfx.exceptions.CopyException;
 import fgenejfx.utils.Utils;
 
@@ -24,8 +25,8 @@ public class TeamHistory implements Serializable{
 		return powers.get(year);
 	}
 	
-	public void save(Integer year, Team t, Stats s) throws CopyException {
-		powers.put(year, Utils.copy(t.getPowers()));
-		stats.put(year, Utils.copy(s));
+	public void save(Team t, Stats s) throws CopyException {
+		powers.put(League.get().getYear(), Utils.copy(t.getPowers()));
+		stats.put(League.get().getYear(), Utils.copy(s));
 	}
 }
