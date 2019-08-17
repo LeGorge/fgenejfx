@@ -13,7 +13,11 @@ import fgenejfx.controllers.League;
 
 public class ContractsAgent implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Integer MAXCONTRACT = 8;
+	
+	private static final Integer MAX_YEARS_ON_CONTRACT = 8;
+	private static final Integer CONTRACTS_PER_SEASON = 36;
+	private static final Integer PILOTS_PER_TEAM = 2;
+	
 	private static ContractsAgent agent;
 	
 	private Set<Contract> contracts = new HashSet<>();
@@ -40,12 +44,14 @@ public class ContractsAgent implements Serializable {
 		return contracts.stream().filter(c->c.getTeam() == t).collect(Collectors.toList())
 				.stream().map(Contract::getPilot).collect(Collectors.toList());
 	}
-	//=========================================================================================== operations
 	public Set<Pilot> getRookies(){
 		return contracts.stream().filter(c->c.getPilot().isRookie()).map(a->a.getPilot()).collect(Collectors.toSet());
 	}
-	
-	public void updateContracts(Set<Pilot> rookies){
+	//=========================================================================================== operations
+	public void updateContracts(){
+		updateContracts(CONTRACTS_PER_SEASON);
+	}
+	public void updateContracts(int max){
 		//reduce one year on all contacts
 		for (Contract c : contracts) {
 			c.passYear();
@@ -61,7 +67,11 @@ public class ContractsAgent implements Serializable {
 			.filter(c->c.getPilot().isActive())
 			.map(Contract::getPilot)
 			.collect(Collectors.toSet());
-		noContract.addAll(rookies);
+		
+		//create necessary rookies
+		int nNewPilots = (max - contracts.size()) - noContract.size();
+		nNewPilots = nNewPilots > 0 ? nNewPilots : 0;
+		noContract.addAll(League.get().createNewPilots(nNewPilots));
 		
 		//get Teams with room for pilots
 		Set<Team> teamsWithRoom = ended.stream()
@@ -69,6 +79,9 @@ public class ContractsAgent implements Serializable {
 				.map(Contract::getTeam)
 				.distinct()
 				.collect(Collectors.toSet());
+		if(teamsWithRoom.size() == 0 && noContract.size() > 0) {
+			teamsWithRoom = TeamsEnum.all();
+		}
 		
 		executeFreeAgency(noContract, teamsWithRoom);
 		HistoryAgent.get().save(contracts);
@@ -86,10 +99,11 @@ public class ContractsAgent implements Serializable {
 					entries.add(last);
 				}
 			} catch (NoSuchElementException e) {
+			} catch (NullPointerException e) {
 			}
 			Team sorted = entries.get(new Random().nextInt(entries.size()));
-			contracts.add(new Contract(p,sorted,new Random().nextInt(MAXCONTRACT)+1));
-			if(getPilotsOf(sorted).size() == 2) {
+			contracts.add(new Contract(p,sorted,new Random().nextInt(MAX_YEARS_ON_CONTRACT)+1));
+			if(getPilotsOf(sorted).size() == PILOTS_PER_TEAM) {
 				teams.remove(sorted);
 			}
 		});
@@ -123,5 +137,10 @@ public class ContractsAgent implements Serializable {
 			new ContractsAgent();
 		}
 		return agent;
+	}
+	public static void set(ContractsAgent ag) {
+		if(agent == null) {
+			agent = ag;
+		}
 	}
 }

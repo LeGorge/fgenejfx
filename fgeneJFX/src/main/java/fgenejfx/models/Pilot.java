@@ -30,10 +30,9 @@ public class Pilot implements Serializable, StatsMonitorable {
 	
 	public static Pilot get(String name) {
 		try {
-			return League.get().getPilot(name);
+			return HistoryAgent.get().getPilot(name);
 		} catch (NoSuchElementException e) {
 			Pilot p = new Pilot(name);
-			League.get().addPilot(p);
 			return p;
 		}
 	}

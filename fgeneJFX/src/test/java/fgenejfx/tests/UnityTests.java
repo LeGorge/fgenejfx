@@ -20,6 +20,7 @@ import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Team;
+import fgenejfx.models.TeamsEnum;
 
 public class UnityTests {
 
@@ -44,8 +45,8 @@ public class UnityTests {
 		hag = HistoryAgent.get();
 		cag = ContractsAgent.get();
 		
-		t1 = new Team();
-		t2 = new Team();
+		t1 = new Team(TeamsEnum.AUDI);
+		t2 = new Team(TeamsEnum.BMW);
 		
 		p1 = Pilot.get("p1");
 		hag.save(p1, p1.getStats());
@@ -74,7 +75,7 @@ public class UnityTests {
 	
 	@Test
 	public void history() throws NaoEncontradoException, CopyException {
-		Team t = new Team();
+		Team t = new Team(TeamsEnum.AUDI);
 		hag.save(t, t.getStats());
 		
 		assertEquals(t.getPowers(), hag.getPowersByYear(t, l.getYear()));
@@ -115,13 +116,25 @@ public class UnityTests {
 		
 		hag.save(cts);
 		l.passYear();
-		Set<Pilot> rookies = l.createNewPilots(1);
-		cag.updateContracts(rookies);
+		cag.updateContracts(4);
 		
 		assertFalse(p1.isActive());
 		assertTrue(cag.getRemainingYearsOfContract(p4) == 3);
 		assertTrue(cag.getTeamOf(p4) == t2);
 		assertThrows(NoSuchElementException.class, ()->cag.getTeamOf(p1));
+	}
+	@Test
+	public void InitAllContracts() 
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, 
+			SecurityException, InstantiationException, InvocationTargetException{
+		resetSingletons();
+		l = League.get();
+		hag = HistoryAgent.get();
+		cag = ContractsAgent.get();
+		
+		cag.updateContracts();
+		Set<Pilot> all = hag.getAllPilots();
+		assertTrue(all.size() == 36);
 	}
 	
 	@Test

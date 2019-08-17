@@ -10,7 +10,7 @@ public class Season implements Serializable{
 	private Group[] season = new Group[6];
 	
 	private Group pPlayoff;
-	private Group ePlayoff;
+	private Group tPlayoff;
 	
 	public Integer getYear() {
 		return year;
@@ -30,11 +30,34 @@ public class Season implements Serializable{
 	public void setpPlayoff(Group pPlayoff) {
 		this.pPlayoff = pPlayoff;
 	}
-	public Group getePlayoff() {
-		return ePlayoff;
+	public Group gettPlayoff() {
+		return tPlayoff;
 	}
-	public void setePlayoff(Group ePlayoff) {
-		this.ePlayoff = ePlayoff;
+	public void settPlayoff(Group tPlayoff) {
+		this.tPlayoff = tPlayoff;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((year == null) ? 0 : year.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Season other = (Season) obj;
+		if (year == null) {
+			if (other.year != null)
+				return false;
+		} else if (!year.equals(other.year))
+			return false;
+		return true;
 	}
 	
 }

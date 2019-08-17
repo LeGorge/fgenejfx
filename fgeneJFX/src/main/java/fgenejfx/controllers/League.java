@@ -2,14 +2,13 @@ package fgenejfx.controllers;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import fgenejfx.exceptions.NameGeneratorException;
-import fgenejfx.models.ContractsAgent;
+import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
@@ -17,7 +16,6 @@ import javafx.scene.control.TextInputDialog;
 public class League implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static League league;
-	private Set<Pilot> pilots = new HashSet<>();
 	
 	private Integer year = 1;
 
@@ -51,31 +49,17 @@ public class League implements Serializable{
 		return Arrays.stream(nomes).map(n->Pilot.get(n)).collect(Collectors.toSet());
 	}
 	
-	public Set<Pilot> getAllPilots() {
-//		HashSet<Pilot> all = new HashSet<>(HistoryAgent.get().getAllPilots());
-//		all.addAll(ContractsAgent.get().getRookies());
-//		return all;
-		return this.pilots;
-	}
-	
 	public void passYear() {
 		this.year++;
 	}
 	private boolean isNameAvailable(String name) {
 		try {
-			getPilot(name);
+			HistoryAgent.get().getPilot(name);
 			return false;
 		} catch (NoSuchElementException e) {
 			return true;
 		}
 	}
-	public Pilot getPilot(String name) {
-		return pilots.stream().filter(p->p.getName().equals(name)).findFirst().get();
-	}
-	public void addPilot(Pilot p) {
-		pilots.add(p);
-	}
-	
 	//=========================================================================================== get singleton
 	private League() {
 		League.league = this;
@@ -85,6 +69,11 @@ public class League implements Serializable{
 			new League();
 		}
 		return league;
+	}
+	public static void set(League l) {
+		if(league == null) {
+			league = l;
+		}
 	}
 	//=========================================================================================== crud
 	public Integer getYear() {

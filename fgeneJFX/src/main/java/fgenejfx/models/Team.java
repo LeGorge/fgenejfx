@@ -8,24 +8,18 @@ import fgenejfx.interfaces.StatsMonitorable;
 public class Team implements Serializable, StatsMonitorable{
 	private static final long serialVersionUID = 1L;
 	
-	private String name;
+	private TeamsEnum name;
 	
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
 	
-	public Team() {
-	}
-	public Team(String name) {
-		this.name = name;
+	public Team(TeamsEnum tEnum) {
+		this.name = tEnum;
 	}
 
-	public String getName() {
+	public TeamsEnum getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public LifeStats getLifeStats() {
