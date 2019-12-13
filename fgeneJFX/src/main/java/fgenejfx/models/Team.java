@@ -45,5 +45,8 @@ public class Team implements Serializable, StatsMonitorable{
 	public void setPowers(EnumMap<Powers, Double> powers) {
 		this.powers = powers;
 	}
-	
+	@Override
+	public String toString() {
+		return name.toString();
+	}
 }

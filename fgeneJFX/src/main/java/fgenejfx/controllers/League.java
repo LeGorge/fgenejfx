@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import fgenejfx.exceptions.NameGeneratorException;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
+import fgenejfx.models.Season;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
 
@@ -19,6 +20,16 @@ public class League implements Serializable{
 	
 	private Integer year = 1;
 
+	//=========================================================================================== season
+	public void newSeason() {
+		Season s = new Season();
+		HistoryAgent.get().save(s);
+	}
+	//=========================================================================================== operations
+	public void passYear() {
+		this.year++;
+	}
+	//=========================================================================================== pilot
 	public Set<Pilot> createNewPilots(int howMany) {
 		String nomes[] = new String[howMany*2];
 		try {
@@ -49,9 +60,6 @@ public class League implements Serializable{
 		return Arrays.stream(nomes).map(n->Pilot.get(n)).collect(Collectors.toSet());
 	}
 	
-	public void passYear() {
-		this.year++;
-	}
 	private boolean isNameAvailable(String name) {
 		try {
 			HistoryAgent.get().getPilot(name);
@@ -75,7 +83,7 @@ public class League implements Serializable{
 			league = l;
 		}
 	}
-	//=========================================================================================== crud
+	//=========================================================================================== getters and setters
 	public Integer getYear() {
 		return year;
 	}

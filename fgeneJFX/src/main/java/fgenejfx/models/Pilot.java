@@ -42,7 +42,7 @@ public class Pilot implements Serializable, StatsMonitorable {
 		this.name = name;
 		this.AI = Utils.genGaussian(103, 3);
 	}
-	
+
 	public Integer getRookieYear() {
 		return rookieYear;
 	}
@@ -87,5 +87,9 @@ public class Pilot implements Serializable, StatsMonitorable {
 	public void setStats(Stats stats) {
 		this.stats = stats;
 	}
-
+	
+	@Override
+	public String toString() {
+		return name;
+	}
 }

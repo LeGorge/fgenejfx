@@ -21,6 +21,7 @@ public class HistoryAgent implements Serializable{
 	private Map<Pilot, PilotHistory> pilotHistory = new HashMap<>();
 	private Map<Team, TeamHistory> teamHistory = new HashMap<>();
 	private Map<Integer, ContractsHistory> contractHistory = new HashMap<>();
+	private Map<Integer, Season> seasons = new HashMap<>();
 	
 	//=========================================================================================== stats
 	public Stats getStatByYear(StatsMonitorable obj, Integer year) throws NaoEncontradoException {
@@ -59,7 +60,8 @@ public class HistoryAgent implements Serializable{
 	public Set<Team> getAllTeams(){
 		Set<Team> all = this.teamHistory.keySet();
 		if(all.isEmpty()) {
-			return TeamsEnum.create(); 
+			TeamsEnum.create().stream().forEach(t->teamHistory.put(t, new TeamHistory()));;
+			return teamHistory.keySet();
 		}else {
 			return all;
 		}
@@ -78,6 +80,14 @@ public class HistoryAgent implements Serializable{
 	}
 	public List<Pilot> getPilotsOf(Integer year, Team t) throws NoSuchElementException {
 		return contractHistory.get(year).getPilotsOf(t);
+	}
+	//=========================================================================================== seasons
+	public void save(Season season) {
+		int year = League.get().getYear();
+		seasons.put(year, season);
+	}
+	public Season getSeason(Integer year) {
+		return seasons.get(year);
 	}
 	//=========================================================================================== get singleton
 	private HistoryAgent() {

@@ -70,7 +70,9 @@ public class ContractsAgent implements Serializable {
 		
 		//create necessary rookies
 		int nNewPilots = (max - contracts.size()) - noContract.size();
-		nNewPilots = nNewPilots > 0 ? nNewPilots : 0;
+		if(nNewPilots < 0) {
+			nNewPilots = 0;
+		}
 		noContract.addAll(League.get().createNewPilots(nNewPilots));
 		
 		//get Teams with room for pilots
@@ -79,12 +81,12 @@ public class ContractsAgent implements Serializable {
 				.map(Contract::getTeam)
 				.distinct()
 				.collect(Collectors.toSet());
-		if(teamsWithRoom.size() == 0 && noContract.size() > 0) {
+		if(teamsWithRoom.size() == 0) {
 			teamsWithRoom = TeamsEnum.all();
 		}
 		
-		executeFreeAgency(noContract, teamsWithRoom);
-		HistoryAgent.get().save(contracts);
+		executeFreeAgency(noContract, new HashSet<>(teamsWithRoom));
+		//HistoryAgent.get().save(contracts);
 	}
 	
 	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
