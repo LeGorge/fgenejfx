@@ -1,6 +1,7 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,8 +29,9 @@ public class Season implements Serializable{
 	
 	//=========================================================================================== creation
 	public Season() {
-		this.year = League.get().getYear();
-		List<Team> teams = TeamsEnum.all().stream().collect(Collectors.toList());
+		League l = League.get();
+		this.year = l.getYear();
+		List<Team> teams = new ArrayList<>(l.getTeams());
 		Collections.shuffle(teams);
 		buildGroups(teams);
 	}

@@ -63,7 +63,8 @@ public class InternetDependantUtils{
 		
 		while(nomes[amount-1] == null){
 			int rarity = new Random().nextInt(3)+1;
-			String url = "http://random-name-generator.info/random/?n=25&g=2&st="+rarity;
+			String url = "http://random-name-generator.info/?n=25&g=2&st="+rarity;
+//			String url = "http://random-name-generator.info/random/?n=25&g=2&st="+rarity;
 			
 			String result = executePost(url, "");
 			String aa = result.substring(result.lastIndexOf("<ol class=\"nameList\">"), result.lastIndexOf("</ol>"));

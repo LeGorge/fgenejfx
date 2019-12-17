@@ -28,13 +28,8 @@ public class Pilot implements Serializable, StatsMonitorable {
 	
 	//=========================================================================================== get singleton
 	
-	public static Pilot get(String name) {
-		try {
-			return HistoryAgent.get().getPilot(name);
-		} catch (NoSuchElementException e) {
-			Pilot p = new Pilot(name);
-			return p;
-		}
+	public static Pilot get(String name) throws NoSuchElementException{
+		return League.get().getPilot(name);
 	}
 	
 	//=========================================================================================== crud
