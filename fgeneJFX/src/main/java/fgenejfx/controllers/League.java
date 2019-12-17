@@ -48,6 +48,12 @@ public class League implements Serializable{
 	public Team getTeam(TeamsEnum tEnum) throws NoSuchElementException{
 		return this.getTeams().stream().filter(t->t.getName() == tEnum).findFirst().get();
 	}
+//	
+//	//=========================================================================================== season
+//	public void newSeason() {
+//		Season s = new Season();
+//		HistoryAgent.get().save(s);
+//	}
 	
 	//=========================================================================================== new pilots
 	public Set<Pilot> createNewPilots(int howMany) {
@@ -103,7 +109,7 @@ public class League implements Serializable{
 			league = l;
 		}
 	}
-	//=========================================================================================== crud
+	//=========================================================================================== getters and setters
 	public Integer getYear() {
 		return year;
 	}

@@ -1,6 +1,11 @@
 package fgenejfx.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -8,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,7 +130,7 @@ public class UnityTests {
 		assertThrows(NoSuchElementException.class, ()->cag.getTeamOf(p1));
 	}
 	@Test
-	public void InitAllContracts() 
+	public void Init() 
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, 
 			SecurityException, InstantiationException, InvocationTargetException{
 		resetSingletons();
@@ -139,8 +145,27 @@ public class UnityTests {
 	
 	@Test
 	public void teste(){
+		
+//		assertTrue(cag.getRookies().size() == 36);
+//		l.getTeams().stream()
+//			.forEach(t->{
+//				assertEquals(2,cag.getPilotsOf(t).size());
+//			});
+//		
+//		l.newSeason();
+//
+//		IntStream.range(0, 6).forEach(i->{
+//			assertEquals(6, hag.getSeason(1).getSeason()[i].getPilots().size());
+//			
+//		});
+//		hag.getAllPilots().stream().forEach(p->{
+//			assertNotNull(hag.getSeason(1).statsOf(p));
+//		});
 	}
-	
+//	@Test
+//	public void teste(){
+//	}
+//	
 	private void resetSingletons() 
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Constructor<?> s[] = HistoryAgent.class.getDeclaredConstructors();

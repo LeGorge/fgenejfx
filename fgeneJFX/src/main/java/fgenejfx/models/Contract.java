@@ -40,4 +40,8 @@ public class Contract implements Serializable{
 	public void setYears(Integer years) {
 		this.years = years;
 	}
+	@Override
+	public String toString() {
+		return pilot.getName() + " - " + team.getName() + " : " + years;
+	}
 }

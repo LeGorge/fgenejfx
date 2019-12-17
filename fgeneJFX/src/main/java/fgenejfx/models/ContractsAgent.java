@@ -81,7 +81,9 @@ public class ContractsAgent implements Serializable {
 		
 		//create necessary rookies
 		int nNewPilots = (max - contracts.size()) - noContract.size();
-		nNewPilots = nNewPilots > 0 ? nNewPilots : 0;
+		if(nNewPilots < 0) {
+			nNewPilots = 0;
+		}
 		noContract.addAll(League.get().createNewPilots(nNewPilots));
 		
 		//get Teams with room for pilots

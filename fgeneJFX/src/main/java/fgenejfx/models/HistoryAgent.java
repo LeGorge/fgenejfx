@@ -13,6 +13,7 @@ public class HistoryAgent implements Serializable{
 	private Map<Pilot, PilotHistory> pilotHistory = new HashMap<>();
 	private Map<Team, TeamHistory> teamHistory = new HashMap<>();
 	private Map<Integer, ContractsHistory> contractHistory = new HashMap<>();
+//	private Map<Integer, Season> seasons = new HashMap<>();
 	
 	public Set<Pilot> getPilots(){
 		Set<Pilot> all = new HashSet<>(this.pilotHistory.keySet());
