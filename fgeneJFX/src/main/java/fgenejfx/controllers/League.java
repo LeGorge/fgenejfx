@@ -2,14 +2,18 @@ package fgenejfx.controllers;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import fgenejfx.exceptions.NameGeneratorException;
+import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
+import fgenejfx.models.Team;
+import fgenejfx.models.TeamsEnum;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
 
@@ -18,7 +22,34 @@ public class League implements Serializable{
 	private static League league;
 	
 	private Integer year = 1;
+	public void passYear() {
+		this.year++;
+	}
 
+	//=========================================================================================== gets
+	
+	public Set<Pilot> getPilots(){
+		Set<Pilot> all = new HashSet<>();
+		all.addAll(ContractsAgent.get().getPilots());
+		all.addAll(HistoryAgent.get().getPilots());
+		return all;
+	}
+	
+	public Pilot getPilot(String name) throws NoSuchElementException{
+		return this.getPilots().stream().filter(p->p.getName().equals(name)).findFirst().get();
+	}
+	
+	public Set<Team> getTeams(){
+		Set<Team> all = new HashSet<>();
+		all.addAll(ContractsAgent.get().getTeams());
+		return all;
+	}
+	
+	public Team getTeam(TeamsEnum tEnum) throws NoSuchElementException{
+		return this.getTeams().stream().filter(t->t.getName() == tEnum).findFirst().get();
+	}
+	
+	//=========================================================================================== new pilots
 	public Set<Pilot> createNewPilots(int howMany) {
 		String nomes[] = new String[howMany*2];
 		try {
@@ -49,12 +80,9 @@ public class League implements Serializable{
 		return Arrays.stream(nomes).map(n->Pilot.get(n)).collect(Collectors.toSet());
 	}
 	
-	public void passYear() {
-		this.year++;
-	}
 	private boolean isNameAvailable(String name) {
 		try {
-			HistoryAgent.get().getPilot(name);
+			this.getPilot(name);
 			return false;
 		} catch (NoSuchElementException e) {
 			return true;

@@ -2,7 +2,9 @@ package fgenejfx.models;
 
 import java.io.Serializable;
 import java.util.EnumMap;
+import java.util.NoSuchElementException;
 
+import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
 
 public class Team implements Serializable, StatsMonitorable{
@@ -13,6 +15,10 @@ public class Team implements Serializable, StatsMonitorable{
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
+	
+	public static Team getTeam(TeamsEnum name) throws NoSuchElementException {
+		return League.get().getTeam(name);
+	}
 	
 	public Team(TeamsEnum tEnum) {
 		this.name = tEnum;

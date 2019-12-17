@@ -30,6 +30,17 @@ public class ContractsAgent implements Serializable {
 //		this.contractsMap = contractsMap;
 //	}
 
+	//=========================================================================================== get all
+	public Set<Pilot> getPilots(){
+		Set<Pilot> all = this.contracts.stream().map(c -> c.getPilot()).collect(Collectors.toSet());
+		return all;
+	}
+	
+	public Set<Team> getTeams(){
+		Set<Team> all = this.contracts.stream().map(c -> c.getTeam()).collect(Collectors.toSet());
+		return all;
+	}
+	
 	//=========================================================================================== get relations
 	private Contract getContract(Pilot p) {
 		return contracts.stream().filter(c->c.getPilot() == p).findFirst().get();
@@ -80,11 +91,13 @@ public class ContractsAgent implements Serializable {
 				.distinct()
 				.collect(Collectors.toSet());
 		if(teamsWithRoom.size() == 0 && noContract.size() > 0) {
-			teamsWithRoom = TeamsEnum.all();
+			teamsWithRoom = League.get().getTeams();
 		}
 		
 		executeFreeAgency(noContract, teamsWithRoom);
-		HistoryAgent.get().save(contracts);
+		HistoryAgent.get()
+			.getContractsHistory(League.get().getYear())
+			.save(contracts);
 	}
 	
 	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
@@ -94,7 +107,9 @@ public class ContractsAgent implements Serializable {
 		pilotsOrdered.stream().forEachOrdered(p->{
 			List<Team> entries = new ArrayList<>(teams);
 			try {
-				Team last = HistoryAgent.get().getTeamOf(League.get().getYear()-1, p);
+				Team last = HistoryAgent.get()
+						.getContractsHistory(League.get().getYear()-1)
+						.getTeamOf(p);
 				if(entries.contains(last)) {
 					entries.add(last);
 				}
