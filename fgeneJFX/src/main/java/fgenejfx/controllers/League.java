@@ -83,7 +83,7 @@ public class League implements Serializable{
 				}
 			}
 		}
-		return Arrays.stream(nomes).map(n->Pilot.get(n)).collect(Collectors.toSet());
+		return Arrays.stream(nomes).map(n->new Pilot(n)).collect(Collectors.toSet());
 	}
 	
 	private boolean isNameAvailable(String name) {
