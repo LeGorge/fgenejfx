@@ -41,14 +41,23 @@ public class HistoryAgent implements Serializable{
 	}
 	
 	public PilotHistory getPilotHistory(Pilot p) {
+		if(this.pilotHistory.get(p) == null) {
+			this.pilotHistory.put(p, new PilotHistory());
+		}
 		return this.pilotHistory.get(p);
 	}
 	
 	public TeamHistory getTeamHistory(Team t) {
+		if(this.teamHistory.get(t) == null) {
+			this.teamHistory.put(t, new TeamHistory());
+		}
 		return this.teamHistory.get(t);
 	}
 	
 	public ContractsHistory getContractsHistory(Integer i) {
+		if(this.contractHistory.get(i) == null) {
+			this.contractHistory.put(i, new ContractsHistory());
+		}
 		return this.contractHistory.get(i);
 	}
 }

@@ -42,6 +42,9 @@ public class League implements Serializable{
 	public Set<Team> getTeams(){
 		Set<Team> all = new HashSet<>();
 		all.addAll(ContractsAgent.get().getTeams());
+		if(all.isEmpty()) {
+			all = TeamsEnum.create();
+		}
 		return all;
 	}
 	

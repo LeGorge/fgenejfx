@@ -9,6 +9,7 @@ import fgenejfx.utils.Utils;
 
 public class Pilot implements Serializable, StatsMonitorable {
 	private static final long serialVersionUID = 1L;
+	public static final Integer MAX_YEARS_ON_CAREER = 18;
 
 	private String name;
 	private Integer AI;
@@ -23,7 +24,11 @@ public class Pilot implements Serializable, StatsMonitorable {
 	}
 	
 	public Boolean isActive() {
-		return 18 > (League.get().getYear()-rookieYear);
+		return MAX_YEARS_ON_CAREER > (League.get().getYear()-rookieYear);
+	}
+	
+	public Integer getYearsUntilRetirement() {
+		return MAX_YEARS_ON_CAREER - (League.get().getYear()-rookieYear);
 	}
 	
 	//=========================================================================================== get singleton

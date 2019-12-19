@@ -10,13 +10,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
+import fgenejfx.controllers.PersistanceController;
+import fgenejfx.exceptions.PilotInactivationException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class ContractsAgent implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private static final Integer MAX_YEARS_ON_CONTRACT = 8;
-	private static final Integer CONTRACTS_PER_SEASON = 36;
-	private static final Integer PILOTS_PER_TEAM = 2;
+	public static final Integer CONTRACTS_PER_SEASON = 36;
+	public static final Integer PILOTS_PER_TEAM = 2;
 	
 	private static ContractsAgent agent;
 	
@@ -45,6 +49,9 @@ public class ContractsAgent implements Serializable {
 	private Contract getContract(Pilot p) {
 		return contracts.stream().filter(c->c.getPilot() == p).findFirst().get();
 	}
+	private Set<Contract> getContracts(Team t) {
+		return contracts.stream().filter(c->c.getTeam() == t).collect(Collectors.toSet());
+	}
 	public Integer getRemainingYearsOfContract(Pilot p) throws NoSuchElementException {
 		return getContract(p).getYears();
 	}
@@ -59,10 +66,15 @@ public class ContractsAgent implements Serializable {
 		return contracts.stream().filter(c->c.getPilot().isRookie()).map(a->a.getPilot()).collect(Collectors.toSet());
 	}
 	//=========================================================================================== operations
-	public void updateContracts(){
-		updateContracts(CONTRACTS_PER_SEASON);
-	}
-	public void updateContracts(int max){
+//	public void updateContracts(){
+//		updateContracts(CONTRACTS_PER_SEASON);
+//	}
+	public void updateContracts(Set<Pilot> rookies){
+		//save to history
+		HistoryAgent.get()
+			.getContractsHistory(League.get().getYear()-1)
+			.save(contracts);
+		
 		//reduce one year on all contacts
 		for (Contract c : contracts) {
 			c.passYear();
@@ -79,27 +91,26 @@ public class ContractsAgent implements Serializable {
 			.map(Contract::getPilot)
 			.collect(Collectors.toSet());
 		
-		//create necessary rookies
-		int nNewPilots = (max - contracts.size()) - noContract.size();
-		if(nNewPilots < 0) {
-			nNewPilots = 0;
-		}
-		noContract.addAll(League.get().createNewPilots(nNewPilots));
+		//create necessary rookies CHANGED: NOT A RESPONSABILITY OF THIS METHOD
+//		int nNewPilots = (max - contracts.size()) - noContract.size();
+//		if(nNewPilots < 0) {
+//			nNewPilots = 0;
+//		}
+		noContract.addAll(rookies);
 		
 		//get Teams with room for pilots
-		Set<Team> teamsWithRoom = ended.stream()
-				.filter(c->c.getPilot().isActive())
-				.map(Contract::getTeam)
-				.distinct()
+		Set<Team> teamsWithRoom = League.get().getTeams().stream()
+				.filter(t -> ContractsAgent.get().getPilotsOf(t).size() != PILOTS_PER_TEAM)
 				.collect(Collectors.toSet());
-		if(teamsWithRoom.size() == 0 && noContract.size() > 0) {
-			teamsWithRoom = League.get().getTeams();
-		}
 		
 		executeFreeAgency(noContract, teamsWithRoom);
-		HistoryAgent.get()
-			.getContractsHistory(League.get().getYear())
-			.save(contracts);
+		
+		//get retiring Pilots
+		Set<Pilot> retiring = ended.stream()
+				.filter(c->!c.getPilot().isActive())
+				.map(Contract::getPilot)
+				.collect(Collectors.toSet());
+//		cleanPilotFolder(retiring);
 	}
 	
 	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
@@ -119,30 +130,34 @@ public class ContractsAgent implements Serializable {
 			} catch (NullPointerException e) {
 			}
 			Team sorted = entries.get(new Random().nextInt(entries.size()));
-			contracts.add(new Contract(p,sorted,new Random().nextInt(MAX_YEARS_ON_CONTRACT)+1));
+			contracts.add(new Contract(p,sorted,canSignFirst(sorted)));
 			if(getPilotsOf(sorted).size() == PILOTS_PER_TEAM) {
 				teams.remove(sorted);
 			}
 		});
 	}
 	
-	private void endContracts(Set<Contract> end) {
-//		end.stream()
-//				.filter(c->!c.getPilot().isActive())
-//				.forEach(c->{
-//					try {
-//						PersistanceController.inactivatePilotFile(c.getPilot());
-//					} catch (PilotInactivationException e) {
-//						Alert alert = new Alert(
-//								AlertType.ERROR, 
-//								"the "+c.getPilot().getName()+".drv pilot file couldn't be moved to history, "
-//										+ "please do it mannually",
-//								ButtonType.OK
-//							);
-//						alert.showAndWait();
-//					}
-//				});
-		
+	private Boolean canSignFirst(Team t) {
+		Set<Contract> set = this.getContracts(t);
+		if(set.isEmpty())return true;
+		if(set.size() == 2)return false;
+		return !set.stream().findFirst().get().getIsFirst();
+	}
+	
+	private void cleanPilotFolder(Set<Pilot> pilots) {
+		pilots.stream().forEach(c->{
+			try {
+				PersistanceController.inactivatePilotFile(c);
+			} catch (PilotInactivationException e) {
+				Alert alert = new Alert(
+					AlertType.ERROR, 
+					"the "+c.getName()+".drv pilot file couldn't be moved to history, "
+							+ "please do it mannually",
+					ButtonType.OK
+				);
+				alert.showAndWait();
+			}
+		});
 	}
 	
 	//=========================================================================================== get singleton
