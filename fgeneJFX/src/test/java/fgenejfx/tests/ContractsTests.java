@@ -23,13 +23,14 @@ public class ContractsTests {
 		HistoryAgent hag = HistoryAgent.get();
 		
 		Pilot p = new Pilot("");
-		assertEquals(0, League.get().getYear() - p.getRookieYear());
+		assertEquals(p.getRookieYear(), League.get().getYear());
 		
-		for (int i = 0; i < Pilot.MAX_YEARS_ON_CAREER - 1; i++) {
+		for (int i = 1; i < Pilot.MAX_YEARS_ON_CAREER; i++) {
 			l.passYear();
 		}
-		assertEquals(17, League.get().getYear() - p.getRookieYear());
+		assertEquals(1, p.getYearsUntilRetirement());
 		
+		assertEquals(18, l.getYear());
 		HashSet<Pilot> set = new HashSet<>();
 		set.add(p);
 		cag.updateContracts(set);
@@ -40,7 +41,7 @@ public class ContractsTests {
 		
 		cag.updateContracts(new HashSet<>());
 		assertThrows(NoSuchElementException.class, () -> cag.getTeamOf(p));
-		assertNotNull(hag.getContractsHistory(l.getYear()).getTeamOf(p));
+		assertNotNull(hag.getContractsHistory(l.getYear()-1).getTeamOf(p));
 		
 	}
 	

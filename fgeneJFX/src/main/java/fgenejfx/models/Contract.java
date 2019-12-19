@@ -11,6 +11,7 @@ public class Contract implements Serializable{
 
 	private Pilot pilot;
 	private Team team;
+	private Boolean isFirst;
 	private Integer years;
 	
 	public void passYear() {
@@ -20,10 +21,11 @@ public class Contract implements Serializable{
 		return years == 0; 
 	}
 	
-	public Contract(Pilot pilot, Team team) {
+	public Contract(Pilot pilot, Team team, Boolean isFirst) {
 		super();
 		this.pilot = pilot;
 		this.team = team;
+		this.isFirst = isFirst;
 		int maxContract = pilot.getYearsUntilRetirement() > MAX_YEARS_ON_CONTRACT ?
 				MAX_YEARS_ON_CONTRACT : pilot.getYearsUntilRetirement();
 		this.years = new Random().nextInt(maxContract)+1;
@@ -39,6 +41,12 @@ public class Contract implements Serializable{
 	}
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+	public Boolean getIsFirst() {
+		return isFirst;
+	}
+	public void setIsFirst(Boolean isFirst) {
+		this.isFirst = isFirst;
 	}
 	public Integer getYears() {
 		return years;
