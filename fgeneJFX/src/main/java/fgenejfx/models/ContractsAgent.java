@@ -35,34 +35,37 @@ public class ContractsAgent implements Serializable {
 //	}
 
 	//=========================================================================================== get all
-	public Set<Pilot> getPilots(){
+	public Set<Pilot> pilots(){
 		Set<Pilot> all = this.contracts.stream().map(c -> c.getPilot()).collect(Collectors.toSet());
 		return all;
 	}
 	
-	public Set<Team> getTeams(){
+	public Set<Team> teams(){
 		Set<Team> all = this.contracts.stream().map(c -> c.getTeam()).collect(Collectors.toSet());
 		return all;
 	}
 	
 	//=========================================================================================== get relations
-	private Contract getContract(Pilot p) {
+	private Contract contract(Pilot p) {
 		return contracts.stream().filter(c->c.getPilot() == p).findFirst().get();
 	}
-	private Set<Contract> getContracts(Team t) {
+	private Set<Contract> contracts(Team t) {
 		return contracts.stream().filter(c->c.getTeam() == t).collect(Collectors.toSet());
 	}
-	public Integer getRemainingYearsOfContract(Pilot p) throws NoSuchElementException {
-		return getContract(p).getYears();
+	public Integer remainingYearsOfContract(Pilot p) throws NoSuchElementException {
+		return contract(p).getYears();
 	}
-	public Team getTeamOf(Pilot p) throws NoSuchElementException {
-		return getContract(p).getTeam();
+	public Team teamOf(Pilot p) throws NoSuchElementException {
+		return contract(p).getTeam();
 	}
-	public List<Pilot> getPilotsOf(Team t) throws NoSuchElementException {
-		return contracts.stream().filter(c->c.getTeam() == t).collect(Collectors.toList())
-				.stream().map(Contract::getPilot).collect(Collectors.toList());
+	public List<Pilot> pilotsOf(Team t) throws NoSuchElementException {
+		return contracts.stream()
+			.filter(c->c.getTeam() == t)
+			.sorted()
+			.map(Contract::getPilot)
+			.collect(Collectors.toList());
 	}
-	public Set<Pilot> getRookies(){
+	public Set<Pilot> rookies(){
 		return contracts.stream().filter(c->c.getPilot().isRookie()).map(a->a.getPilot()).collect(Collectors.toSet());
 	}
 	//=========================================================================================== operations
@@ -71,9 +74,11 @@ public class ContractsAgent implements Serializable {
 //	}
 	public void updateContracts(Set<Pilot> rookies){
 		//save to history
-		HistoryAgent.get()
-			.getContractsHistory(League.get().getYear()-1)
-			.save(contracts);
+		// if(League.get().getYear() != 1){
+		// 	HistoryAgent.get()
+		// 		.history(League.get().getYear()-1)
+		// 		.save(contracts);
+		// }
 		
 		//reduce one year on all contacts
 		for (Contract c : contracts) {
@@ -100,7 +105,7 @@ public class ContractsAgent implements Serializable {
 		
 		//get Teams with room for pilots
 		Set<Team> teamsWithRoom = League.get().getTeams().stream()
-				.filter(t -> ContractsAgent.get().getPilotsOf(t).size() != PILOTS_PER_TEAM)
+				.filter(t -> ContractsAgent.get().pilotsOf(t).size() != PILOTS_PER_TEAM)
 				.collect(Collectors.toSet());
 		
 		executeFreeAgency(noContract, teamsWithRoom);
@@ -119,26 +124,24 @@ public class ContractsAgent implements Serializable {
 			.collect(Collectors.toList());
 		pilotsOrdered.stream().forEachOrdered(p->{
 			List<Team> entries = new ArrayList<>(teams);
-			try {
+			if(League.get().getYear() != 1){
 				Team last = HistoryAgent.get()
-						.getContractsHistory(League.get().getYear()-1)
-						.getTeamOf(p);
+						.history(League.get().getYear()-1)
+						.teamOf(p);
 				if(entries.contains(last)) {
 					entries.add(last);
 				}
-			} catch (NoSuchElementException e) {
-			} catch (NullPointerException e) {
 			}
 			Team sorted = entries.get(new Random().nextInt(entries.size()));
 			contracts.add(new Contract(p,sorted,canSignFirst(sorted)));
-			if(getPilotsOf(sorted).size() == PILOTS_PER_TEAM) {
+			if(pilotsOf(sorted).size() == PILOTS_PER_TEAM) {
 				teams.remove(sorted);
 			}
 		});
 	}
 	
 	private Boolean canSignFirst(Team t) {
-		Set<Contract> set = this.getContracts(t);
+		Set<Contract> set = this.contracts(t);
 		if(set.isEmpty())return true;
 		if(set.size() == 2)return false;
 		return !set.stream().findFirst().get().getIsFirst();
@@ -174,5 +177,9 @@ public class ContractsAgent implements Serializable {
 		if(agent == null) {
 			agent = ag;
 		}
+	}
+	//=========================================================================================== getters & setters
+	public Set<Contract> getContracts() {
+		return this.contracts;
 	}
 }

@@ -1,57 +1,44 @@
 package fgenejfx.controllers;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fgenejfx.exceptions.NameGeneratorException;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
+import fgenejfx.models.Season;
 import fgenejfx.models.Team;
-import fgenejfx.models.TeamsEnum;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
 
 public class League implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private static League league;
-	
+
+	private Set<Pilot> pilots = new HashSet<>();
+	private Set<Team> teams = new HashSet<>();
+
+	private Season season;
 	private Integer year = 1;
+
 	public void passYear() {
 		this.year++;
 	}
 
 	//=========================================================================================== gets
 	
-	public Set<Pilot> getPilots(){
-		Set<Pilot> all = new HashSet<>();
-		all.addAll(ContractsAgent.get().getPilots());
-		all.addAll(HistoryAgent.get().getPilots());
-		return all;
+	public Set<Pilot> activePilots(){
+		return this.pilots.stream().filter(p->p.isActive()).collect(Collectors.toSet());
 	}
 	
-	public Pilot getPilot(String name) throws NoSuchElementException{
-		return this.getPilots().stream().filter(p->p.getName().equals(name)).findFirst().get();
-	}
-	
-	public Set<Team> getTeams(){
-		Set<Team> all = new HashSet<>();
-		all.addAll(ContractsAgent.get().getTeams());
-		if(all.isEmpty()) {
-			all = TeamsEnum.create();
-		}
-		return all;
-	}
-	
-	public Team getTeam(TeamsEnum tEnum) throws NoSuchElementException{
-		return this.getTeams().stream().filter(t->t.getName() == tEnum).findFirst().get();
-	}
-//	
 //	//=========================================================================================== season
 //	public void newSeason() {
 //		Season s = new Season();
@@ -91,7 +78,7 @@ public class League implements Serializable{
 	
 	private boolean isNameAvailable(String name) {
 		try {
-			this.getPilot(name);
+			Pilot.get(name);
 			return false;
 		} catch (NoSuchElementException e) {
 			return true;
@@ -116,8 +103,29 @@ public class League implements Serializable{
 	public Integer getYear() {
 		return year;
 	}
-
 	public void setYear(Integer year) {
 		this.year = year;
 	}
+	public Set<Pilot> getPilots(){
+		return this.pilots;
+	}
+	public Set<Team> getTeams(){
+		return this.teams;
+	}
+	public void setPilots(Set<Pilot> pilots) {
+		this.pilots = pilots;
+	}
+	public void setTeams(Set<Team> teams) {
+		this.teams = teams;
+	}
+
+	@JsonIgnore
+	public Season getSeason() {
+		return this.season;
+	}
+	public void setSeason(Season s) {
+		this.season = s;
+		this.year = s.getYear();
+	}
+
 }

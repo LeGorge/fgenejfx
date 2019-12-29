@@ -3,6 +3,8 @@ package fgenejfx.models;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.utils.Utils;
@@ -19,14 +21,17 @@ public class Pilot implements Serializable, StatsMonitorable {
 	private Stats stats = new Stats();
 	
 	//=========================================================================================== operations
+	@JsonIgnore
 	public Boolean isRookie() {
 		return League.get().getYear().equals(rookieYear);
 	}
 	
+	@JsonIgnore
 	public Boolean isActive() {
 		return MAX_YEARS_ON_CAREER > (League.get().getYear()-rookieYear);
 	}
 	
+	@JsonIgnore
 	public Integer getYearsUntilRetirement() {
 		return MAX_YEARS_ON_CAREER - (League.get().getYear()-rookieYear);
 	}
@@ -34,15 +39,17 @@ public class Pilot implements Serializable, StatsMonitorable {
 	//=========================================================================================== get singleton
 	
 	public static Pilot get(String name) throws NoSuchElementException{
-		return League.get().getPilot(name);
+		return League.get().getPilots().stream().filter(p->p.getName().equals(name)).findFirst().get();
 	}
 	
 	//=========================================================================================== crud
+	public Pilot() {
+	}
 	public Pilot(String name) {
 		this.name = name;
 		this.AI = Utils.genGaussian(103, 3);
 	}
-
+	
 	public Integer getRookieYear() {
 		return rookieYear;
 	}
@@ -50,40 +57,40 @@ public class Pilot implements Serializable, StatsMonitorable {
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public Integer getAI() {
 		return AI;
 	}
-
+	
 	public void setAI(Integer aI) {
 		AI = aI;
 	}
-
+	
 	public Double getXp() {
 		return xp;
 	}
-
+	
 	public void setXp(Double xp) {
 		this.xp = xp;
 	}
-
-
+	
+	
 	public LifeStats getLifeStats() {
 		return lifeStats;
 	}
-
+	
 	public void setLifeStats(LifeStats lifeStats) {
 		this.lifeStats = lifeStats;
 	}
-
+	
 	public Stats getStats() {
 		return stats;
 	}
-
+	
 	public void setStats(Stats stats) {
 		this.stats = stats;
 	}

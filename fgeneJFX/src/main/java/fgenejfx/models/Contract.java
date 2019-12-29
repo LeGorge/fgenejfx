@@ -5,7 +5,7 @@ import java.util.Random;
 
 import fgenejfx.controllers.League;
 
-public class Contract implements Serializable{
+public class Contract implements Serializable, Comparable<Contract>{
 	private static final long serialVersionUID = 1L;
 	public static final Integer MAX_YEARS_ON_CONTRACT = 8;
 
@@ -57,5 +57,10 @@ public class Contract implements Serializable{
 	@Override
 	public String toString() {
 		return pilot.getName() + " - " + team.getName() + " : " + years;
+	}
+
+	@Override
+	public int compareTo(Contract c) {
+		return this.getIsFirst().compareTo(c.getIsFirst());
 	}
 }

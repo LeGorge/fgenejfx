@@ -1,63 +1,60 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.NoSuchElementException;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import fgenejfx.jackson.MapDeserializer;
 
 public class HistoryAgent implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private static HistoryAgent history;
+	private static HistoryAgent historyAgent;
 
-	private Map<Pilot, PilotHistory> pilotHistory = new HashMap<>();
-	private Map<Team, TeamHistory> teamHistory = new HashMap<>();
-	private Map<Integer, ContractsHistory> contractHistory = new HashMap<>();
-//	private Map<Integer, Season> seasons = new HashMap<>();
+	private List<Season> seasons = new ArrayList<>();
+
+	@JsonDeserialize(using = MapDeserializer.class, keyAs = Season.class, contentAs = History.class)
+	private Map<Season,History> historyMap = new LinkedHashMap<>();
 	
-	public Set<Pilot> getPilots(){
-		Set<Pilot> all = new HashSet<>(this.pilotHistory.keySet());
-		return all;
+	//=========================================================================================== seasons
+	public void save(Season s){
+		this.seasons.add(s);
+		this.historyMap.put(s, new History(s));
 	}
-	public Set<Team> getTeams(){
-		Set<Team> all = this.teamHistory.keySet();
-		return all;
+	//=========================================================================================== history
+	public History history(Season s){
+		return historyMap.get(s);
+	}
+	public History history(Integer year) throws NoSuchElementException{
+		Season se = historyMap.keySet().stream().filter(s -> s.getYear().equals(year)).findFirst().get();
+		return this.history(se);
 	}
 	
 	//=========================================================================================== get singletons
 	private HistoryAgent() {
-		HistoryAgent.history = this;
+		HistoryAgent.historyAgent = this;
 	}
 	public static HistoryAgent get() {
-		if(history == null) {
+		if(historyAgent == null) {
 			new HistoryAgent();
 		}
-		return history;
+		return historyAgent;
 	}
 	public static void set(HistoryAgent ag) {
-		if(history == null) {
-			history = ag;
+		if(historyAgent == null) {
+			historyAgent = ag;
 		}
 	}
-	
-	public PilotHistory getPilotHistory(Pilot p) {
-		if(this.pilotHistory.get(p) == null) {
-			this.pilotHistory.put(p, new PilotHistory());
-		}
-		return this.pilotHistory.get(p);
+	//=========================================================================================== getters & setters
+	public List<Season> getSeasons() {
+		return this.seasons;
 	}
-	
-	public TeamHistory getTeamHistory(Team t) {
-		if(this.teamHistory.get(t) == null) {
-			this.teamHistory.put(t, new TeamHistory());
-		}
-		return this.teamHistory.get(t);
-	}
-	
-	public ContractsHistory getContractsHistory(Integer i) {
-		if(this.contractHistory.get(i) == null) {
-			this.contractHistory.put(i, new ContractsHistory());
-		}
-		return this.contractHistory.get(i);
+
+	public Map<Season,History> getHistoryMap() {
+		return this.historyMap;
 	}
 }

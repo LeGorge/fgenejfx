@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.NoSuchElementException;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
 
@@ -16,12 +18,23 @@ public class Team implements Serializable, StatsMonitorable{
 	private Stats stats = new Stats();
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
 	
-	public static Team getTeam(TeamsEnum name) throws NoSuchElementException {
-		return League.get().getTeam(name);
+	@JsonIgnore
+	public static Team get(TeamsEnum name) throws NoSuchElementException {
+		return League.get().getTeams().stream().filter(t->t.getName() == name).findFirst().get();
 	}
 	
+	@JsonIgnore
+	public static Team get(String name) throws NoSuchElementException {
+		return Team.get(TeamsEnum.valueOf(name));
+	}
+	
+	public Team() {
+	}
 	public Team(TeamsEnum tEnum) {
 		this.name = tEnum;
+		for (Powers p : Powers.values()) {
+			this.powers.put(p, p.def);
+		}
 	}
 
 	public TeamsEnum getName() {

@@ -33,4 +33,11 @@ public class TeamHistory implements Serializable{
 	public void savePowers(Integer year, EnumMap<Powers, Double> powers) throws CopyException {
 		this.powers.put(year, Utils.copy(powers));
 	}
+
+	public Map<Integer, EnumMap<Powers, Double>> getPowers(){
+		return this.powers;
+	}
+	public Map<Integer, Stats> getStats(){
+		return this.stats;
+	}
 }
