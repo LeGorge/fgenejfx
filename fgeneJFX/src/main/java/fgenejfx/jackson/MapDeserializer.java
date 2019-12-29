@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 
 import fgenejfx.models.Pilot;
+import fgenejfx.models.Powers;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
 
@@ -60,13 +61,16 @@ Map<Object, Object> intoValue) throws IOException, JsonProcessingException {
                 break;
             }
             JsonNode valueNode = entry.getValue();
-            intoValue.put(chaveObj, valueNode.traverse(codec).readValueAs(this.contentAs));
-            // if(this.contentAs.equals(EnumMap.class)){
-            //     EnumMap<Powers,Double> enumMap = new Enum
-            //     valueNode.fieldNames().forEachRemaining(action);
-            // }else{
-            //     intoValue.put(chaveObj, valueNode.traverse(codec).readValueAs(this.contentAs));
-            // }
+            // intoValue.put(chaveObj, valueNode.traverse(codec).readValueAs(this.contentAs));
+            if(this.contentAs.equals(EnumMap.class)){
+                EnumMap<Powers,Double> enumMap = new EnumMap<>(Powers.class);
+                valueNode.fields().forEachRemaining(e -> {
+                    enumMap.put(Powers.valueOf(e.getKey()), e.getValue().asDouble());
+                });;
+                intoValue.put(chaveObj, enumMap);
+            }else{
+                intoValue.put(chaveObj, valueNode.traverse(codec).readValueAs(this.contentAs));
+            }
         } catch (NullPointerException | IOException e) {
             // skip entry
         }

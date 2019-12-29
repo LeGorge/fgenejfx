@@ -1,5 +1,7 @@
 package fgenejfx.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +49,8 @@ public class JsonTests {
 		// System.out.println(json2);
 		
 		HistoryAgent g2 = (HistoryAgent)PersistanceController.loadJSON(json, HistoryAgent.class);
+		assertEquals(hag, g2);
+
 		// Group g2 = PersistanceController.loadJSON(json);
 		// League g2 = (League)PersistanceController.loadJSON(json, League.class);
 		
