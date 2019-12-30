@@ -39,6 +39,10 @@ public class Group implements Serializable{
 		return ps.indexOf(p)+1;
 	}
 
+	public Boolean contains(Pilot p) {
+		return pilotsMap.containsKey(p);
+	}
+
 	@JsonIgnore
 	public List<Pilot> getPilots(){
 		return pilotsMap.keySet().stream().sorted(
