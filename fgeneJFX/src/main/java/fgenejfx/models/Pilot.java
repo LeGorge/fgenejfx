@@ -14,7 +14,7 @@ public class Pilot implements Serializable, StatsMonitorable {
 	public static final Integer MAX_YEARS_ON_CAREER = 18;
 
 	private String name;
-	private Integer AI;
+	private Integer ai;
 	private Double xp = 0.0;
 	private Integer rookieYear = League.get().getYear();
 	private LifeStats lifeStats = new LifeStats();
@@ -47,7 +47,7 @@ public class Pilot implements Serializable, StatsMonitorable {
 	}
 	public Pilot(String name) {
 		this.name = name;
-		this.AI = Utils.genGaussian(103, 3);
+		this.ai = Utils.genGaussian(103, 3);
 	}
 	
 	public Integer getRookieYear() {
@@ -62,12 +62,12 @@ public class Pilot implements Serializable, StatsMonitorable {
 		this.name = name;
 	}
 	
-	public Integer getAI() {
-		return AI;
+	public Integer getAi() {
+		return ai;
 	}
 	
-	public void setAI(Integer aI) {
-		AI = aI;
+	public void setAi(Integer ai) {
+		this.ai = ai;
 	}
 	
 	public Double getXp() {

@@ -41,15 +41,15 @@ public class JsonTests {
 
 		hag.save(s);
 
-		String json = PersistanceController.json(hag);
-		System.out.println(json);
+		// String json = PersistanceController.json(cag);
+		// System.out.println(json);
 
-		// PersistanceController.save(l.getSeason());
+		PersistanceController.save();
 		// String json2 = PersistanceController.json(l.getSeason());
 		// System.out.println(json2);
 		
-		HistoryAgent g2 = (HistoryAgent)PersistanceController.loadJSON(json, HistoryAgent.class);
-		assertEquals(hag, g2);
+		// ContractsAgent g2 = (ContractsAgent)PersistanceController.loadJSON(json, ContractsAgent.class);
+		// assertEquals(cag, g2);
 
 		// Group g2 = PersistanceController.loadJSON(json);
 		// League g2 = (League)PersistanceController.loadJSON(json, League.class);

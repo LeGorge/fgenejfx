@@ -120,7 +120,7 @@ public class ContractsAgent implements Serializable {
 	
 	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
 		List<Pilot> pilotsOrdered = pilots.stream()
-			.sorted((p2, p1) -> p1.getAI().compareTo(p2.getAI()))
+			.sorted((p2, p1) -> p1.getAi().compareTo(p2.getAi()))
 			.collect(Collectors.toList());
 		pilotsOrdered.stream().forEachOrdered(p->{
 			List<Team> entries = new ArrayList<>(teams);

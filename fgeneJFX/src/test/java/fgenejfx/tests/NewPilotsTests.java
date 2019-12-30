@@ -21,8 +21,8 @@ public class NewPilotsTests {
 		
 		set.forEach(p ->{
 			//---------------------------------------------------- ai
-			assertNotNull(p.getAI());
-			assertTrue(p.getAI() > 50 && p.getAI() < 150);
+			assertNotNull(p.getAi());
+			assertTrue(p.getAi() > 50 && p.getAi() < 150);
 			
 			//---------------------------------------------------- rookieYear
 			assertNotNull(p.getRookieYear());

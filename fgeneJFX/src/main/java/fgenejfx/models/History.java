@@ -30,7 +30,7 @@ public class History implements Serializable{
 	}
 	public History(Season s){
 		ContractsAgent.get().pilots().forEach(p ->{
-			this.saveAi(p, p.getAI());
+			this.saveAi(p, p.getAi());
 		});
 		ContractsAgent.get().teams().forEach(t ->{
 			try {
