@@ -3,24 +3,42 @@ package fgenejfx.models;
 import java.io.Serializable;
 import java.util.Random;
 
-import fgenejfx.controllers.League;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-public class Contract implements Serializable{
+import fgenejfx.jackson.ContractDeserializer;
+
+@JsonDeserialize(using = ContractDeserializer.class)
+public class Contract implements Serializable, Comparable<Contract>{
 	private static final long serialVersionUID = 1L;
 	public static final Integer MAX_YEARS_ON_CONTRACT = 8;
 
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name")
+	@JsonIdentityReference(alwaysAsId=true)
 	private Pilot pilot;
+	
+	// @JsonIgnoreProperties({"lifeStats", "stats","powers"})
+	@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="name")
+	@JsonIdentityReference(alwaysAsId=true)
 	private Team team;
+		
 	private Boolean isFirst;
 	private Integer years;
 	
 	public void passYear() {
 		years--;
 	}
+
+	@JsonIgnore
 	public boolean isDone() {
 		return years == 0; 
 	}
 	
+	public Contract() {
+	}
 	public Contract(Pilot pilot, Team team, Boolean isFirst) {
 		super();
 		this.pilot = pilot;
@@ -57,5 +75,10 @@ public class Contract implements Serializable{
 	@Override
 	public String toString() {
 		return pilot.getName() + " - " + team.getName() + " : " + years;
+	}
+
+	@Override
+	public int compareTo(Contract c) {
+		return this.getIsFirst().compareTo(c.getIsFirst());
 	}
 }

@@ -34,14 +34,14 @@ public class ContractsTests {
 		HashSet<Pilot> set = new HashSet<>();
 		set.add(p);
 		cag.updateContracts(set);
-		assertNotNull(cag.getTeamOf(p));
-		assertEquals(1, cag.getRemainingYearsOfContract(p));
+		assertNotNull(cag.teamOf(p));
+		assertEquals(1, cag.remainingYearsOfContract(p));
 		
 		l.passYear();
 		
 		cag.updateContracts(new HashSet<>());
-		assertThrows(NoSuchElementException.class, () -> cag.getTeamOf(p));
-		assertNotNull(hag.getContractsHistory(l.getYear()-1).getTeamOf(p));
+		assertThrows(NoSuchElementException.class, () -> cag.teamOf(p));
+		assertNotNull(hag.history(l.getYear()-1).teamOf(p));
 		
 	}
 	

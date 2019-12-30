@@ -11,84 +11,74 @@
 </properties>
 
   <dependencies>
-	<dependency>
-	    <groupId>com.google.guava</groupId>
-	    <artifactId>guava</artifactId>
-	    <version>28.0-jre</version>
-	</dependency>
-	
+  
+	<!-- JUNIT -->
 	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-api</artifactId>
 	    <version>5.5.1</version>
 	    <scope>test</scope>
 	</dependency>
-	
 	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
 	    <version>5.5.1</version>
 	    <scope>test</scope>
 	</dependency>
-	
 	<dependency>
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-params</artifactId>
 	    <version>5.5.1</version>
 	    <scope>test</scope>
 	</dependency>
-<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
-<dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter</artifactId>
-    <version>5.5.1</version>
-    <scope>test</scope>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-migrationsupport -->
-<dependency>
-    <groupId>org.junit.jupiter</groupId>
-    <artifactId>junit-jupiter-migrationsupport</artifactId>
-    <version>5.5.1</version>
-    <scope>test</scope>
-</dependency>
-	
+	<dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter</artifactId>
+		<version>5.5.1</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-migrationsupport</artifactId>
+		<version>5.5.1</version>
+		<scope>test</scope>
+	</dependency>
+		
+	<!-- JACKSON -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-core</artifactId>
+		<version>2.10.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>2.10.1</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-annotations</artifactId>
+		<version>2.10.1</version>
+	</dependency>
 
+	<!-- APACHE COMMONS -->
 	<dependency>
 	    <groupId>org.apache.commons</groupId>
 	    <artifactId>commons-collections4</artifactId>
 	    <version>4.4</version>
 	</dependency>
-	
 	<dependency>
 	    <groupId>org.apache.commons</groupId>
 	    <artifactId>commons-lang3</artifactId>
 	    <version>3.9</version>
 	</dependency>
-	
 	<dependency>
-	    <groupId>javax.ws.rs</groupId>
-	    <artifactId>javax.ws.rs-api</artifactId>
-	    <version>2.1.1</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.glassfish.jersey.core</groupId>
-	    <artifactId>jersey-client</artifactId>
-	    <version>2.29</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.glassfish.jersey.inject</groupId>
-	    <artifactId>jersey-hk2</artifactId>
-	    <version>2.29</version>
-	</dependency>
-	
-	<dependency>
-	    <groupId>org.glassfish.jersey.media</groupId>
-	    <artifactId>jersey-media-json-jackson</artifactId>
-	    <version>2.29</version>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.6</version>
 	</dependency>
 
+	
   </dependencies>
   
 </project>

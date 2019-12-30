@@ -2,6 +2,8 @@ package fgenejfx.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class RaceStats implements Serializable,Comparable<RaceStats> {
 
 	protected static final long serialVersionUID = 1L;
@@ -32,21 +34,27 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 	}
 
 
+	@JsonIgnore
 	public Integer getTotalRaces() {
 		return p1st + p2nd + p3rd + p4th + p5th + p6th;
 	}
 
+	@JsonIgnore
 	public Integer getPts() {
 		return p1st * 8 + p2nd * 5 + p3rd * 3 + p4th * 2 + p5th * 1 + p6th * 0;
 	}
 	
+	@JsonIgnore
 	public Double getWinRate() {
 		return getTotalRaces() != 0 ? new Double(p1st/getTotalRaces()) : 0.0d ;
 	}
+
+	@JsonIgnore
 	public Double getPtRate() {
 		return getTotalRaces() != 0 ? new Double(getPts()/getTotalRaces()/8) : 0.0d ;
 	}
 
+	@JsonIgnore
 	public boolean isEmpty() {
 		if ((p1st == 0) && (p2nd == 0) && (p3rd == 0) && (p4th == 0) && (p5th == 0) && (p6th == 0)) {
 			return true;

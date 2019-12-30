@@ -12,6 +12,11 @@ import fgenejfx.controllers.League;
 
 public class Season implements Serializable{
 	private static final long serialVersionUID = 1L;
+	public static Season get(Integer year){
+		return League.get().getYear().equals(year) ?
+			League.get().getSeason() :
+			HistoryAgent.get().getSeasons().stream().filter(s -> s.getYear().equals(year)).findFirst().get();
+	}
 	
 	private Integer year;
 	
@@ -19,6 +24,7 @@ public class Season implements Serializable{
 	
 	private Group pPlayoff;
 	private Group tPlayoff;
+
 
 	public RaceStats statsOf(Pilot p) throws NoSuchElementException {
 		return Arrays.stream(season).filter(g->g.statsOf(p)!=null).findFirst().get().statsOf(p);
@@ -37,15 +43,11 @@ public class Season implements Serializable{
 	}
 
 	private void buildGroups(List<Team> teams) {
-		List<Pilot> pss = teams.stream()
-		.map(t->ContractsAgent.get().getPilotsOf(t))
-		.flatMap(l->l.stream())
-		.collect(Collectors.toList());
 		for (int i = 0; i < season.length; i++) {
 			season[i] = new Group(teams.subList(i*3, i*3+3).stream()
-					.map(t->ContractsAgent.get().getPilotsOf(t))
+					.map(t->ContractsAgent.get().pilotsOf(t))
 					.flatMap(l->l.stream())
-					.collect(Collectors.toList()));
+					.collect(Collectors.toSet()));
 		}
 	}
 	
@@ -96,6 +98,11 @@ public class Season implements Serializable{
 		} else if (!year.equals(other.year))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return this.year.toString();
 	}
 	
 }
