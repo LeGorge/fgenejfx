@@ -41,30 +41,24 @@ public class PersistanceController {
 		save(ContractsAgent.get(),contractsPath);
 	}
 
-	
-	// public static Object load() {
-	// 	try {
-	// 		FileUtils.writeStringToFile(new File("saves\\league.json"), json(obj), StandardCharsets.UTF_8);
-	// 	} catch (IOException e) {
-	// 		e.printStackTrace();
-	// 	}
-	// 	try {
-	// 		FileInputStream pilotsIn = new FileInputStream("C:\\Users\\Gorge\\Desktop\\save.save");
+	public static void load() {
+		try {
+			String json = FileUtils.readFileToString(new File(leaguePath),StandardCharsets.UTF_8);
+			League.set((League)loadJSON(json, League.class));
+			
+			json = FileUtils.readFileToString(new File(seasonPath), StandardCharsets.UTF_8);
+			League.get().setSeason((Season)loadJSON(json, Season.class));
+			
+			json = FileUtils.readFileToString(new File(historyPath), StandardCharsets.UTF_8);
+			HistoryAgent.set((HistoryAgent)loadJSON(json, HistoryAgent.class));
+			
+			json = FileUtils.readFileToString(new File(contractsPath), StandardCharsets.UTF_8);
+			ContractsAgent.set((ContractsAgent)loadJSON(json, ContractsAgent.class));
 
-	// 		ObjectInputStream in = new ObjectInputStream(pilotsIn);
-	// 		Object o = in.readObject();
-	// 		in.close();
-
-	// 		pilotsIn.close();
-	// 		return o;
-	// 	} catch (IOException i) {
-	// 		i.printStackTrace();
-	// 		return false;
-	// 	} catch (ClassNotFoundException c) {
-	// 		c.printStackTrace();
-	// 		return false;
-	// 	}
-	// }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void inactivatePilotFile(Pilot p) throws PilotInactivationException {
 		File fileSource = new File(System.getProperty("user.dir") + "\\Drivers\\" + p.getName() + ".drv");
@@ -90,13 +84,7 @@ public class PersistanceController {
 	public static Object loadJSON(String json, Class<?> c) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
-
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-			// SimpleModule module = new SimpleModule("CarDeserializer", new Version(3, 1, 8, null, null, null));
-			// module.addDeserializer(Pilot.class, new PilotDeserializer(Pilot.class));
-			// objectMapper.registerModule(module);
-
 			Object obj = objectMapper.readValue(json, c);
 			return obj;
 		} catch (JsonProcessingException e) {

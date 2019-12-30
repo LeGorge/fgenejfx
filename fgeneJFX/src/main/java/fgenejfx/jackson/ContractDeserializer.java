@@ -31,7 +31,7 @@ public class ContractDeserializer extends JsonDeserializer<Contract>
         intoValue.setPilot(Pilot.get(node.findValue("pilot").textValue()));
         intoValue.setTeam(Team.get(node.findValue("team").textValue()));
         intoValue.setIsFirst(node.findValue("isFirst").asBoolean());
-        intoValue.setYears(node.findValue("isFirst").asInt());
+        intoValue.setYears(node.findValue("years").asInt());
         return intoValue;
     }
 
