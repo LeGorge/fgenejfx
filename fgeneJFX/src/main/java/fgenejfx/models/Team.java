@@ -17,6 +17,13 @@ public class Team implements Serializable, StatsMonitorable{
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
+
+	public Double power(Powers p){
+		return this.powers.get(p);
+	}
+	public void update(Powers p, Double d){
+		this.powers.put(p,d);
+	}
 	
 	@JsonIgnore
 	public static Team get(TeamsEnum name) throws NoSuchElementException {

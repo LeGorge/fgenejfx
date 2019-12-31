@@ -25,25 +25,24 @@ public class League implements Serializable{
 
 	private Set<Pilot> pilots = new HashSet<>();
 	private Set<Team> teams = new HashSet<>();
-
+	
 	private Season season;
 	private Integer year = 1;
-
+	
 	public void passYear() {
 		this.year++;
 	}
-
+	
 	//=========================================================================================== gets
 	
 	public Set<Pilot> activePilots(){
 		return this.pilots.stream().filter(p->p.isActive()).collect(Collectors.toSet());
 	}
 	
-//	//=========================================================================================== season
-//	public void newSeason() {
-//		Season s = new Season();
-//		HistoryAgent.get().save(s);
-//	}
+	//	//=========================================================================================== season
+	public void changeSeason(){
+		new SeasonChangeController();
+	}
 	
 	//=========================================================================================== new pilots
 	public Set<Pilot> createNewPilots(int howMany) {

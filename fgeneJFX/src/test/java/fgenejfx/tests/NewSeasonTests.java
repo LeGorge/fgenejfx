@@ -19,7 +19,7 @@ public class NewSeasonTests {
 		Season s = new Season();
 
 		for (Group g : s.getSeason()) {
-			for (Pilot p : g.getPilots()) {
+			for (Pilot p : g.pilots()) {
 				assertTrue(s.seasonGroupOf(p) == g);
 				Team t = ContractsAgent.get().teamOf(p);
 				Pilot p2 = ContractsAgent.get().pilotsOf(t).stream()
