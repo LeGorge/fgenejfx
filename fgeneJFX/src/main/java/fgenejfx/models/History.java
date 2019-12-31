@@ -49,13 +49,17 @@ public class History implements Serializable{
 		);
 	}
 	public Team teamOf(Pilot p) throws NoSuchElementException {
-		return Team.get(relations.get(p.getName()));
+		try {
+			return Team.get(relations.get(p.getName()));
+		} catch (Exception e) {
+			throw new NoSuchElementException();
+		}
 	}
 	public List<Pilot> pilotsOf(Team t) throws NoSuchElementException {
 		return relations.keySet().stream()
 		.filter(p->relations.get(p) == t.getName().toString())
 		.map(p -> Pilot.get(p))
-		.sorted()
+		// .sorted()
 		.collect(Collectors.toList());
 	}
 	//=========================================================================================== ai

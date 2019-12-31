@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
 import fgenejfx.controllers.PersistanceController;
+import fgenejfx.exceptions.NotValidException;
 import fgenejfx.exceptions.PilotInactivationException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -65,6 +66,11 @@ public class ContractsAgent implements Serializable {
 			.map(Contract::getPilot)
 			.collect(Collectors.toList());
 	}
+	public Set<Pilot> willRetire() throws NoSuchElementException {
+		return this.pilots().stream()
+				.filter(p->p.getYearsUntilRetirement() == 1)
+				.collect(Collectors.toSet());
+	}
 	public Set<Pilot> rookies(){
 		return contracts.stream().filter(c->c.getPilot().isRookie()).map(a->a.getPilot()).collect(Collectors.toSet());
 	}
@@ -72,13 +78,14 @@ public class ContractsAgent implements Serializable {
 //	public void updateContracts(){
 //		updateContracts(CONTRACTS_PER_SEASON);
 //	}
-	public void updateContracts(Set<Pilot> rookies){
-		//save to history
-		// if(League.get().getYear() != 1){
-		// 	HistoryAgent.get()
-		// 		.history(League.get().getYear()-1)
-		// 		.save(contracts);
-		// }
+	public void updateContracts(Set<Pilot> rookies) throws NotValidException {
+		//verify if league has room for the rookies
+		Set<Pilot> retired = this.pilots().stream()
+				.filter(p->!p.isActive())
+				.collect(Collectors.toSet());
+		if(rookies.size() != retired.size()){
+			throw new NotValidException();
+		}
 		
 		//reduce one year on all contacts
 		for (Contract c : contracts) {
@@ -110,12 +117,7 @@ public class ContractsAgent implements Serializable {
 		
 		executeFreeAgency(noContract, teamsWithRoom);
 		
-		//get retiring Pilots
-		Set<Pilot> retiring = ended.stream()
-				.filter(c->!c.getPilot().isActive())
-				.map(Contract::getPilot)
-				.collect(Collectors.toSet());
-//		cleanPilotFolder(retiring);
+		cleanPilotFolder(retired);
 	}
 	
 	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
@@ -125,11 +127,14 @@ public class ContractsAgent implements Serializable {
 		pilotsOrdered.stream().forEachOrdered(p->{
 			List<Team> entries = new ArrayList<>(teams);
 			if(League.get().getYear() != 1){
-				Team last = HistoryAgent.get()
-						.history(League.get().getYear()-1)
-						.teamOf(p);
-				if(entries.contains(last)) {
-					entries.add(last);
+				try {
+					Team last = HistoryAgent.get()
+							.history(League.get().getYear()-1)
+							.teamOf(p);
+					if(entries.contains(last)) {
+						entries.add(last);
+					}
+				} catch (NoSuchElementException e) {
 				}
 			}
 			Team sorted = entries.get(new Random().nextInt(entries.size()));
@@ -152,13 +157,13 @@ public class ContractsAgent implements Serializable {
 			try {
 				PersistanceController.inactivatePilotFile(c);
 			} catch (PilotInactivationException e) {
-				Alert alert = new Alert(
-					AlertType.ERROR, 
-					"the "+c.getName()+".drv pilot file couldn't be moved to history, "
-							+ "please do it mannually",
-					ButtonType.OK
-				);
-				alert.showAndWait();
+				// Alert alert = new Alert(
+				// 	AlertType.ERROR, 
+				// 	"the "+c.getName()+".drv pilot file couldn't be moved to history, "
+				// 			+ "please do it mannually",
+				// 	ButtonType.OK
+				// );
+				// alert.showAndWait();
 			}
 		});
 	}

@@ -1,18 +1,15 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import fgenejfx.controllers.League;
 import fgenejfx.jackson.MapDeserializer;
 
 public class Group implements Serializable{
@@ -49,20 +46,20 @@ public class Group implements Serializable{
 			).collect(Collectors.toList());
 	}
 	//=========================================================================================== team
-	public Set<Team> teams() {
+	public Set<Team> teams(Integer year) {
 		return pilotsMap.keySet().stream()
-			.map(p -> ContractsAgent.get().teamOf(p))
+			.map(p -> League.get().teamOf(p,year))
 			.collect(Collectors.toSet());
 	}
-	public Team firstTeam() {
-		return this.teams().stream()
-			.sorted((t1, t2) -> this.statsOf(t1).compareTo(this.statsOf(t2)))
+	public Team firstTeam(Integer year) {
+		return this.teams(year).stream()
+			.sorted((t1, t2) -> this.statsOf(t1,year).compareTo(this.statsOf(t2,year)))
 			.findFirst().get();
 	}
-	public RaceStats statsOf(Team t) {
+	public RaceStats statsOf(Team t,Integer year) {
 		RaceStats stat = new RaceStatsTeam();
-		ContractsAgent.get().pilotsOf(t).forEach(p -> {
-			RaceStats.somarStats(stat, this.statsOf(p), true);
+		League.get().pilotsOf(t,year).forEach(p -> {
+			stat = RaceStats.somarStats(stat, this.statsOf(p), true);
 		});
 		return stat;
 	}

@@ -10,14 +10,15 @@ import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 
 import fgenejfx.controllers.League;
+import fgenejfx.exceptions.NotValidException;
 import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 
 public class ContractsTests {
-	
+
 	@Test
-	public void updateContractOfRetiringPilot() {
+	public void updateContractOfRetiringPilot() throws NotValidException {
 		League l = League.get();
 		ContractsAgent cag = ContractsAgent.get();
 		HistoryAgent hag = HistoryAgent.get();

@@ -1,33 +1,5 @@
 package fgenejfx.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.stream.IntStream;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import fgenejfx.controllers.League;
-import fgenejfx.exceptions.CopyException;
-import fgenejfx.exceptions.NaoEncontradoException;
-import fgenejfx.models.Contract;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
-import fgenejfx.models.Pilot;
-import fgenejfx.models.Team;
-import fgenejfx.models.TeamsEnum;
-
 public class UnityTests {
 
 //	private League l;

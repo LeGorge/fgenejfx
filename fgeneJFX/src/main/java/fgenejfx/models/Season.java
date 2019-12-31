@@ -34,14 +34,22 @@ public class Season implements Serializable{
 		return Arrays.stream(season).filter(g->g.contains(p)).findFirst().get();
 	}
 	public Set<Team> pPlayoffTeams() {
-		return pPlayoff.teams();
+		if(League.get().getYear() == this.year){
+
+		}
+		return pPlayoff.teams(this.year);
 	}
 	public Team tChamp() {
-		return tPlayoff.firstTeam();
+		return tPlayoff.firstTeam(this.year);
+	}
+	public Team pChamp() {
+		return pPlayoff.firstTeam(this.year);
 	}
 //	public RaceStats statsOf(Team p) {
 //		
 //	}
+	//=========================================================================================== teams
+	
 	
 	//=========================================================================================== creation
 	public Season() {
