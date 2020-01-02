@@ -78,14 +78,22 @@ public class ContractsAgent implements Serializable {
 //	public void updateContracts(){
 //		updateContracts(CONTRACTS_PER_SEASON);
 //	}
-	public void updateContracts(Set<Pilot> rookies) throws NotValidException {
+	public void validateRookies(Set<Pilot> rookies) throws NotValidException {
+		//verify if rookies are rooies
+		if(rookies.stream().filter(p -> !p.getRookieYear().equals(League.get().getYear())).findAny().isPresent()){
+			throw new NotValidException();
+		}
+
 		//verify if league has room for the rookies
 		Set<Pilot> retired = this.pilots().stream()
 				.filter(p->!p.isActive())
 				.collect(Collectors.toSet());
-		if(rookies.size() != retired.size()){
+		if(rookies.size() != retired.size() && retired.size() != 0){
 			throw new NotValidException();
 		}
+	}
+
+	public void updateContracts(Set<Pilot> rookies) throws NotValidException {
 		
 		//reduce one year on all contacts
 		for (Contract c : contracts) {
@@ -112,11 +120,14 @@ public class ContractsAgent implements Serializable {
 		
 		//get Teams with room for pilots
 		Set<Team> teamsWithRoom = League.get().getTeams().stream()
-				.filter(t -> ContractsAgent.get().pilotsOf(t).size() != PILOTS_PER_TEAM)
-				.collect(Collectors.toSet());
+			.filter(t -> this.pilotsOf(t).size() != PILOTS_PER_TEAM)
+			.collect(Collectors.toSet());
 		
 		executeFreeAgency(noContract, teamsWithRoom);
 		
+		Set<Pilot> retired = this.pilots().stream()
+			.filter(p->!p.isActive())
+			.collect(Collectors.toSet());
 		cleanPilotFolder(retired);
 	}
 	
@@ -124,7 +135,9 @@ public class ContractsAgent implements Serializable {
 		List<Pilot> pilotsOrdered = pilots.stream()
 			.sorted((p2, p1) -> p1.getAi().compareTo(p2.getAi()))
 			.collect(Collectors.toList());
+		System.out.println(teams);
 		pilotsOrdered.stream().forEachOrdered(p->{
+			System.out.println(teams);
 			List<Team> entries = new ArrayList<>(teams);
 			if(League.get().getYear() != 1){
 				try {

@@ -19,6 +19,7 @@ import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
+import fgenejfx.models.TeamsEnum;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
 
@@ -99,6 +100,7 @@ public class League implements Serializable {
 	}
 	//=========================================================================================== get singleton
 	private League() {
+		this.setTeams(TeamsEnum.create());
 		League.league = this;
 	}
 	public static League get() {
