@@ -58,9 +58,11 @@ public class Group implements Serializable{
 	}
 	public RaceStats statsOf(Team t,Integer year) {
 		RaceStats stat = new RaceStatsTeam();
-		League.get().pilotsOf(t,year).forEach(p -> {
-			stat = RaceStats.somarStats(stat, this.statsOf(p), true);
-		});
+		for (Pilot p : League.get().pilotsOf(t,year)) {
+			if(this.pilots().contains(p)){
+				stat = RaceStats.somarStats(stat, this.statsOf(p), true);
+			}
+		}
 		return stat;
 	}
 	//=========================================================================================== getters & setters

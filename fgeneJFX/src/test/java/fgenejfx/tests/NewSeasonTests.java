@@ -63,7 +63,6 @@ public class NewSeasonTests {
 		teams.remove(g.firstTeam(s.getYear()));
 		totalCarPower  = teams.stream().collect(Collectors.summingInt(Team::carPower));
 		assertTrue(totalCarPower != 0);
-
 	}
 
 }
