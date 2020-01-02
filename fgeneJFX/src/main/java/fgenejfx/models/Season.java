@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
@@ -32,9 +33,23 @@ public class Season implements Serializable{
 	public Group seasonGroupOf(Pilot p) throws NoSuchElementException {
 		return Arrays.stream(season).filter(g->g.contains(p)).findFirst().get();
 	}
+	public Set<Team> pPlayoffTeams() {
+		if(League.get().getYear() == this.year){
+
+		}
+		return pPlayoff.teams(this.year);
+	}
+	public Team tChamp() {
+		return tPlayoff.firstTeam(this.year);
+	}
+	public Team pChamp() {
+		return pPlayoff.firstTeam(this.year);
+	}
 //	public RaceStats statsOf(Team p) {
 //		
 //	}
+	//=========================================================================================== teams
+	
 	
 	//=========================================================================================== creation
 	public Season() {
@@ -44,13 +59,13 @@ public class Season implements Serializable{
 		Collections.shuffle(teams);
 		buildGroups(teams);
 	}
-
+	
 	private void buildGroups(List<Team> teams) {
 		for (int i = 0; i < season.length; i++) {
 			season[i] = new Group(teams.subList(i*3, i*3+3).stream()
-					.map(t->ContractsAgent.get().pilotsOf(t))
-					.flatMap(l->l.stream())
-					.collect(Collectors.toSet()));
+			.map(t->ContractsAgent.get().pilotsOf(t))
+			.flatMap(l->l.stream())
+			.collect(Collectors.toSet()));
 		}
 	}
 	

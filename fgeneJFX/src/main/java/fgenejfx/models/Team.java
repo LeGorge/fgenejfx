@@ -3,8 +3,7 @@ package fgenejfx.models;
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.NoSuchElementException;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
@@ -17,13 +16,27 @@ public class Team implements Serializable, StatsMonitorable{
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
+
+	//=========================================================================================== powers
+	public Double power(Powers p){
+		return this.powers.get(p);
+	}
+	public void updatePowers(Integer times, Boolean improve){
+		for (int i = 0; i < times; i++) {
+			Powers.update(this.powers,improve);
+		}
+	}
+	public Integer carPower(){
+		return this.powers.keySet().stream().collect(Collectors.summingInt(p -> {
+			return p.relativePower(this.powers.get(p));
+		}));
+	}
 	
-	@JsonIgnore
+	//=========================================================================================== get team
 	public static Team get(TeamsEnum name) throws NoSuchElementException {
 		return League.get().getTeams().stream().filter(t->t.getName() == name).findFirst().get();
 	}
 	
-	@JsonIgnore
 	public static Team get(String name) throws NoSuchElementException {
 		return Team.get(TeamsEnum.valueOf(name));
 	}
@@ -36,7 +49,7 @@ public class Team implements Serializable, StatsMonitorable{
 			this.powers.put(p, p.def);
 		}
 	}
-
+	//=========================================================================================== getters & setters
 	public TeamsEnum getName() {
 		return name;
 	}

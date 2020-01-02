@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
 import fgenejfx.controllers.PersistanceController;
+import fgenejfx.exceptions.NotValidException;
 import fgenejfx.exceptions.PilotInactivationException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -65,6 +66,11 @@ public class ContractsAgent implements Serializable {
 			.map(Contract::getPilot)
 			.collect(Collectors.toList());
 	}
+	public Set<Pilot> willRetire() throws NoSuchElementException {
+		return this.pilots().stream()
+				.filter(p->p.getYearsUntilRetirement() == 1)
+				.collect(Collectors.toSet());
+	}
 	public Set<Pilot> rookies(){
 		return contracts.stream().filter(c->c.getPilot().isRookie()).map(a->a.getPilot()).collect(Collectors.toSet());
 	}
@@ -72,13 +78,22 @@ public class ContractsAgent implements Serializable {
 //	public void updateContracts(){
 //		updateContracts(CONTRACTS_PER_SEASON);
 //	}
-	public void updateContracts(Set<Pilot> rookies){
-		//save to history
-		// if(League.get().getYear() != 1){
-		// 	HistoryAgent.get()
-		// 		.history(League.get().getYear()-1)
-		// 		.save(contracts);
-		// }
+	public void validateRookies(Set<Pilot> rookies) throws NotValidException {
+		//verify if rookies are rooies
+		if(rookies.stream().filter(p -> !p.getRookieYear().equals(League.get().getYear())).findAny().isPresent()){
+			throw new NotValidException();
+		}
+
+		//verify if league has room for the rookies
+		Set<Pilot> retired = this.pilots().stream()
+				.filter(p->!p.isActive())
+				.collect(Collectors.toSet());
+		if(rookies.size() != retired.size() && retired.size() != 0){
+			throw new NotValidException();
+		}
+	}
+
+	public void updateContracts(Set<Pilot> rookies) throws NotValidException {
 		
 		//reduce one year on all contacts
 		for (Contract c : contracts) {
@@ -105,31 +120,34 @@ public class ContractsAgent implements Serializable {
 		
 		//get Teams with room for pilots
 		Set<Team> teamsWithRoom = League.get().getTeams().stream()
-				.filter(t -> ContractsAgent.get().pilotsOf(t).size() != PILOTS_PER_TEAM)
-				.collect(Collectors.toSet());
+			.filter(t -> this.pilotsOf(t).size() != PILOTS_PER_TEAM)
+			.collect(Collectors.toSet());
 		
 		executeFreeAgency(noContract, teamsWithRoom);
 		
-		//get retiring Pilots
-		Set<Pilot> retiring = ended.stream()
-				.filter(c->!c.getPilot().isActive())
-				.map(Contract::getPilot)
-				.collect(Collectors.toSet());
-//		cleanPilotFolder(retiring);
+		Set<Pilot> retired = this.pilots().stream()
+			.filter(p->!p.isActive())
+			.collect(Collectors.toSet());
+		cleanPilotFolder(retired);
 	}
 	
 	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
 		List<Pilot> pilotsOrdered = pilots.stream()
 			.sorted((p2, p1) -> p1.getAi().compareTo(p2.getAi()))
 			.collect(Collectors.toList());
+		System.out.println(teams);
 		pilotsOrdered.stream().forEachOrdered(p->{
+			System.out.println(teams);
 			List<Team> entries = new ArrayList<>(teams);
 			if(League.get().getYear() != 1){
-				Team last = HistoryAgent.get()
-						.history(League.get().getYear()-1)
-						.teamOf(p);
-				if(entries.contains(last)) {
-					entries.add(last);
+				try {
+					Team last = HistoryAgent.get()
+							.history(League.get().getYear()-1)
+							.teamOf(p);
+					if(entries.contains(last)) {
+						entries.add(last);
+					}
+				} catch (NoSuchElementException e) {
 				}
 			}
 			Team sorted = entries.get(new Random().nextInt(entries.size()));
@@ -152,13 +170,13 @@ public class ContractsAgent implements Serializable {
 			try {
 				PersistanceController.inactivatePilotFile(c);
 			} catch (PilotInactivationException e) {
-				Alert alert = new Alert(
-					AlertType.ERROR, 
-					"the "+c.getName()+".drv pilot file couldn't be moved to history, "
-							+ "please do it mannually",
-					ButtonType.OK
-				);
-				alert.showAndWait();
+				// Alert alert = new Alert(
+				// 	AlertType.ERROR, 
+				// 	"the "+c.getName()+".drv pilot file couldn't be moved to history, "
+				// 			+ "please do it mannually",
+				// 	ButtonType.OK
+				// );
+				// alert.showAndWait();
 			}
 		});
 	}

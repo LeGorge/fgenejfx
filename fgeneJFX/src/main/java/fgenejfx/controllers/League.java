@@ -13,13 +13,17 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fgenejfx.exceptions.NameGeneratorException;
+import fgenejfx.exceptions.NotValidException;
+import fgenejfx.models.ContractsAgent;
+import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
+import fgenejfx.models.TeamsEnum;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
 
-public class League implements Serializable{
+public class League implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static League league;
 
@@ -33,20 +37,30 @@ public class League implements Serializable{
 		this.year++;
 	}
 
-	//=========================================================================================== gets
-	
-	public Set<Pilot> activePilots(){
-		return this.pilots.stream().filter(p->p.isActive()).collect(Collectors.toSet());
+	// ==================================================================================== gets
+	public Team teamOf(Pilot p, Integer year) throws NoSuchElementException {
+		if(year == this.year){
+			return ContractsAgent.get().teamOf(p);
+		}else{
+			return HistoryAgent.get().history(year).teamOf(p);
+		}
+	}
+	public List<Pilot> pilotsOf(Team t, Integer year) throws NoSuchElementException {
+		if(year == this.year){
+			return ContractsAgent.get().pilotsOf(t);
+		}else{
+			return HistoryAgent.get().history(year).pilotsOf(t);
+		}
+	}
+
+	// //============================================================================== season
+	public void changeSeason() throws NotValidException {
+		new SeasonChangeController();
 	}
 	
-//	//=========================================================================================== season
-//	public void newSeason() {
-//		Season s = new Season();
-//		HistoryAgent.get().save(s);
-//	}
-	
-	//=========================================================================================== new pilots
+	//==================================================================================== new pilots
 	public Set<Pilot> createNewPilots(int howMany) {
+		if(howMany == 0) return new HashSet<>();
 		String nomes[] = new String[howMany*2];
 		try {
 			nomes = InternetDependantUtils.getRandomNames(howMany*2);
@@ -86,6 +100,7 @@ public class League implements Serializable{
 	}
 	//=========================================================================================== get singleton
 	private League() {
+		this.setTeams(TeamsEnum.create());
 		League.league = this;
 	}
 	public static League get() {
