@@ -27,29 +27,31 @@ public class Season implements Serializable{
 	private Group tPlayoff;
 
 
+	//=========================================================================================== pilots
+	public Set<Pilot> pilots() {
+		return Arrays.stream(season).flatMap(g -> g.pilots().stream()).collect(Collectors.toSet());
+	}
+	
 	public RaceStats seasonStatsOf(Pilot p) throws NoSuchElementException {
 		return Arrays.stream(season).filter(g->g.statsOf(p)!=null).findFirst().get().statsOf(p);
 	}
+	
 	public Group seasonGroupOf(Pilot p) throws NoSuchElementException {
 		return Arrays.stream(season).filter(g->g.contains(p)).findFirst().get();
 	}
+	
+	//=========================================================================================== teams
 	public Set<Team> pPlayoffTeams() {
-		if(League.get().getYear() == this.year){
-
-		}
 		return pPlayoff.teams(this.year);
 	}
+	
 	public Team tChamp() {
 		return tPlayoff.firstTeam(this.year);
 	}
+	
 	public Team pChamp() {
 		return pPlayoff.firstTeam(this.year);
 	}
-//	public RaceStats statsOf(Team p) {
-//		
-//	}
-	//=========================================================================================== teams
-	
 	
 	//=========================================================================================== creation
 	public Season() {
@@ -121,6 +123,9 @@ public class Season implements Serializable{
 	@Override
 	public String toString() {
 		return this.year.toString();
+	}
+	public Boolean ended() {
+		return true;
 	}
 	
 }

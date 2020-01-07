@@ -137,7 +137,6 @@ public class ContractsAgent implements Serializable {
 			.collect(Collectors.toList());
 		System.out.println(teams);
 		pilotsOrdered.stream().forEachOrdered(p->{
-			System.out.println(teams);
 			List<Team> entries = new ArrayList<>(teams);
 			if(League.get().getYear() != 1){
 				try {
