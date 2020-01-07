@@ -4,8 +4,10 @@ import java.util.Random;
 
 import fgenejfx.exceptions.NotValidException;
 import fgenejfx.models.ContractsAgent;
+import fgenejfx.models.Group;
 import fgenejfx.models.HistoryAgent;
-import fgenejfx.models.Powers;
+import fgenejfx.models.Pilot;
+import fgenejfx.models.Season;
 import fgenejfx.models.Team;
 
 public class SeasonChangeController {
@@ -14,6 +16,10 @@ public class SeasonChangeController {
 	private ContractsAgent cag = ContractsAgent.get();
 
 	public SeasonChangeController() throws NotValidException {
+		if(!l.getSeason().ended()) {
+			throw new NotValidException();
+		}
+		
 		//save history
 		hag.save(l.getSeason());
 		
@@ -21,6 +27,8 @@ public class SeasonChangeController {
 		updatePowers();
 		
 		//update ai
+		updateAI();
+		
 		//update stats
 		
 		//pass year
@@ -29,6 +37,8 @@ public class SeasonChangeController {
 		//update contracts
 		int newPilots = ContractsAgent.get().willRetire().size();
 		cag.updateContracts(l.createNewPilots(newPilots));
+		
+		//new season
 	}
 	
 	public void updatePowers(){
@@ -49,6 +59,34 @@ public class SeasonChangeController {
 		t.updatePowers(1, false);
 		
 		//update car files with powers in generally
-		new GenerallyFilesController().updateCarFile();
+		GenerallyFilesController.updateCarFile();
 	}
+	
+	public void updateAI(){
+		Season last = null;
+		if(l.getYear() != 1) {
+			last = hag.season(l.getYear()-1);
+		}
+		for (Pilot p : l.getSeason().pilots()) {
+			Group season = l.getSeason().seasonGroupOf(p);
+			
+			int seasonPlacing = season.posOf(p);
+			int pplayoffPlacing = -1;
+			if(seasonPlacing == 1) {
+				pplayoffPlacing = l.getSeason().getpPlayoff().posOf(p);
+			}
+			
+			int lastYearSeasonPlacing = -1;
+			int lastYearPplayoffPlacing = -1;
+			if(!p.isRookie() && last != null) {
+				lastYearSeasonPlacing = last.seasonGroupOf(p).posOf(p);
+				if(lastYearSeasonPlacing == 1) {
+					lastYearPplayoffPlacing = last.getpPlayoff().posOf(p);
+				}
+			}
+			p.updateAi(seasonPlacing, lastYearSeasonPlacing, pplayoffPlacing, lastYearPplayoffPlacing, season.closeFight(p));
+			GenerallyFilesController.updateDriverAI(p);
+		}
+	}
+
 }

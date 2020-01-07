@@ -25,6 +25,9 @@ public class HistoryAgent implements Serializable{
 		this.seasons.add(s);
 		this.historyMap.put(s, new History(s));
 	}
+	public Season season(int year) throws NoSuchElementException{
+		return seasons.stream().filter(s -> s.getYear() == year).findFirst().get();
+	}
 	//=========================================================================================== history
 	public History history(Season s){
 		return historyMap.get(s);
