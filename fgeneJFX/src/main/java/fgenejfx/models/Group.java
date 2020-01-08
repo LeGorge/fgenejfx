@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -60,15 +61,19 @@ public class Group implements Serializable{
 	}
 	
 	//=========================================================================================== team
-	public Set<Team> teams(Integer year) {
-		return pilotsMap.keySet().stream()
-			.map(p -> League.get().teamOf(p,year))
-			.collect(Collectors.toSet());
+	public List<Team> teams(Integer year){
+		return this.teamsSet(year).stream()
+				.sorted((t2, t1) -> this.statsOf(t1,year).compareTo(this.statsOf(t2,year)))
+				.collect(Collectors.toList());
+	}
+	
+	public Integer posOf(Team t, Integer year) {
+		return this.teams(year).indexOf(t)+1;
 	}
 	
 	public Team firstTeam(Integer year) {
-		return this.teams(year).stream()
-			.sorted((t1, t2) -> this.statsOf(t1,year).compareTo(this.statsOf(t2,year)))
+		return this.teamsSet(year).stream()
+			.sorted((t2, t1) -> this.statsOf(t1,year).compareTo(this.statsOf(t2,year)))
 			.findFirst().get();
 	}
 	
@@ -83,7 +88,12 @@ public class Group implements Serializable{
 	}
 	
 	//=========================================================================================== privates
-	public List<Pilot> pilotsOrdered(){
+	private Set<Team> teamsSet(Integer year) {
+		return pilotsMap.keySet().stream()
+				.map(p -> League.get().teamOf(p,year))
+				.collect(Collectors.toSet());
+	}
+	private List<Pilot> pilotsOrdered(){
 		return pilotsMap.entrySet().stream()
 				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.map(e->e.getKey())
