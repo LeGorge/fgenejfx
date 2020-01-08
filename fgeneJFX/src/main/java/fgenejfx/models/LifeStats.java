@@ -17,6 +17,34 @@ public class LifeStats implements Serializable {
 	private Integer tSilver = 0;
 	private Integer tBronze = 0;
 	
+	public void incrementSeasons() {
+		seasons++;
+	}
+	public void incrementpPlayoffs() {
+		pPlayoffs++;
+	}
+	public void incrementtPlayoffs() {
+		tPlayoffs++;
+	}
+	public void incrementpGold() {
+		pGold++;
+	}
+	public void incrementpSilver() {
+		pSilver++;
+	}
+	public void incrementpBronze() {
+		pBronze++;
+	}
+	public void incrementtGold() {
+		tGold++;
+	}
+	public void incrementtSilver() {
+		tSilver++;
+	}
+	public void incrementtBronze() {
+		tBronze++;
+	}
+	
 	public LifeStats() {
 		// TODO Auto-generated constructor stub
 	}

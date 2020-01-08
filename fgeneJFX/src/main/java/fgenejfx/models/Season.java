@@ -41,7 +41,7 @@ public class Season implements Serializable{
 	}
 	
 	//=========================================================================================== teams
-	public Set<Team> pPlayoffTeams() {
+	public List<Team> pPlayoffTeams() {
 		return pPlayoff.teams(this.year);
 	}
 	

@@ -6,6 +6,17 @@ public class RaceStatsTeam extends RaceStats {
 
 	private static final long serialVersionUID = 1L;
 
+	public RaceStatsTeam() {
+	}
+	
+	public RaceStatsTeam(Integer p1st, Integer p2nd, Integer p3rd, Integer p4th, Integer p5th, Integer p6th) {
+		super(p1st,p2nd,p3rd,p4th,p5th,p6th);
+	}
+	
+	public RaceStatsTeam(RaceStats st) {
+		super(st.p1st,st.p2nd,st.p3rd,st.p4th,st.p5th,st.p6th);
+	}
+	
 	@Override
 	@JsonIgnore
 	public Double getPtRate() {

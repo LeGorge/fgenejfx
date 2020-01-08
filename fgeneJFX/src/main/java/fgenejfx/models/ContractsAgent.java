@@ -199,4 +199,7 @@ public class ContractsAgent implements Serializable {
 	public Set<Contract> getContracts() {
 		return this.contracts;
 	}
+	public void setContracts(Set<Contract> set) {
+		this.contracts = set;
+	}
 }
