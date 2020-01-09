@@ -1,24 +1,5 @@
 package fgenejfx.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.Test;
-
-import fgenejfx.controllers.League;
-import fgenejfx.controllers.PersistanceController;
-import fgenejfx.exceptions.CopyException;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
-import fgenejfx.models.Pilot;
-import fgenejfx.models.Season;
-import fgenejfx.models.Team;
-import fgenejfx.models.TeamHistory;
-import fgenejfx.models.TeamsEnum;
-
 public class JsonTests {
 
 	// @Test

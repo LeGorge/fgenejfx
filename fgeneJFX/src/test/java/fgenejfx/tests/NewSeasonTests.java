@@ -1,6 +1,5 @@
 package fgenejfx.tests;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
@@ -17,7 +16,6 @@ import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
-import fgenejfx.models.TeamsEnum;
 
 public class NewSeasonTests {
 

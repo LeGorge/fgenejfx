@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import fgenejfx.controllers.League;
 import fgenejfx.jackson.MapDeserializer;
+import fgenejfx.models.enums.OpEnum;
 
 public class Group implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -81,7 +81,7 @@ public class Group implements Serializable{
 		RaceStats stat = new RaceStatsTeam();
 		for (Pilot p : League.get().pilotsOf(t,year)) {
 			if(this.pilots().contains(p)){
-				stat = RaceStats.somarStats(stat, this.statsOf(p), true);
+				stat = RaceStats.somarStats(stat, this.statsOf(p), OpEnum.SUM);
 			}
 		}
 		return stat;
