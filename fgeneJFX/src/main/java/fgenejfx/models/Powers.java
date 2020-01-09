@@ -3,6 +3,8 @@ import java.text.DecimalFormat;
 import java.util.EnumMap;
 import java.util.Random;
 
+import fgenejfx.models.enums.OpEnum;
+
 public enum Powers {
 	
 	AIR(2.0,-0.01),
@@ -37,7 +39,7 @@ public enum Powers {
 			&& (value > (p.def - MAXPOWERCHANGES*Math.abs(p.inc)));
 	}
 
-	public static void update(EnumMap<Powers, Double> powers, boolean improve){
+	public static void update(EnumMap<Powers, Double> powers, OpEnum op){
 		// EnumMap<Powers, Double> result = new EnumMap<>(Powers.class);
 		Powers p;
 		Double atual;
@@ -46,7 +48,7 @@ public enum Powers {
 			atual = powers.get(p);
 		}while(!valid(p, atual));
 
-		if(improve){
+		if(OpEnum.isSum(op)){
 			powers.put(p,powers.get(p)+p.inc);
 		}else{
 			powers.put(p,powers.get(p)-p.inc);

@@ -12,6 +12,7 @@ import fgenejfx.models.RaceStats;
 import fgenejfx.models.RaceStatsTeam;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
+import fgenejfx.models.enums.OpEnum;
 
 public class SeasonChangeController {
 	private League l = League.get();
@@ -48,19 +49,19 @@ public class SeasonChangeController {
 	private void updatePowers(){
 		//-2 for pplayoff teams
 		l.getSeason().pPlayoffTeams().forEach(t -> {
-			t.updatePowers(2, false);
+			t.updatePowers(2, OpEnum.SUBTRACT);
 		});
 		
 		//+1 for tplayoff champion
-		l.getSeason().tChamp().updatePowers(1, true);
+		l.getSeason().tChamp().updatePowers(1, OpEnum.SUM);
 		
 		//+1 for non-pplayoff teams
 		cag.teams().stream().filter(t -> !l.getSeason().pPlayoffTeams().contains(t))
-		.forEach(t -> t.updatePowers(1, true));
+		.forEach(t -> t.updatePowers(1, OpEnum.SUM));
 		
 		//-1 for random team
 		Team t = (Team)cag.teams().toArray()[new Random().nextInt(cag.teams().size())];
-		t.updatePowers(1, false);
+		t.updatePowers(1, OpEnum.SUBTRACT);
 		
 		//update car files with powers in generally
 		GenerallyFilesController.updateCarFile();
@@ -104,11 +105,11 @@ public class SeasonChangeController {
 			p.getLifeStats().incrementSeasons();
 			
 			RaceStats st = s.seasonStatsOf(p);
-			RaceStats newSt = RaceStats.somarStats(p.getStats().getSeason(), st, true);
+			RaceStats newSt = RaceStats.somarStats(p.getStats().getSeason(), st, OpEnum.SUM);
 			p.getStats().setSeason(newSt);
 			
 			Team t = l.teamOf(p, s.getYear());
-			newSt = RaceStats.somarStats(t.getStats().getSeason(), st, true);
+			newSt = RaceStats.somarStats(t.getStats().getSeason(), st, OpEnum.SUM);
 			t.getStats().setSeason(new RaceStatsTeam(newSt));
 		}
 		
@@ -116,11 +117,11 @@ public class SeasonChangeController {
 		int cont = 0;
 		for (Pilot p : s.getpPlayoff().pilots()) {
 			RaceStats st = s.getpPlayoff().statsOf(p);
-			RaceStats newSt = RaceStats.somarStats(p.getStats().getpPlayoff(), st, true);
+			RaceStats newSt = RaceStats.somarStats(p.getStats().getpPlayoff(), st, OpEnum.SUM);
 			p.getStats().setpPlayoff(newSt);
 			
 			Team t = l.teamOf(p, s.getYear());
-			newSt = RaceStats.somarStats(t.getStats().getpPlayoff(), st, true);
+			newSt = RaceStats.somarStats(t.getStats().getpPlayoff(), st, OpEnum.SUM);
 			t.getStats().setpPlayoff(new RaceStatsTeam(newSt));
 			
 			//update lifeStats
@@ -146,11 +147,11 @@ public class SeasonChangeController {
 		//update tplayoff stats
 		for (Pilot p : s.gettPlayoff().pilots()) {
 			RaceStats st = s.gettPlayoff().statsOf(p);
-			RaceStats newSt = RaceStats.somarStats(p.getStats().gettPlayoff(), st, true);
+			RaceStats newSt = RaceStats.somarStats(p.getStats().gettPlayoff(), st, OpEnum.SUM);
 			p.getStats().settPlayoff(newSt);
 			
 			Team t = l.teamOf(p, s.getYear());
-			newSt = RaceStats.somarStats(t.getStats().gettPlayoff(), st, true);
+			newSt = RaceStats.somarStats(t.getStats().gettPlayoff(), st, OpEnum.SUM);
 			t.getStats().settPlayoff(new RaceStatsTeam(newSt));
 		}
 		

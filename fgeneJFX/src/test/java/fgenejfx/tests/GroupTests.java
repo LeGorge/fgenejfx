@@ -15,7 +15,7 @@ import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Team;
-import fgenejfx.models.TeamsEnum;
+import fgenejfx.models.enums.TeamsEnum;
 
 public class GroupTests {
 	League l;
