@@ -18,6 +18,7 @@ import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
 import fgenejfx.models.TeamsEnum;
+import fgenejfx.utils.Utils;
 
 public class NewSeasonTests {
 
@@ -65,4 +66,12 @@ public class NewSeasonTests {
 		assertTrue(totalCarPower != 0);
 	}
 
+	@Test
+	public void newSeason() throws NotValidException {
+		Utils.begin();
+		
+		//update stats
+		
+		League.get().getSeason().startPlayoffs();
+	}
 }

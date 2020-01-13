@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
+import fgenejfx.exceptions.NotValidException;
 
 public class Season implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -41,6 +42,16 @@ public class Season implements Serializable{
 	}
 	
 	//=========================================================================================== teams
+	public Set<Team> teams(){
+		return League.get().getTeams();
+	}
+	
+	public RaceStats seasonStatsOf(Team t) throws NoSuchElementException {
+		return Arrays.stream(season)
+				.filter(g->g.contains(t, this.year)).findFirst().get()
+				.statsOf(t,this.year);
+	}
+	
 	public List<Team> pPlayoffTeams() {
 		return pPlayoff.teams(this.year);
 	}
@@ -51,6 +62,22 @@ public class Season implements Serializable{
 	
 	public Team pChamp() {
 		return pPlayoff.firstTeam(this.year);
+	}
+	
+	//=========================================================================================== op
+	public void startPlayoffs() throws NotValidException{
+		//pplayoff
+		for (Group g : season) {
+			this.pPlayoff.addPilot(g.firstPilot());
+		}
+		
+		//tplayoff
+		Set<Pilot> ps = this.teams().stream()
+				.sorted((t2,t1) -> this.seasonStatsOf(t1).compareTo(this.seasonStatsOf(t2)))
+				.limit(3)
+				.flatMap(t -> League.get().pilotsOf(t, year).stream())
+				.collect(Collectors.toSet());
+		this.tPlayoff = new Group(ps);
 	}
 	
 	//=========================================================================================== creation

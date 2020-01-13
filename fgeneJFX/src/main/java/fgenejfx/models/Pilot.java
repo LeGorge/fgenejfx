@@ -128,6 +128,9 @@ public class Pilot implements Serializable, StatsMonitorable {
 	public Integer getRookieYear() {
 		return rookieYear;
 	}
+	public void setRookieYear(Integer year) {
+		this.rookieYear = year;
+	}
 	
 	public String getName() {
 		return name;

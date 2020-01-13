@@ -43,6 +43,7 @@ public class SeasonChangeController {
 		cag.updateContracts(l.createNewPilots(newPilots));
 		
 		//new season
+		l.setSeason(new Season());
 	}
 	
 	private void updatePowers(){
