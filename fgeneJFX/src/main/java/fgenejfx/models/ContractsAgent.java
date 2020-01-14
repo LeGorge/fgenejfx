@@ -27,14 +27,6 @@ public class ContractsAgent implements Serializable {
 	
 	private Set<Contract> contracts = new HashSet<>();
 	
-//	public ContractsAgent(Map<Team, List<Pilot>> map, Map<Pilot, Integer> contractsMap) {
-//		map.entrySet().stream().forEach(entry->{
-//			biMapPilot1.put(entry.getKey(), entry.getValue().get(0));
-//			biMapPilot2.put(entry.getKey(), entry.getValue().get(1));
-//		});
-//		this.contractsMap = contractsMap;
-//	}
-
 	//=========================================================================================== get all
 	public Set<Pilot> pilots(){
 		Set<Pilot> all = this.contracts.stream().map(c -> c.getPilot()).collect(Collectors.toSet());
@@ -75,14 +67,11 @@ public class ContractsAgent implements Serializable {
 		return contracts.stream().filter(c->c.getPilot().isRookie()).map(a->a.getPilot()).collect(Collectors.toSet());
 	}
 	//=========================================================================================== operations
-//	public void updateContracts(){
-//		updateContracts(CONTRACTS_PER_SEASON);
-//	}
 	public void validateRookies(Set<Pilot> rookies) throws NotValidException {
-		//verify if rookies are rooies
-		if(rookies.stream().filter(p -> !p.getRookieYear().equals(League.get().getYear())).findAny().isPresent()){
-			throw new NotValidException();
-		}
+		//verify if rookies are rookies
+//		if(rookies.stream().filter(p -> !p.getRookieYear().equals(League.get().getYear())).findAny().isPresent()){
+//			throw new NotValidException();
+//		}
 
 		//verify if league has room for the rookies
 		Set<Pilot> retired = this.pilots().stream()
@@ -110,12 +99,6 @@ public class ContractsAgent implements Serializable {
 			.filter(c->c.getPilot().isActive())
 			.map(Contract::getPilot)
 			.collect(Collectors.toSet());
-		
-		//create necessary rookies CHANGED: NOT A RESPONSABILITY OF THIS METHOD
-//		int nNewPilots = (max - contracts.size()) - noContract.size();
-//		if(nNewPilots < 0) {
-//			nNewPilots = 0;
-//		}
 		noContract.addAll(rookies);
 		
 		//get Teams with room for pilots
@@ -135,7 +118,6 @@ public class ContractsAgent implements Serializable {
 		List<Pilot> pilotsOrdered = pilots.stream()
 			.sorted((p2, p1) -> p1.getAi().compareTo(p2.getAi()))
 			.collect(Collectors.toList());
-		System.out.println(teams);
 		pilotsOrdered.stream().forEachOrdered(p->{
 			List<Team> entries = new ArrayList<>(teams);
 			if(League.get().getYear() != 1){
@@ -194,6 +176,9 @@ public class ContractsAgent implements Serializable {
 		if(agent == null) {
 			agent = ag;
 		}
+	}
+	public static void reset() {
+		new ContractsAgent();
 	}
 	//=========================================================================================== getters & setters
 	public Set<Contract> getContracts() {

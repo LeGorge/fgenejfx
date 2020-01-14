@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import fgenejfx.controllers.League;
+import fgenejfx.exceptions.NotValidException;
 import fgenejfx.jackson.MapDeserializer;
 import fgenejfx.models.enums.OpEnum;
 
@@ -24,6 +25,13 @@ public class Group implements Serializable{
 	}
 	public Group(Set<Pilot> ps) {
 		ps.forEach(p->pilotsMap.put(p, new RaceStats()));
+	}
+	public void addPilot(Pilot p) throws NotValidException {
+		if(this.pilotsMap.keySet().size() != 6) {
+			pilotsMap.put(p, new RaceStats());
+		}else {
+			throw new NotValidException();
+		}
 	}
 	
 	//=========================================================================================== pilot
@@ -56,11 +64,19 @@ public class Group implements Serializable{
 		return false;
 	}
 	
+	public Pilot firstPilot(){
+		return this.pilotsOrdered().get(0);
+	}
+	
 	public List<Pilot> pilots(){
 		return this.pilotsOrdered();
 	}
 	
 	//=========================================================================================== team
+	public Boolean contains(Team t, Integer year) {
+		return this.teamsSet(year).contains(t);
+	}
+	
 	public List<Team> teams(Integer year){
 		return this.teamsSet(year).stream()
 				.sorted((t2, t1) -> this.statsOf(t1,year).compareTo(this.statsOf(t2,year)))

@@ -6,13 +6,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fgenejfx.controllers.League;
+import fgenejfx.models.ContractsAgent;
+import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 
 public class NewPilotsTests {
 
+	@BeforeEach
+	public void reset() {
+		League.reset();
+		HistoryAgent.reset();
+		ContractsAgent.reset();
+	}
 	@Test
 	public void pilotCreation() {
 		final int HOWMANY = 2;

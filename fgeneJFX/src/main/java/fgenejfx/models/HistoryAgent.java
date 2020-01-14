@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import fgenejfx.controllers.League;
 import fgenejfx.jackson.MapDeserializer;
 
 public class HistoryAgent implements Serializable{
@@ -51,6 +52,9 @@ public class HistoryAgent implements Serializable{
 		if(historyAgent == null) {
 			historyAgent = ag;
 		}
+	}
+	public static void reset() {
+		new HistoryAgent();
 	}
 	//=========================================================================================== getters & setters
 	public List<Season> getSeasons() {

@@ -5,9 +5,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
+import fgenejfx.controllers.League;
 import fgenejfx.exceptions.CopyException;
+import fgenejfx.exceptions.NotValidException;
+import fgenejfx.models.ContractsAgent;
+import fgenejfx.models.Pilot;
+import fgenejfx.models.Season;
 
 public class Utils {
 
@@ -42,6 +52,29 @@ public class Utils {
 			e.printStackTrace();
 		}
 		throw new CopyException();
+	}
+	
+	public static void begin() {
+		League l = League.get();
+		
+		ContractsAgent cag = ContractsAgent.get();
+		
+		l.setPilots(l.createNewPilots(36));
+		List<Pilot> list = new ArrayList<>(l.getPilots());
+		Collections.shuffle(list);
+		for (int i = 2; i < list.size(); i+=2) {
+			list.get(i).setRookieYear(1-i/2);
+			list.get(i+1).setRookieYear(1-i/2);
+		}
+		
+		try {
+			ContractsAgent.get().setContracts(new HashSet<>());
+			ContractsAgent.get().updateContracts(l.getPilots());
+		} catch (NotValidException e) {
+			e.printStackTrace();
+		}
+		
+		l.setSeason(new Season());
 	}
 	
 }

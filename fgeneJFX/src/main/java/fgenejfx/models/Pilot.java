@@ -39,8 +39,8 @@ public class Pilot implements Serializable, StatsMonitorable {
 	//=========================================================================================== operations
 	public void updateAi(
 			int seasonPlacing,
-			int pplayoffPlacing,
 			int lastYearSeasonPlacing,
+			int pplayoffPlacing,
 			int lastYearPplayoffPlacing,
 			boolean closeFight) {
 		
@@ -127,6 +127,9 @@ public class Pilot implements Serializable, StatsMonitorable {
 	
 	public Integer getRookieYear() {
 		return rookieYear;
+	}
+	public void setRookieYear(Integer year) {
+		this.rookieYear = year;
 	}
 	
 	public String getName() {
