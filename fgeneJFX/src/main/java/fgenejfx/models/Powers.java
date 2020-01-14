@@ -2,6 +2,7 @@ package fgenejfx.models;
 import java.text.DecimalFormat;
 import java.util.EnumMap;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public enum Powers {
 	
@@ -51,5 +52,10 @@ public enum Powers {
 		}else{
 			powers.put(p,powers.get(p)-p.inc);
 		}
+	}
+	public static Integer carPower(EnumMap<Powers, Double> powers){
+		return powers.keySet().stream().collect(Collectors.summingInt(p -> {
+			return p.relativePower(powers.get(p));
+		}));
 	}
 }

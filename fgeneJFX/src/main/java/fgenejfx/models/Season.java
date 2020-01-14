@@ -67,6 +67,7 @@ public class Season implements Serializable{
 	//=========================================================================================== op
 	public void startPlayoffs() throws NotValidException{
 		//pplayoff
+		this.pPlayoff = new Group();
 		for (Group g : season) {
 			this.pPlayoff.addPilot(g.firstPilot());
 		}

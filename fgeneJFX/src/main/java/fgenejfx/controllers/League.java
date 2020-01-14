@@ -110,9 +110,10 @@ public class League implements Serializable {
 		return league;
 	}
 	public static void set(League l) {
-		if(league == null) {
-			league = l;
-		}
+		league = l;
+	}
+	public static void reset() {
+		new League();
 	}
 	//=========================================================================================== getters and setters
 	public Integer getYear() {

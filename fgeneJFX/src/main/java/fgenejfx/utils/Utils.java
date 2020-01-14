@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -56,6 +57,8 @@ public class Utils {
 	public static void begin() {
 		League l = League.get();
 		
+		ContractsAgent cag = ContractsAgent.get();
+		
 		l.setPilots(l.createNewPilots(36));
 		List<Pilot> list = new ArrayList<>(l.getPilots());
 		Collections.shuffle(list);
@@ -65,6 +68,7 @@ public class Utils {
 		}
 		
 		try {
+			ContractsAgent.get().setContracts(new HashSet<>());
 			ContractsAgent.get().updateContracts(l.getPilots());
 		} catch (NotValidException e) {
 			e.printStackTrace();

@@ -27,9 +27,7 @@ public class Team implements Serializable, StatsMonitorable{
 		}
 	}
 	public Integer carPower(){
-		return this.powers.keySet().stream().collect(Collectors.summingInt(p -> {
-			return p.relativePower(this.powers.get(p));
-		}));
+		return Powers.carPower(this.powers);
 	}
 	
 	//=========================================================================================== get team

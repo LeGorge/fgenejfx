@@ -177,6 +177,9 @@ public class ContractsAgent implements Serializable {
 			agent = ag;
 		}
 	}
+	public static void reset() {
+		new ContractsAgent();
+	}
 	//=========================================================================================== getters & setters
 	public Set<Contract> getContracts() {
 		return this.contracts;

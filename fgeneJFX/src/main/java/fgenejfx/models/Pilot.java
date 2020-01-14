@@ -39,8 +39,8 @@ public class Pilot implements Serializable, StatsMonitorable {
 	//=========================================================================================== operations
 	public void updateAi(
 			int seasonPlacing,
-			int pplayoffPlacing,
 			int lastYearSeasonPlacing,
+			int pplayoffPlacing,
 			int lastYearPplayoffPlacing,
 			boolean closeFight) {
 		

@@ -13,6 +13,7 @@ import fgenejfx.controllers.League;
 import fgenejfx.models.Contract;
 import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Group;
+import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Team;
 import fgenejfx.models.TeamsEnum;
@@ -35,6 +36,10 @@ public class GroupTests {
 
 	@BeforeEach
 	public void setup() {
+		League.reset();
+		HistoryAgent.reset();
+		ContractsAgent.reset();
+		
 		l = League.get();
 		
 		p1 = new Pilot("A1");
