@@ -1,7 +1,6 @@
 package fgenejfx.controllers;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +18,7 @@ import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
-import fgenejfx.models.TeamsEnum;
+import fgenejfx.models.enums.TeamsEnum;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
 

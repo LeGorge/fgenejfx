@@ -16,7 +16,7 @@ import fgenejfx.models.Group;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Team;
-import fgenejfx.models.TeamsEnum;
+import fgenejfx.models.enums.TeamsEnum;
 
 public class GroupTests {
 	League l;

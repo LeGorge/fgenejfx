@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import fgenejfx.models.enums.OpEnum;
+
 public class RaceStats implements Serializable,Comparable<RaceStats> {
 
 	protected static final long serialVersionUID = 1L;
@@ -63,9 +65,9 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		}
 	}
 
-	public static RaceStats somarStats(RaceStats st1, RaceStats st2, boolean isSoma) {
+	public static RaceStats somarStats(RaceStats st1, RaceStats st2, OpEnum op) {
 		RaceStats res = new RaceStats();
-		if (isSoma) {
+		if (OpEnum.isSum(op)) {
 			res.p1st = st1.p1st + st2.p1st;
 			res.p2nd = st1.p2nd + st2.p2nd;
 			res.p3rd = st1.p3rd + st2.p3rd;

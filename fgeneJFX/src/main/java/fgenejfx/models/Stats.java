@@ -2,6 +2,8 @@ package fgenejfx.models;
 
 import java.io.Serializable;
 
+import fgenejfx.models.enums.OpEnum;
+
 public class Stats implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -15,8 +17,8 @@ public class Stats implements Serializable {
 	}
 	
 	public RaceStats getStatsTotals() {
-		RaceStats r = RaceStats.somarStats(season, pPlayoff, true);
-		return RaceStats.somarStats(r, tPlayoff, true);
+		RaceStats r = RaceStats.somarStats(season, pPlayoff, OpEnum.SUM);
+		return RaceStats.somarStats(r, tPlayoff, OpEnum.SUM);
 	}
 
 

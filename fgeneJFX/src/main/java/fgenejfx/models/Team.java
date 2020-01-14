@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
+import fgenejfx.models.enums.OpEnum;
+import fgenejfx.models.enums.TeamsEnum;
 
 public class Team implements Serializable, StatsMonitorable{
 	private static final long serialVersionUID = 1L;
@@ -21,9 +23,9 @@ public class Team implements Serializable, StatsMonitorable{
 	public Double power(Powers p){
 		return this.powers.get(p);
 	}
-	public void updatePowers(Integer times, Boolean improve){
+	public void updatePowers(Integer times, OpEnum op){
 		for (int i = 0; i < times; i++) {
-			Powers.update(this.powers,improve);
+			Powers.update(this.powers,op);
 		}
 	}
 	public Integer carPower(){
