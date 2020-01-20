@@ -20,112 +20,112 @@ public class SeasonChangeController {
 	private ContractsAgent cag = ContractsAgent.get();
 
 	public SeasonChangeController() throws NotValidException {
-		if(!l.getSeason().ended()) {
+		if (!l.getSeason().ended()) {
 			throw new NotValidException();
 		}
-		
-		//save history
+
+		// save history
 		hag.save(l.getSeason());
-		
-		//update powers
+
+		// update powers
 		updatePowers();
-		
-		//update ai
+
+		// update ai
 		updateAI();
-		
-		//update stats
+
+		// update stats
 		updateStats();
-		
-		//pass year
+
+		// pass year
 		l.passYear();
-		
-		//update contracts
+
+		// update contracts
 		int newPilots = ContractsAgent.get().willRetire().size();
 		cag.updateContracts(l.createNewPilots(newPilots));
-		
-		//new season
+
+		// new season
 		l.setSeason(new Season());
 	}
-	
-	private void updatePowers(){
-		//-2 for pplayoff teams
+
+	private void updatePowers() {
+		// -2 for pplayoff teams
 		l.getSeason().pPlayoffTeams().forEach(t -> {
 			t.updatePowers(2, OpEnum.SUBTRACT);
 		});
-		
-		//+1 for tplayoff champion
+
+		// +1 for tplayoff champion
 		l.getSeason().tChamp().updatePowers(1, OpEnum.SUM);
-		
-		//+1 for non-pplayoff teams
+
+		// +1 for non-pplayoff teams
 		cag.teams().stream().filter(t -> !l.getSeason().pPlayoffTeams().contains(t))
-		.forEach(t -> t.updatePowers(1, OpEnum.SUM));
-		
-		//-1 for random team
-		Team t = (Team)cag.teams().toArray()[new Random().nextInt(cag.teams().size())];
+				.forEach(t -> t.updatePowers(1, OpEnum.SUM));
+
+		// -1 for random team
+		Team t = (Team) cag.teams().toArray()[new Random().nextInt(cag.teams().size())];
 		t.updatePowers(1, OpEnum.SUBTRACT);
-		
-		//update car files with powers in generally
+
+		// update car files with powers in generally
 		GenerallyFilesController.updateCarFile();
 	}
-	
-	private void updateAI(){
+
+	private void updateAI() {
 		Season last = null;
-		if(l.getYear() != 1) {
-			last = hag.season(l.getYear()-1);
+		if (l.getYear() != 1) {
+			last = hag.season(l.getYear() - 1);
 		}
 		for (Pilot p : l.getSeason().pilots()) {
 			Group season = l.getSeason().seasonGroupOf(p);
-			
+
 			int seasonPlacing = season.posOf(p);
 			int pplayoffPlacing = -1;
-			if(seasonPlacing == 1) {
+			if (seasonPlacing == 1) {
 				pplayoffPlacing = l.getSeason().getpPlayoff().posOf(p);
 			}
-			
+
 			int lastYearSeasonPlacing = -1;
 			int lastYearPplayoffPlacing = -1;
-			if(!p.isRookie() && last != null) {
+			if (!p.isRookie() && last != null) {
 				lastYearSeasonPlacing = last.seasonGroupOf(p).posOf(p);
-				if(lastYearSeasonPlacing == 1) {
+				if (lastYearSeasonPlacing == 1) {
 					lastYearPplayoffPlacing = last.getpPlayoff().posOf(p);
 				}
 			}
-			p.updateAi(seasonPlacing, lastYearSeasonPlacing, pplayoffPlacing,
-					lastYearPplayoffPlacing, season.closeFight(p));
-			
+			p.updateAi(seasonPlacing, lastYearSeasonPlacing, pplayoffPlacing, lastYearPplayoffPlacing,
+					season.closeFight(p));
+
 			GenerallyFilesController.updateDriverAI(p);
 		}
 	}
-	
-	private void updateStats(){
+
+	private void updateStats() {
 		Season s = l.getSeason();
-		
-		//update season stats
+
+		// update season stats
 		l.getTeams().forEach(t -> t.getLifeStats().incrementSeasons());
 		for (Pilot p : s.pilots()) {
 			p.getLifeStats().incrementSeasons();
-			
+
 			RaceStats st = s.seasonStatsOf(p);
 			RaceStats newSt = RaceStats.somarStats(p.getStats().getSeason(), st, OpEnum.SUM);
 			p.getStats().setSeason(newSt);
-			
+
 			Team t = l.teamOf(p, s.getYear());
 			newSt = RaceStats.somarStats(t.getStats().getSeason(), st, OpEnum.SUM);
 			t.getStats().setSeason(new RaceStatsTeam(newSt));
 		}
-		
-		//update pplayoff stats
+
+		// update pplayoff stats
 		int cont = 0;
 		for (Pilot p : s.getpPlayoff().pilots()) {
 			RaceStats st = s.getpPlayoff().statsOf(p);
 			RaceStats newSt = RaceStats.somarStats(p.getStats().getpPlayoff(), st, OpEnum.SUM);
 			p.getStats().setpPlayoff(newSt);
-			
+
 			Team t = l.teamOf(p, s.getYear());
 			newSt = RaceStats.somarStats(t.getStats().getpPlayoff(), st, OpEnum.SUM);
 			t.getStats().setpPlayoff(new RaceStatsTeam(newSt));
-			
-			//update lifeStats
+
+			// update lifeStats
 			p.getLifeStats().incrementpPlayoffs();
 			t.getLifeStats().incrementpPlayoffs();
 			switch (cont) {
@@ -144,19 +144,19 @@ public class SeasonChangeController {
 			}
 			cont++;
 		}
-		
-		//update tplayoff stats
+
+		// update tplayoff stats
 		for (Pilot p : s.gettPlayoff().pilots()) {
 			RaceStats st = s.gettPlayoff().statsOf(p);
 			RaceStats newSt = RaceStats.somarStats(p.getStats().gettPlayoff(), st, OpEnum.SUM);
 			p.getStats().settPlayoff(newSt);
-			
+
 			Team t = l.teamOf(p, s.getYear());
 			newSt = RaceStats.somarStats(t.getStats().gettPlayoff(), st, OpEnum.SUM);
 			t.getStats().settPlayoff(new RaceStatsTeam(newSt));
 		}
-		
-		//update tplayoff lifeStats
+
+		// update tplayoff lifeStats
 		cont = 0;
 		for (Team t : s.gettPlayoff().teams(s.getYear())) {
 			t.getLifeStats().incrementtPlayoffs();

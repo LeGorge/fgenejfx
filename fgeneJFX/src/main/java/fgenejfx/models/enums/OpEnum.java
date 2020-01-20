@@ -2,10 +2,9 @@ package fgenejfx.models.enums;
 
 public enum OpEnum {
 
-	SUM,
-	SUBTRACT;
+	SUM, SUBTRACT;
 
-	public static boolean isSum(OpEnum op){
+	public static boolean isSum(OpEnum op) {
 		return op.equals(OpEnum.SUM);
 	}
 

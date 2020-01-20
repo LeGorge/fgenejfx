@@ -31,29 +31,31 @@ public class PersistanceController {
 			e.printStackTrace();
 		}
 	}
+
 	public static void save(Season s) {
-		save(s,seasonPath);
+		save(s, seasonPath);
 	}
+
 	public static void save() {
-		save(League.get(),leaguePath);
-		save(League.get().getSeason(),seasonPath);
-		save(HistoryAgent.get(),historyPath);
-		save(ContractsAgent.get(),contractsPath);
+		save(League.get(), leaguePath);
+		save(League.get().getSeason(), seasonPath);
+		save(HistoryAgent.get(), historyPath);
+		save(ContractsAgent.get(), contractsPath);
 	}
 
 	public static void load() {
 		try {
-			String json = FileUtils.readFileToString(new File(leaguePath),StandardCharsets.UTF_8);
-			League.set((League)loadJSON(json, League.class));
-			
+			String json = FileUtils.readFileToString(new File(leaguePath), StandardCharsets.UTF_8);
+			League.set((League) loadJSON(json, League.class));
+
 			json = FileUtils.readFileToString(new File(seasonPath), StandardCharsets.UTF_8);
-			League.get().setSeason((Season)loadJSON(json, Season.class));
-			
+			League.get().setSeason((Season) loadJSON(json, Season.class));
+
 			json = FileUtils.readFileToString(new File(historyPath), StandardCharsets.UTF_8);
-			HistoryAgent.set((HistoryAgent)loadJSON(json, HistoryAgent.class));
-			
+			HistoryAgent.set((HistoryAgent) loadJSON(json, HistoryAgent.class));
+
 			json = FileUtils.readFileToString(new File(contractsPath), StandardCharsets.UTF_8);
-			ContractsAgent.set((ContractsAgent)loadJSON(json, ContractsAgent.class));
+			ContractsAgent.set((ContractsAgent) loadJSON(json, ContractsAgent.class));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,8 +63,10 @@ public class PersistanceController {
 	}
 
 	public static void inactivatePilotFile(Pilot p) throws PilotInactivationException {
-		File fileSource = new File(System.getProperty("user.dir") + "\\Drivers\\" + p.getName() + ".drv");
-		File fileTarget = new File(System.getProperty("user.dir") + "\\History\\Drivers\\" + p.getName() + ".drv");
+		File fileSource = new File(
+				System.getProperty("user.dir") + "\\Drivers\\" + p.getName() + ".drv");
+		File fileTarget = new File(
+				System.getProperty("user.dir") + "\\History\\Drivers\\" + p.getName() + ".drv");
 		try {
 			Files.move(fileSource.toPath(), fileTarget.toPath(), StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {
@@ -80,7 +84,7 @@ public class PersistanceController {
 			return null;
 		}
 	}
-	
+
 	public static Object loadJSON(String json, Class<?> c) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();

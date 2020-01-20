@@ -36,59 +36,69 @@ public class League implements Serializable {
 		this.year++;
 	}
 
-	// ==================================================================================== gets
+	// ============================================================================================
+	// gets
+	// ============================================================================================
 	public Team teamOf(Pilot p, Integer year) throws NoSuchElementException {
-		if(year == this.year){
+		if (year == this.year) {
 			return ContractsAgent.get().teamOf(p);
-		}else{
+		} else {
 			return HistoryAgent.get().history(year).teamOf(p);
 		}
 	}
+
 	public List<Pilot> pilotsOf(Team t, Integer year) throws NoSuchElementException {
-		if(year == this.year){
+		if (year == this.year) {
 			return ContractsAgent.get().pilotsOf(t);
-		}else{
+		} else {
 			return HistoryAgent.get().history(year).pilotsOf(t);
 		}
 	}
 
-	// //============================================================================== season
+	// ============================================================================================
+	// season
+	// ============================================================================================
 	public void changeSeason() throws NotValidException {
 		new SeasonChangeController();
 	}
-	
-	//==================================================================================== new pilots
+
+	// ============================================================================================
+	// new pilots
+	// ============================================================================================
 	public Set<Pilot> createNewPilots(int howMany) {
-		if(howMany == 0) return new HashSet<>();
-		String nomes[] = new String[howMany*2];
+		if (howMany == 0)
+			return new HashSet<>();
+		String nomes[] = new String[howMany * 2];
 		try {
-			nomes = InternetDependantUtils.getRandomNames(howMany*2);
-			nomes = Arrays.stream(nomes).filter(n->isNameAvailable(n)).limit(howMany).toArray(String[]::new);
-			if(nomes.length < howMany) {
+			nomes = InternetDependantUtils.getRandomNames(howMany * 2);
+			nomes = Arrays.stream(nomes).filter(n -> isNameAvailable(n)).limit(howMany)
+					.toArray(String[]::new);
+			if (nomes.length < howMany) {
 				throw new NameGeneratorException();
 			}
 		} catch (NameGeneratorException e) {
 			nomes = new String[howMany];
 			int i = 0;
-			
+
 			TextInputDialog dialog = new TextInputDialog();
 			dialog.setTitle("PILOT CREATION");
-			dialog.setHeaderText("The Name Generator wasn't able to get a proper name, please try one yourself:");
-			 
-			while(i<howMany) {
-				dialog.setContentText("Name for Pilot "+(i+1)+":");
+			dialog.setHeaderText(
+					"The Name Generator wasn't able to get a proper name, " + "please try one yourself:");
+
+			while (i < howMany) {
+				dialog.setContentText("Name for Pilot " + (i + 1) + ":");
 				Optional<String> result = dialog.showAndWait();
-				if(result.isPresent()) {
-					if(isNameAvailable(result.get())) {
+				if (result.isPresent()) {
+					if (isNameAvailable(result.get())) {
 						nomes[0] = result.get();
 						i++;
 					}
 				}
 			}
 		}
-		return Arrays.stream(nomes).map(n->new Pilot(n)).collect(Collectors.toSet());
+		return Arrays.stream(nomes).map(n -> new Pilot(n)).collect(Collectors.toSet());
 	}
-	
+
 	private boolean isNameAvailable(String name) {
 		try {
 			Pilot.get(name);
@@ -97,39 +107,53 @@ public class League implements Serializable {
 			return true;
 		}
 	}
-	//=========================================================================================== get singleton
+
+	// ============================================================================================
+	// get singleton
+	// ============================================================================================
 	private League() {
 		this.setTeams(TeamsEnum.create());
 		League.league = this;
 	}
+
 	public static League get() {
-		if(league == null) {
+		if (league == null) {
 			new League();
 		}
 		return league;
 	}
+
 	public static void set(League l) {
 		league = l;
 	}
+
 	public static void reset() {
 		new League();
 	}
-	//=========================================================================================== getters and setters
+
+	// ============================================================================================
+	// getters and setters
+	// ============================================================================================
 	public Integer getYear() {
 		return year;
 	}
+
 	public void setYear(Integer year) {
 		this.year = year;
 	}
-	public Set<Pilot> getPilots(){
+
+	public Set<Pilot> getPilots() {
 		return this.pilots;
 	}
-	public Set<Team> getTeams(){
+
+	public Set<Team> getTeams() {
 		return this.teams;
 	}
+
 	public void setPilots(Set<Pilot> pilots) {
 		this.pilots = pilots;
 	}
+
 	public void setTeams(Set<Team> teams) {
 		this.teams = teams;
 	}
@@ -138,6 +162,7 @@ public class League implements Serializable {
 	public Season getSeason() {
 		return this.season;
 	}
+
 	public void setSeason(Season s) {
 		this.season = s;
 		this.year = s.getYear();
