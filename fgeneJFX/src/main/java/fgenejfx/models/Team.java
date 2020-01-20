@@ -10,46 +10,53 @@ import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.enums.OpEnum;
 import fgenejfx.models.enums.TeamsEnum;
 
-public class Team implements Serializable, StatsMonitorable{
+public class Team implements Serializable, StatsMonitorable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private TeamsEnum name;
-	
+
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 	private EnumMap<Powers, Double> powers = new EnumMap<>(Powers.class);
 
-	//=========================================================================================== powers
-	public Double power(Powers p){
+	// ===========================================================================================
+	// powers
+	public Double power(Powers p) {
 		return this.powers.get(p);
 	}
-	public void updatePowers(Integer times, OpEnum op){
+
+	public void updatePowers(Integer times, OpEnum op) {
 		for (int i = 0; i < times; i++) {
-			Powers.update(this.powers,op);
+			Powers.update(this.powers, op);
 		}
 	}
-	public Integer carPower(){
+
+	public Integer carPower() {
 		return Powers.carPower(this.powers);
 	}
-	
-	//=========================================================================================== get team
+
+	// ===========================================================================================
+	// get team
 	public static Team get(TeamsEnum name) throws NoSuchElementException {
-		return League.get().getTeams().stream().filter(t->t.getName() == name).findFirst().get();
+		return League.get().getTeams().stream().filter(t -> t.getName() == name).findFirst().get();
 	}
-	
+
 	public static Team get(String name) throws NoSuchElementException {
 		return Team.get(TeamsEnum.valueOf(name));
 	}
-	
+
 	public Team() {
 	}
+
 	public Team(TeamsEnum tEnum) {
 		this.name = tEnum;
 		for (Powers p : Powers.values()) {
 			this.powers.put(p, p.def);
 		}
 	}
-	//=========================================================================================== getters & setters
+
+	// ===========================================================================================
+	// getters & setters
 	public TeamsEnum getName() {
 		return name;
 	}
@@ -77,6 +84,7 @@ public class Team implements Serializable, StatsMonitorable{
 	public void setPowers(EnumMap<Powers, Double> powers) {
 		this.powers = powers;
 	}
+
 	@Override
 	public String toString() {
 		return name.toString();

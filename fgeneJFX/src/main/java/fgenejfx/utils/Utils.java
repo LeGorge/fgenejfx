@@ -21,29 +21,30 @@ import fgenejfx.models.Season;
 
 public class Utils {
 
-	public static Double genGaussian(Double mean, Double dev){
-		return new Random().nextGaussian()*dev+mean;
+	public static Double genGaussian(Double mean, Double dev) {
+		return new Random().nextGaussian() * dev + mean;
 	}
-	public static Integer genGaussian(Integer mean, Integer dev){
-		return (int)(new Random().nextGaussian()*dev+mean);
+
+	public static Integer genGaussian(Integer mean, Integer dev) {
+		return (int) (new Random().nextGaussian() * dev + mean);
 	}
-	
-	public static <A> A copy(A obj) throws CopyException{
+
+	public static <A> A copy(A obj) throws CopyException {
 		try {
-		ByteArrayOutputStream out1 = new ByteArrayOutputStream();
-		ObjectOutputStream out = new ObjectOutputStream(out1);
-		out.writeObject(obj);
-		out.close();
-		out1.close();
-		byte[] byteData = out1.toByteArray();
-		
-		ByteArrayInputStream in1 = new ByteArrayInputStream(byteData);
-		ObjectInputStream in = new ObjectInputStream(in1);
-        A result = (A) in.readObject();
-        in.close();
-        in1.close();
-        
-        return result;
+			ByteArrayOutputStream out1 = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(out1);
+			out.writeObject(obj);
+			out.close();
+			out1.close();
+			byte[] byteData = out1.toByteArray();
+
+			ByteArrayInputStream in1 = new ByteArrayInputStream(byteData);
+			ObjectInputStream in = new ObjectInputStream(in1);
+			A result = (A) in.readObject();
+			in.close();
+			in1.close();
+
+			return result;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,28 +54,28 @@ public class Utils {
 		}
 		throw new CopyException();
 	}
-	
+
 	public static void begin() {
 		League l = League.get();
-		
+
 		ContractsAgent cag = ContractsAgent.get();
-		
+
 		l.setPilots(l.createNewPilots(36));
 		List<Pilot> list = new ArrayList<>(l.getPilots());
 		Collections.shuffle(list);
-		for (int i = 2; i < list.size(); i+=2) {
-			list.get(i).setRookieYear(1-i/2);
-			list.get(i+1).setRookieYear(1-i/2);
+		for (int i = 2; i < list.size(); i += 2) {
+			list.get(i).setRookieYear(1 - i / 2);
+			list.get(i + 1).setRookieYear(1 - i / 2);
 		}
-		
+
 		try {
 			ContractsAgent.get().setContracts(new HashSet<>());
 			ContractsAgent.get().updateContracts(l.getPilots());
 		} catch (NotValidException e) {
 			e.printStackTrace();
 		}
-		
+
 		l.setSeason(new Season());
 	}
-	
+
 }

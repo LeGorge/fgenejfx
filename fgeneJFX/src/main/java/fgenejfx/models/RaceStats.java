@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fgenejfx.models.enums.OpEnum;
 
-public class RaceStats implements Serializable,Comparable<RaceStats> {
+public class RaceStats implements Serializable, Comparable<RaceStats> {
 
 	protected static final long serialVersionUID = 1L;
 
@@ -16,16 +16,17 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 	protected Integer p4th = 0;
 	protected Integer p5th = 0;
 	protected Integer p6th = 0;
-	
-	//pts
-	//WinRate
-	//PtRate
+
+	// pts
+	// WinRate
+	// PtRate
 
 	public RaceStats() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public RaceStats(Integer p1st, Integer p2nd, Integer p3rd, Integer p4th, Integer p5th, Integer p6th) {
+
+	public RaceStats(Integer p1st, Integer p2nd, Integer p3rd, Integer p4th, Integer p5th,
+			Integer p6th) {
 		super();
 		this.p1st = p1st;
 		this.p2nd = p2nd;
@@ -34,7 +35,6 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		this.p5th = p5th;
 		this.p6th = p6th;
 	}
-
 
 	@JsonIgnore
 	public Integer getTotalRaces() {
@@ -45,15 +45,15 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 	public Integer getPts() {
 		return p1st * 8 + p2nd * 5 + p3rd * 3 + p4th * 2 + p5th * 1 + p6th * 0;
 	}
-	
+
 	@JsonIgnore
 	public Double getWinRate() {
-		return getTotalRaces() != 0 ? new Double(p1st/getTotalRaces()) : 0.0d ;
+		return getTotalRaces() != 0 ? new Double(p1st / getTotalRaces()) : 0.0d;
 	}
 
 	@JsonIgnore
 	public Double getPtRate() {
-		return getTotalRaces() != 0 ? new Double(getPts()/getTotalRaces()/8) : 0.0d ;
+		return getTotalRaces() != 0 ? new Double(getPts() / getTotalRaces() / 8) : 0.0d;
 	}
 
 	@JsonIgnore
@@ -136,13 +136,25 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 	public int compareTo(RaceStats o) {
 		int result = 0;
 		result = this.getPts().compareTo(o.getPts());
-        if (result == 0) {result = p1st.compareTo(o.p1st);}
-        if (result == 0) {result = p2nd.compareTo(o.p2nd);}
-        if (result == 0) {result = p3rd.compareTo(o.p3rd);}
-        if (result == 0) {result = p4th.compareTo(o.p4th);}
-        if (result == 0) {result = p5th.compareTo(o.p5th);}
-        if (result == 0) {result = p6th.compareTo(o.p6th);}
-        return result;
+		if (result == 0) {
+			result = p1st.compareTo(o.p1st);
+		}
+		if (result == 0) {
+			result = p2nd.compareTo(o.p2nd);
+		}
+		if (result == 0) {
+			result = p3rd.compareTo(o.p3rd);
+		}
+		if (result == 0) {
+			result = p4th.compareTo(o.p4th);
+		}
+		if (result == 0) {
+			result = p5th.compareTo(o.p5th);
+		}
+		if (result == 0) {
+			result = p6th.compareTo(o.p6th);
+		}
+		return result;
 	}
 
 	@Override
@@ -157,7 +169,7 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		result = prime * result + ((p6th == null) ? 0 : p6th.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

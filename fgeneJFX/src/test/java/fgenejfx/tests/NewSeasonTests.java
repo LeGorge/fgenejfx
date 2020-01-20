@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fgenejfx.controllers.GenerallyFilesController;
 import fgenejfx.controllers.League;
 import fgenejfx.controllers.PersistanceController;
 import fgenejfx.exceptions.NotValidException;
@@ -25,9 +26,12 @@ import fgenejfx.models.Group;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
+import fgenejfx.models.RaceStats;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
 import fgenejfx.utils.Utils;
+import mockit.Mock;
+import mockit.MockUp;
 
 public class NewSeasonTests {
 	
@@ -71,6 +75,13 @@ public class NewSeasonTests {
 		s.setpPlayoff(g);
 		s.settPlayoff(s.getSeason()[1]);
 
+		Group g2 = s.gettPlayoff();
+		Pilot p = g2.firstPilot();
+		g2.statsOf(p).setP1st(1);
+		g2 = s.getpPlayoff();
+		p = g2.firstPilot();
+		g2.statsOf(p).setP1st(1);
+		
 		League.get().changeSeason();
 
 		Set<Team> teams = new HashSet<>(cag.teams());
@@ -83,7 +94,49 @@ public class NewSeasonTests {
 	}
 
 	@Test
+	public void midSeasonStates() throws NotValidException {
+	  new MockUp<GenerallyFilesController>() {
+      @Mock
+      public RaceStats readDriver(String name) {
+          return new RaceStats();
+      }
+	  };
+	  
+	  Utils.begin();
+	  League l = League.get();
+	  Season s = l.getSeason();
+	  Arrays.stream(s.getSeason()).forEach(g -> {
+	    Pilot p = g.firstPilot();
+	    g.statsOf(p).setP1st(1);
+	    p.getStats().getSeason().setP1st(1);
+	  });
+	  
+	  assertFalse(s.ended());
+	  assertTrue(s.playoffReady());
+	  
+	  s.update();
+	  assertTrue(s.inPlayoffs());
+	 
+	  Group g = s.gettPlayoff();
+	  Pilot p = g.firstPilot();
+	  g.statsOf(p).setP1st(1);
+	  assertFalse(s.ended());
+	  
+	  g = s.getpPlayoff();
+	  p = g.firstPilot();
+	  g.statsOf(p).setP1st(1);
+	  assertTrue(s.ended());
+	}
+	
+	@Test
 	public void changeSeasonFlow() throws NotValidException {
+	  new MockUp<GenerallyFilesController>() {
+	    @Mock
+	    public RaceStats readDriver(String name) {
+	      return new RaceStats();
+	    }
+	  };
+	  
 		Utils.begin();
 		League l = League.get();
 		Season s = l.getSeason();

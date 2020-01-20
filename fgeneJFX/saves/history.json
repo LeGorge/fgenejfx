@@ -1,1 +1,513 @@
-{"seasons":[{"year":1,"season":[{"pilotsMap":{"A23":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A13":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A7":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A3":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A32":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A22":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0}}},{"pilotsMap":{"A12":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A2":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A33":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A35":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A8":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A28":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0}}},{"pilotsMap":{"A6":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A19":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A5":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A18":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A30":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A21":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0}}},{"pilotsMap":{"A11":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A0":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A34":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A20":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A17":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A24":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0}}},{"pilotsMap":{"A15":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A14":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A27":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A9":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A10":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A25":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0}}},{"pilotsMap":{"A31":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A29":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A4":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A16":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A26":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0},"A1":{"p1st":0,"p2nd":0,"p3rd":0,"p4th":0,"p5th":0,"p6th":0}}}],"pPlayoff":null,"tPlayoff":null}],"historyMap":{"1":{"relations":{"A21":"HYUNDAY","A22":"KIA","A23":"AUDI","A24":"BMW","A25":"NISSAN","A26":"CHEVROLET","A27":"TOYOTA","A28":"RENAULT","A29":"FERRARI","A0":"BMW","A1":"FIAT","A2":"LAMBORGHINI","A3":"HONDA","A4":"CHEVROLET","A5":"JAGUAR","A6":"HYUNDAY","A7":"KIA","A8":"MERCEDEZ","A9":"FORD","A30":"JAGUAR","A31":"FIAT","A32":"HONDA","A10":"TOYOTA","A33":"RENAULT","A11":"WILLIAMS","A34":"WILLIAMS","A12":"LAMBORGHINI","A13":"AUDI","A35":"MERCEDEZ","A14":"FORD","A15":"NISSAN","A16":"FERRARI","A17":"MCLAREN","A18":"VOLKSWAGEN","A19":"VOLKSWAGEN","A20":"MCLAREN"},"ais":{"A6":107,"A4":101,"A29":106,"A23":102,"A18":104,"A1":107,"A11":104,"A8":100,"A9":95,"A34":106,"A21":99,"A25":106,"A20":99,"A22":103,"A31":102,"A13":98,"A15":100,"A7":105,"A5":103,"A3":101,"A35":99,"A26":98,"A24":101,"A17":100,"A19":108,"A12":107,"A2":105,"A33":103,"A0":101,"A16":104,"A14":97,"A27":102,"A28":103,"A32":110,"A30":101,"A10":104},"powers":{"MERCEDEZ":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"LAMBORGHINI":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"NISSAN":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"HONDA":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"CHEVROLET":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"AUDI":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"FERRARI":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"MCLAREN":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"BMW":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"KIA":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"FIAT":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"VOLKSWAGEN":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"JAGUAR":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"TOYOTA":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"WILLIAMS":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"FORD":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"HYUNDAY":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0},"RENAULT":{"AIR":2.0,"POWER":400.0,"SLOWDOWN":0.1,"GRIP":3.0}}}}}
+{
+	"seasons": [
+		{
+			"year": 1,
+			"season": [
+				{
+					"pilotsMap": {
+						"A23": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A13": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A7": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A3": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A32": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A22": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						}
+					}
+				},
+				{
+					"pilotsMap": {
+						"A12": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A2": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A33": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A35": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A8": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A28": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						}
+					}
+				},
+				{
+					"pilotsMap": {
+						"A6": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A19": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A5": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A18": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A30": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A21": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						}
+					}
+				},
+				{
+					"pilotsMap": {
+						"A11": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A0": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A34": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A20": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A17": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A24": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						}
+					}
+				},
+				{
+					"pilotsMap": {
+						"A15": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A14": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A27": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A9": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A10": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A25": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						}
+					}
+				},
+				{
+					"pilotsMap": {
+						"A31": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A29": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A4": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A16": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A26": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						},
+						"A1": {
+							"p1st": 0,
+							"p2nd": 0,
+							"p3rd": 0,
+							"p4th": 0,
+							"p5th": 0,
+							"p6th": 0
+						}
+					}
+				}
+			],
+			"pPlayoff": null,
+			"tPlayoff": null
+		}
+	],
+	"historyMap": {
+		"1": {
+			"relations": {
+				"A21": "HYUNDAY",
+				"A22": "KIA",
+				"A23": "AUDI",
+				"A24": "BMW",
+				"A25": "NISSAN",
+				"A26": "CHEVROLET",
+				"A27": "TOYOTA",
+				"A28": "RENAULT",
+				"A29": "FERRARI",
+				"A0": "BMW",
+				"A1": "FIAT",
+				"A2": "LAMBORGHINI",
+				"A3": "HONDA",
+				"A4": "CHEVROLET",
+				"A5": "JAGUAR",
+				"A6": "HYUNDAY",
+				"A7": "KIA",
+				"A8": "MERCEDEZ",
+				"A9": "FORD",
+				"A30": "JAGUAR",
+				"A31": "FIAT",
+				"A32": "HONDA",
+				"A10": "TOYOTA",
+				"A33": "RENAULT",
+				"A11": "WILLIAMS",
+				"A34": "WILLIAMS",
+				"A12": "LAMBORGHINI",
+				"A13": "AUDI",
+				"A35": "MERCEDEZ",
+				"A14": "FORD",
+				"A15": "NISSAN",
+				"A16": "FERRARI",
+				"A17": "MCLAREN",
+				"A18": "VOLKSWAGEN",
+				"A19": "VOLKSWAGEN",
+				"A20": "MCLAREN"
+			},
+			"ais": {
+				"A6": 107,
+				"A4": 101,
+				"A29": 106,
+				"A23": 102,
+				"A18": 104,
+				"A1": 107,
+				"A11": 104,
+				"A8": 100,
+				"A9": 95,
+				"A34": 106,
+				"A21": 99,
+				"A25": 106,
+				"A20": 99,
+				"A22": 103,
+				"A31": 102,
+				"A13": 98,
+				"A15": 100,
+				"A7": 105,
+				"A5": 103,
+				"A3": 101,
+				"A35": 99,
+				"A26": 98,
+				"A24": 101,
+				"A17": 100,
+				"A19": 108,
+				"A12": 107,
+				"A2": 105,
+				"A33": 103,
+				"A0": 101,
+				"A16": 104,
+				"A14": 97,
+				"A27": 102,
+				"A28": 103,
+				"A32": 110,
+				"A30": 101,
+				"A10": 104
+			},
+			"powers": {
+				"MERCEDEZ": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"LAMBORGHINI": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"NISSAN": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"HONDA": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"CHEVROLET": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"AUDI": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"FERRARI": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"MCLAREN": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"BMW": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"KIA": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"FIAT": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"VOLKSWAGEN": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"JAGUAR": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"TOYOTA": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"WILLIAMS": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"FORD": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"HYUNDAY": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				},
+				"RENAULT": {
+					"AIR": 2.0,
+					"POWER": 400.0,
+					"SLOWDOWN": 0.1,
+					"GRIP": 3.0
+				}
+			}
+		}
+	}
+}
