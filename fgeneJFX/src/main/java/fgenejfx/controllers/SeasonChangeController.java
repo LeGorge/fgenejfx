@@ -106,11 +106,11 @@ public class SeasonChangeController {
 			p.getLifeStats().incrementSeasons();
 
 			RaceStats st = s.seasonStatsOf(p);
-			RaceStats newSt = RaceStats.somarStats(p.getStats().getSeason(), st, OpEnum.SUM);
+			RaceStats newSt = RaceStats.sum(p.getStats().getSeason(), st);
 			p.getStats().setSeason(newSt);
 
 			Team t = l.teamOf(p, s.getYear());
-			newSt = RaceStats.somarStats(t.getStats().getSeason(), st, OpEnum.SUM);
+			newSt = RaceStats.sum(t.getStats().getSeason(), st);
 			t.getStats().setSeason(new RaceStatsTeam(newSt));
 		}
 
@@ -118,11 +118,11 @@ public class SeasonChangeController {
 		int cont = 0;
 		for (Pilot p : s.getpPlayoff().pilots()) {
 			RaceStats st = s.getpPlayoff().statsOf(p);
-			RaceStats newSt = RaceStats.somarStats(p.getStats().getpPlayoff(), st, OpEnum.SUM);
+			RaceStats newSt = RaceStats.sum(p.getStats().getpPlayoff(), st);
 			p.getStats().setpPlayoff(newSt);
 
 			Team t = l.teamOf(p, s.getYear());
-			newSt = RaceStats.somarStats(t.getStats().getpPlayoff(), st, OpEnum.SUM);
+			newSt = RaceStats.sum(t.getStats().getpPlayoff(), st);
 			t.getStats().setpPlayoff(new RaceStatsTeam(newSt));
 
 			// update lifeStats
@@ -148,11 +148,11 @@ public class SeasonChangeController {
 		// update tplayoff stats
 		for (Pilot p : s.gettPlayoff().pilots()) {
 			RaceStats st = s.gettPlayoff().statsOf(p);
-			RaceStats newSt = RaceStats.somarStats(p.getStats().gettPlayoff(), st, OpEnum.SUM);
+			RaceStats newSt = RaceStats.sum(p.getStats().gettPlayoff(), st);
 			p.getStats().settPlayoff(newSt);
 
 			Team t = l.teamOf(p, s.getYear());
-			newSt = RaceStats.somarStats(t.getStats().gettPlayoff(), st, OpEnum.SUM);
+			newSt = RaceStats.sum(t.getStats().gettPlayoff(), st);
 			t.getStats().settPlayoff(new RaceStatsTeam(newSt));
 		}
 
