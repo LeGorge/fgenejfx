@@ -10,5 +10,9 @@ public class App extends Application {
     // TODO Auto-generated method stub
 
   }
+  
+  public static void main(String[] args) {
+    Application.launch(args);
+  }
 
 }
