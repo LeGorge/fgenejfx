@@ -121,15 +121,15 @@ public class Season implements Serializable {
     RaceStats result = this.seasonStatsOf(p);
     RaceStats tplayoff = this.tPlayoff.statsOf(p);
     if(tplayoff != null) {
-      result = RaceStats.somarStats(result, tplayoff, OpEnum.SUM);
+      result = RaceStats.sum(result, tplayoff);
     }
     
     RaceStats pplayoff = this.pPlayoff.statsOf(p);
     if(pplayoff != null) {
-      result = RaceStats.somarStats(result, pplayoff, OpEnum.SUM);
+      result = RaceStats.sum(result, pplayoff);
     }
     
-    return RaceStats.somarStats(result, p.getStats().getStatsTotals(), OpEnum.SUM);
+    return RaceStats.sum(result, p.getStats().getStatsTotals());
   }
   
   private void updateSeason() {
@@ -139,7 +139,7 @@ public class Season implements Serializable {
           g.pilots().stream().forEach(p -> {
             RaceStats read = GenerallyFilesController.readDriver(p.getName());
             g.updateStat(p,
-                RaceStats.somarStats(read, p.getStats().getStatsTotals(), OpEnum.SUBTRACT));
+                RaceStats.subtract(read, p.getStats().getStatsTotals()));
           });
         });
       }
@@ -149,7 +149,7 @@ public class Season implements Serializable {
   private void updateTplayoff() {
     this.tPlayoff.pilots().stream().forEach(p -> {
       RaceStats read = GenerallyFilesController.readDriver(p.getName());
-      this.tPlayoff.updateStat(p,RaceStats.somarStats(read, this.total(p), OpEnum.SUBTRACT));
+      this.tPlayoff.updateStat(p,RaceStats.subtract(read, this.total(p)));
     });
   }
   
@@ -157,7 +157,7 @@ public class Season implements Serializable {
     if (!this.ended() && inPlayoffs()) {
       this.pPlayoff.pilots().stream().forEach(p -> {
         RaceStats read = GenerallyFilesController.readDriver(p.getName());
-        this.pPlayoff.updateStat(p,RaceStats.somarStats(read, this.total(p), OpEnum.SUBTRACT));
+        this.pPlayoff.updateStat(p,RaceStats.subtract(read, this.total(p)));
       });
     }
   }

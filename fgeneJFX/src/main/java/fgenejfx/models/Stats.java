@@ -17,8 +17,8 @@ public class Stats implements Serializable {
 	}
 
 	public RaceStats getStatsTotals() {
-		RaceStats r = RaceStats.somarStats(season, pPlayoff, OpEnum.SUM);
-		return RaceStats.somarStats(r, tPlayoff, OpEnum.SUM);
+		RaceStats r = RaceStats.sum(season, pPlayoff);
+		return RaceStats.sum(r, tPlayoff);
 	}
 
 	public RaceStats getSeason() {
