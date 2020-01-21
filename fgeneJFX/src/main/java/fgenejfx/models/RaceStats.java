@@ -65,7 +65,16 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 		}
 	}
 
-	public static RaceStats somarStats(RaceStats st1, RaceStats st2, OpEnum op) {
+	// ============================================================================================
+	// static methods
+	// ============================================================================================
+	public static RaceStats sum(RaceStats st1, RaceStats st2) {
+		return joinStats(st1, st2, OpEnum.SUM);
+	}
+	public static RaceStats subtract(RaceStats st1, RaceStats st2) {
+		return joinStats(st1, st2, OpEnum.SUBTRACT);
+	}
+	private static RaceStats joinStats(RaceStats st1, RaceStats st2, OpEnum op) {
 		RaceStats res = new RaceStats();
 		if (OpEnum.isSum(op)) {
 			res.p1st = st1.p1st + st2.p1st;
@@ -85,6 +94,9 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 		return res;
 	}
 
+	// ============================================================================================
+	// getters & setters
+	// ============================================================================================
 	public Integer getP1st() {
 		return p1st;
 	}

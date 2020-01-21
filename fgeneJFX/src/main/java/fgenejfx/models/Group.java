@@ -110,7 +110,7 @@ public class Group implements Serializable {
 		RaceStats stat = new RaceStatsTeam();
 		for (Pilot p : League.get().pilotsOf(t, year)) {
 			if (this.pilots().contains(p)) {
-				stat = RaceStats.somarStats(stat, this.statsOf(p), OpEnum.SUM);
+				stat = RaceStats.sum(stat, this.statsOf(p));
 			}
 		}
 		return stat;
