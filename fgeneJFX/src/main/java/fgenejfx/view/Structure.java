@@ -2,33 +2,35 @@ package fgenejfx.view;
 
 import java.util.List;
 
+import org.controlsfx.control.HiddenSidesPane;
+
+import fgenejfx.App;
+import fgenejfx.models.enums.SideType;
+import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToolBar;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 public class Structure extends BorderPane {
   
-  public Structure(Stage stage, List<Hyperlink> links) {
+  public Structure() {
     super();
-    this.setTop(topMenu(stage));
-    if(links != null) {
-      this.setLeft(leftMenu(stage, links));
-    }
+    this.setTop(topMenu());
   }
   
-  private MenuBar topMenu(Stage stage) {
+  private MenuBar topMenu() {
     MenuBar bar = new MenuBar();
-    bar.prefWidthProperty().bind(stage.widthProperty());
+    bar.prefWidthProperty().bind(App.stage.widthProperty());
     
     ImageView dashboardIcon = new ImageView(
         "file:src\\main\\resources\\graphics\\generally-icon.png");
@@ -41,16 +43,20 @@ public class Structure extends BorderPane {
     return bar;
   }
   
-  private Node leftMenu(Stage stage, List<Hyperlink> list) {
+  private Node leftMenu(List<String> list) {
     ToolBar bar = new ToolBar();
     bar.setOrientation(Orientation.VERTICAL);
+//    bar.setPrefWidth();
+//    DoubleProperty height = App.stage.heightProperty().multiply(other);
+    bar.prefHeightProperty().bind(App.stage.heightProperty().multiply(0.905));
     
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    scrollPane.prefHeightProperty().bind(stage.heightProperty());
     scrollPane.setContent(bar);
     
-    list.stream().forEachOrdered(h -> {
+    
+    list.stream().forEachOrdered(s -> {
+      Hyperlink h = new Hyperlink(s);
       h.setBorder(null);
       h.getStyleClass().add("hyperlink");
       bar.getItems().add(h);
@@ -59,7 +65,10 @@ public class Structure extends BorderPane {
     return scrollPane;
   }
   
-  public void set(Pane pane) {
+  public void set(Node content, SideType side) {
+    HiddenSidesPane pane = new HiddenSidesPane();
+    pane.setLeft(this.leftMenu(side.list()));
+    pane.setContent(content);
     this.setCenter(pane);
   }
 
