@@ -24,6 +24,7 @@ public class App extends Application {
     Scene scene = new Scene(App.view);
     
     scene.getStylesheets().add(getClass().getResource("/css/text.css").toString());
+    scene.getStylesheets().add(getClass().getResource("/css/background.css").toString());
     primaryStage.setScene(scene);
     primaryStage.setMaximized(true);
     primaryStage.show();

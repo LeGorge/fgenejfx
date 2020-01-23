@@ -39,21 +39,18 @@ public class Structure extends BorderPane {
     Menu dashboardMenu = new Menu("", dashboardIcon);
     
     bar.getMenus().add(dashboardMenu);
-    
     return bar;
   }
   
   private Node leftMenu(List<String> list) {
     ToolBar bar = new ToolBar();
     bar.setOrientation(Orientation.VERTICAL);
-//    bar.setPrefWidth();
-//    DoubleProperty height = App.stage.heightProperty().multiply(other);
-    bar.prefHeightProperty().bind(App.stage.heightProperty().multiply(0.905));
+    bar.setStyle("-fx-padding: 0 10 0 5;");
     
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
     scrollPane.setContent(bar);
-    
     
     list.stream().forEachOrdered(s -> {
       Hyperlink h = new Hyperlink(s);
