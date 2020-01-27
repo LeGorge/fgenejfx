@@ -2,6 +2,7 @@ package fgenejfx;
 
 import fgenejfx.controllers.League;
 import fgenejfx.models.enums.SideType;
+import fgenejfx.utils.Utils;
 import fgenejfx.view.SeasonView;
 import fgenejfx.view.Structure;
 import javafx.application.Application;
@@ -17,6 +18,7 @@ public class App extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     League.get();
+    Utils.begin();
     App.stage = primaryStage;
     
     App.view = new Structure();
