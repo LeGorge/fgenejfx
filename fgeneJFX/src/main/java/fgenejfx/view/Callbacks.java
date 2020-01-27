@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import fgenejfx.controllers.League;
+import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.RaceStats;
 import javafx.beans.property.SimpleObjectProperty;
@@ -31,13 +32,13 @@ public class Callbacks {
     return null;
   }
 
-  public static Callback<CellDataFeatures<Pilot, Number>, ObservableValue<Number>> stats(
+  public static Callback<CellDataFeatures<StatsMonitorable, Number>, ObservableValue<Number>> stats(
       String method, int year){
-    return new Callback<CellDataFeatures<Pilot, Number>, ObservableValue<Number>>() {
+    return new Callback<CellDataFeatures<StatsMonitorable, Number>, ObservableValue<Number>>() {
       @Override
-      public ObservableValue<Number> call(CellDataFeatures<Pilot, Number> data) {
-        Pilot p = data.getValue();
-        RaceStats stats = League.get().season(year).seasonStatsOf(p);
+      public ObservableValue<Number> call(CellDataFeatures<StatsMonitorable, Number> data) {
+        StatsMonitorable sm = data.getValue();
+        RaceStats stats = League.get().season(year).seasonStatsOf(sm);
         Object obj = getMethodResult(stats, method);
         return new SimpleObjectProperty(obj);
       }
