@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+import org.apache.commons.math3.stat.descriptive.moment.Variance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +42,43 @@ public class NewSeasonTests {
 		League.reset();
 		HistoryAgent.reset();
 		ContractsAgent.reset();
+	}
+	
+	@Test
+	public void tes() {
+	  double ai[] = {143,136,131,132,112,108};
+	  double max = 143;
+	  double min = 108;
+	  
+	  
+	  double aux = 0;
+	  for (int i = 0; i < ai.length; i++) {
+	    double[] diff = new double[6];
+	    for (int j = 0; j < ai.length; j++) {
+	      diff[j] = ai[i]-ai[j];
+	      aux += ai[i]-ai[j];
+      }
+//	    System.out.println(Arrays.toString(diff));
+	    StandardDeviation v = new StandardDeviation(false);
+	    double deviation = v.evaluate(diff);
+	    double doubleDeviation = v.evaluate(diff) * 2;
+	    double diffMedia = aux/5.0;
+	    
+	    double up = max;
+	    double down = min;
+	    
+	    if(diffMedia > 0) {
+	      down = min - diffMedia;
+	      up = max + (doubleDeviation - diffMedia);
+	    }else {
+	      up = max - diffMedia;
+	      down = min - (doubleDeviation + diffMedia);
+	    }
+	    
+	    System.out.println("diff: " + diffMedia + " - "+v.evaluate(diff));
+	    System.out.println(up + " - "+down);
+	    aux = 0;
+    }
 	}
 	
 	@Test
