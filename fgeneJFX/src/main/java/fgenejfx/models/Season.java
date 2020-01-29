@@ -149,6 +149,7 @@ public class Season implements Serializable {
             g.updateStat(p,
                 RaceStats.subtract(read, p.getStats().getStatsTotals()));
           });
+          g.updatePer();
         });
       }
     }
@@ -159,6 +160,7 @@ public class Season implements Serializable {
       RaceStats read = GenerallyFilesController.readDriver(p.getName());
       this.tPlayoff.updateStat(p,RaceStats.subtract(read, this.total(p)));
     });
+    this.tPlayoff.updatePer();
   }
   
   private void updatePplayoff() {
@@ -167,6 +169,7 @@ public class Season implements Serializable {
         RaceStats read = GenerallyFilesController.readDriver(p.getName());
         this.pPlayoff.updateStat(p,RaceStats.subtract(read, this.total(p)));
       });
+      this.pPlayoff.updatePer();
     }
   }
         
