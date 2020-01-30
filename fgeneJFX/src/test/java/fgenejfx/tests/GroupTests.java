@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 
 import fgenejfx.controllers.League;
 import fgenejfx.models.Contract;
@@ -20,11 +19,10 @@ import fgenejfx.models.Pilot;
 import fgenejfx.models.RaceStats;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.TeamsEnum;
+import mockit.Invocation;
 import mockit.Mock;
 import mockit.MockUp;
-import mockit.integration.junit4.JMockit;
 
-@RunWith(JMockit.class)
 public class GroupTests {
 	League l;
 	
@@ -141,9 +139,10 @@ public class GroupTests {
   public void per() {
 	  new MockUp<RaceStats>() {
       @Mock
-      public Integer getPts() {
+      public Integer getPts(Invocation inv) {
+        RaceStats invoked = inv.getInvokedInstance();
         Integer[] is = {107,101,64,61,20,8};
-        return is[getMockInstance().getP1st()];
+        return is[invoked.getP1st()];
       }
       @Mock
       public Integer getTotalRaces() {

@@ -92,6 +92,7 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 			res.p4th = st1.p4th + st2.p4th;
 			res.p5th = st1.p5th + st2.p5th;
 			res.p6th = st1.p6th + st2.p6th;
+			res.per = st1.per + st2.per;
 		} else {
 			res.p1st = st1.p1st - st2.p1st;
 			res.p2nd = st1.p2nd - st2.p2nd;
