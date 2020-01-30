@@ -16,6 +16,7 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 	protected Integer p4th = 0;
 	protected Integer p5th = 0;
 	protected Integer p6th = 0;
+	protected Double per = 0.0;
 
 	// pts
 	// WinRate
@@ -48,12 +49,20 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 
 	@JsonIgnore
 	public Double getWinRate() {
-		return getTotalRaces() != 0 ? new Double(p1st / getTotalRaces()) : 0.0d;
+		return getTotalRaces() != 0 ? new Double(p1st) / new Double(getTotalRaces()) : 0.0d;
 	}
 
 	@JsonIgnore
 	public Double getPtRate() {
-		return getTotalRaces() != 0 ? new Double(getPts() / getTotalRaces() / 8) : 0.0d;
+//	  if(getTotalRaces() != 0) {
+//	    System.out.println(getPts());
+//	    System.out.println(getTotalRaces());
+//	    System.out.println(getPts()/getTotalRaces());
+//	    System.out.println(new Double(getPts()/getTotalRaces()));
+//	    System.out.println();
+//	    
+//	  }
+		return getTotalRaces() != 0 ? new Double(getPts()) / new Double(getTotalRaces()) / 8.0d : 0.0d;
 	}
 
 	@JsonIgnore
@@ -83,6 +92,7 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 			res.p4th = st1.p4th + st2.p4th;
 			res.p5th = st1.p5th + st2.p5th;
 			res.p6th = st1.p6th + st2.p6th;
+			res.per = st1.per + st2.per;
 		} else {
 			res.p1st = st1.p1st - st2.p1st;
 			res.p2nd = st1.p2nd - st2.p2nd;
@@ -145,7 +155,15 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 		this.p6th = p6th;
 	}
 
-	public int compareTo(RaceStats o) {
+	public Double getPer() {
+    return per;
+  }
+
+  public void setPer(Double per) {
+    this.per = per;
+  }
+
+  public int compareTo(RaceStats o) {
 		int result = 0;
 		result = this.getPts().compareTo(o.getPts());
 		if (result == 0) {

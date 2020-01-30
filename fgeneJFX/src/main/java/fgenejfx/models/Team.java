@@ -10,7 +10,7 @@ import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.enums.OpEnum;
 import fgenejfx.models.enums.TeamsEnum;
 
-public class Team implements Serializable, StatsMonitorable {
+public class Team implements Serializable, StatsMonitorable, Comparable<Team> {
 	private static final long serialVersionUID = 1L;
 
 	private TeamsEnum name;
@@ -89,4 +89,9 @@ public class Team implements Serializable, StatsMonitorable {
 	public String toString() {
 		return name.toString();
 	}
+
+  @Override
+  public int compareTo(Team o) {
+    return this.name.toString().compareTo(o.name.toString());
+  }
 }

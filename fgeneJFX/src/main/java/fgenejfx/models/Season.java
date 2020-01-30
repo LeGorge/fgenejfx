@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import fgenejfx.controllers.GenerallyFilesController;
 import fgenejfx.controllers.League;
 import fgenejfx.exceptions.NotValidException;
+import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.enums.OpEnum;
 
 public class Season implements Serializable {
@@ -30,6 +31,13 @@ public class Season implements Serializable {
   private Group pPlayoff;
   private Group tPlayoff;
 
+  // ============================================================================================
+  // misc methods
+  // ============================================================================================
+  public RaceStats seasonStatsOf(StatsMonitorable sm) throws NoSuchElementException {
+    return (sm instanceof Pilot) ? this.seasonStatsOf((Pilot)sm):this.seasonStatsOf((Team)sm);
+  }
+  
   // ============================================================================================
   // pilot related methods
   // ============================================================================================
@@ -141,6 +149,7 @@ public class Season implements Serializable {
             g.updateStat(p,
                 RaceStats.subtract(read, p.getStats().getStatsTotals()));
           });
+          g.updatePer();
         });
       }
     }
@@ -151,6 +160,7 @@ public class Season implements Serializable {
       RaceStats read = GenerallyFilesController.readDriver(p.getName());
       this.tPlayoff.updateStat(p,RaceStats.subtract(read, this.total(p)));
     });
+    this.tPlayoff.updatePer();
   }
   
   private void updatePplayoff() {
@@ -159,6 +169,7 @@ public class Season implements Serializable {
         RaceStats read = GenerallyFilesController.readDriver(p.getName());
         this.pPlayoff.updateStat(p,RaceStats.subtract(read, this.total(p)));
       });
+      this.pPlayoff.updatePer();
     }
   }
         

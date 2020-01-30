@@ -10,7 +10,7 @@ import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.utils.Utils;
 
-public class Pilot implements Serializable, StatsMonitorable {
+public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> {
 	private static final long serialVersionUID = 1L;
 	public static final Integer MAX_YEARS_ON_CAREER = 18;
 
@@ -185,4 +185,9 @@ public class Pilot implements Serializable, StatsMonitorable {
 	public String toString() {
 		return name;
 	}
+
+  @Override
+  public int compareTo(Pilot o) {
+    return this.name.compareTo(o.name);
+  }
 }

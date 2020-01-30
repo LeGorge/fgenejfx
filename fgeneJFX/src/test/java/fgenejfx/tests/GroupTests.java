@@ -1,6 +1,7 @@
 package fgenejfx.tests;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
@@ -15,8 +16,12 @@ import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Group;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
+import fgenejfx.models.RaceStats;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.TeamsEnum;
+import mockit.Invocation;
+import mockit.Mock;
+import mockit.MockUp;
 
 public class GroupTests {
 	League l;
@@ -129,4 +134,54 @@ public class GroupTests {
 		assertTrue(g.statsOf(t2,1).getPts() == g.statsOf(t3,1).getPts());
 		assertTrue(g.posOf(t3,1) == 3);
 	}
+	
+	@Test
+  public void per() {
+	  new MockUp<RaceStats>() {
+      @Mock
+      public Integer getPts(Invocation inv) {
+        RaceStats invoked = inv.getInvokedInstance();
+        Integer[] is = {107,101,64,61,20,8};
+        return is[invoked.getP1st()];
+      }
+      @Mock
+      public Integer getTotalRaces() {
+        return 19;
+      }
+    };
+    
+//    double[] assertResult = {0.8361815007433951, 0.5653067318158819, 0.39752549817412935,
+//        0.4300688392653924, 0.14591743000120114, 0.0};
+    double[] assertResult = {-1.3, 1.0, 0.2, -0.3, -0.1, 0.5};
+    
+    p1.setAi(143);
+    p2.setAi(136);
+    p3.setAi(131);
+    p4.setAi(132);
+    p5.setAi(112);
+    p6.setAi(108);
+    
+    //mapping for mock of getPts()
+    g.statsOf(p1).setP1st(0);
+    g.statsOf(p2).setP1st(1);
+    g.statsOf(p3).setP1st(2);
+    g.statsOf(p4).setP1st(3);
+    g.statsOf(p5).setP1st(4);
+    g.statsOf(p6).setP1st(5);
+    assertEquals(107, g.statsOf(p1).getPts());
+    assertEquals(101, g.statsOf(p2).getPts());
+    assertEquals(64, g.statsOf(p3).getPts());
+    assertEquals(61, g.statsOf(p4).getPts());
+    assertEquals(20, g.statsOf(p5).getPts());
+    assertEquals(8, g.statsOf(p6).getPts());
+    
+    g.updatePer();
+    
+    assertEquals(assertResult[0] ,g.statsOf(p1).getPer());
+    assertEquals(assertResult[1] ,g.statsOf(p2).getPer());
+    assertEquals(assertResult[2] ,g.statsOf(p3).getPer());
+    assertEquals(assertResult[3] ,g.statsOf(p4).getPer());
+    assertEquals(assertResult[4] ,g.statsOf(p5).getPer());
+    assertEquals(assertResult[5] ,g.statsOf(p6).getPer());
+  }
 }

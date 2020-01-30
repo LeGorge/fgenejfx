@@ -21,12 +21,14 @@ public class RaceStatsTeam extends RaceStats {
 	@Override
 	@JsonIgnore
 	public Double getPtRate() {
-		return getTotalRaces() != 0 ? new Double(getPts() / (getTotalRaces() / 2) / 13) : 0.0d;
+		return getTotalRaces() != 0 
+		    ? new Double(getPts()) / new Double(getTotalRaces() / 2.0d) / new Double(13) 
+		    : 0.0d;
 	}
 
 	@Override
 	@JsonIgnore
 	public Double getWinRate() {
-		return getTotalRaces() != 0 ? new Double(p1st / (getTotalRaces() / 2)) : 0.0d;
+		return getTotalRaces() != 0 ? new Double(p1st) / new Double(getTotalRaces() / 2.0d) : 0.0d;
 	}
 }

@@ -5,8 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +23,17 @@ import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 
 public class Utils {
+  
+  public static NumberFormat perFormat = new DecimalFormat("#0.0");
 
+  public static double round(double value, int places) {
+    if (places < 0) throw new IllegalArgumentException();
+
+    BigDecimal bd = BigDecimal.valueOf(value);
+    bd = bd.setScale(places, RoundingMode.HALF_UP);
+    return bd.doubleValue();
+  }
+  
 	public static Double genGaussian(Double mean, Double dev) {
 		return new Random().nextGaussian() * dev + mean;
 	}
