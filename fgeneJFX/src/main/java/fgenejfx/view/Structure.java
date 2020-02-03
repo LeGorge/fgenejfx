@@ -65,7 +65,14 @@ public class Structure extends BorderPane {
   public void set(Node content, SideType side) {
     HiddenSidesPane pane = new HiddenSidesPane();
     pane.setLeft(this.leftMenu(side.list()));
-    pane.setContent(content);
+    
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+    scrollPane.setFitToWidth(true);
+    scrollPane.setContent(content);
+    
+    pane.setContent(scrollPane);
     this.setCenter(pane);
   }
 

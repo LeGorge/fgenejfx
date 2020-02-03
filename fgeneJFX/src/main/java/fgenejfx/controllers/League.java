@@ -54,7 +54,7 @@ public class League implements Serializable {
 			return HistoryAgent.get().history(year).pilotsOf(t);
 		}
 	}
-	public Season season(int year){
+	public Season season(Integer year){
 		if(year == this.year){
 			return this.season;
 		}else{
