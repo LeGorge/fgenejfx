@@ -4,12 +4,20 @@ import java.util.LinkedHashMap;
 
 public class MethodMapper {
 
+  private static LinkedHashMap<String, Object[]> pts = null;
   private static LinkedHashMap<String, Object[]> teamOf = null;
   private static LinkedHashMap<String, Object[]> seasonStatOf = null;
   private static LinkedHashMap<String, Object[]> ptr = null;
   private static LinkedHashMap<String, Object[]> winr = null;
   private static LinkedHashMap<String, Object[]> per = null;
   
+  public static LinkedHashMap<String, Object[]> pts(Integer year){
+    if(pts == null) {
+      pts = new LinkedHashMap<>(seasonStatOf(year));
+      pts.put("getPts", null);
+    }
+    return pts;
+  }
   public static LinkedHashMap<String, Object[]> teamOf(Integer year){
     if(teamOf == null) {
       teamOf = new LinkedHashMap<>();

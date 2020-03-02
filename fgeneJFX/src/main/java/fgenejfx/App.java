@@ -22,7 +22,7 @@ public class App extends Application {
     App.stage = primaryStage;
     
     App.view = new Structure();
-    App.view.set(new SeasonView(), SideType.TEAMSIDE);
+    App.view.set(new SeasonView(1), SideType.TEAMSIDE);
     Scene scene = new Scene(App.view);
     
     scene.getStylesheets().add(getClass().getResource("/css/text.css").toString());
