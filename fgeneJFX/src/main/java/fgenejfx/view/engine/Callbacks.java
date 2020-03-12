@@ -1,4 +1,4 @@
-package fgenejfx.view;
+package fgenejfx.view.engine;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,6 +39,7 @@ public class Callbacks<A,B> {
     }
     return map;
   }
+  
   private Class<?>[] paramTypes(Object[] params){
     if(params != null) {
       Class<?>[] paramTypes = new Class[params.length];
@@ -49,6 +50,7 @@ public class Callbacks<A,B> {
     }
     return null;
   }
+  
   private Object methodResult(Object obj, String method){
     return methodResultWithParams(obj, method, new Object[0]);
   }
@@ -71,18 +73,18 @@ public class Callbacks<A,B> {
     return null;
   }
 
-  public Callback<CellDataFeatures<StatsMonitorable, Number>, ObservableValue<Number>> stats(
-      String method, int year){
-    return new Callback<CellDataFeatures<StatsMonitorable, Number>, ObservableValue<Number>>() {
-      @Override
-      public ObservableValue<Number> call(CellDataFeatures<StatsMonitorable, Number> data) {
-        StatsMonitorable sm = data.getValue();
-        RaceStats stats = League.get().season(year).seasonStatsOf(sm);
-        Object obj = methodResult(stats, method);
-        return new SimpleObjectProperty(obj);
-      }
-    };
-  }
+//  public Callback<CellDataFeatures<StatsMonitorable, Number>, ObservableValue<Number>> stats(
+//      String method, int year){
+//    return new Callback<CellDataFeatures<StatsMonitorable, Number>, ObservableValue<Number>>() {
+//      @Override
+//      public ObservableValue<Number> call(CellDataFeatures<StatsMonitorable, Number> data) {
+//        StatsMonitorable sm = data.getValue();
+//        RaceStats stats = League.get().season(year).seasonStatsOf(sm);
+//        Object obj = methodResult(stats, method);
+//        return new SimpleObjectProperty(obj);
+//      }
+//    };
+//  }
   
   public Callback<CellDataFeatures<A, B>, ObservableValue<B>> stringCol(
       Object altData, LinkedHashMap<String, Object[]> exec){

@@ -32,13 +32,6 @@ public class Season implements Serializable {
   private Group tPlayoff;
 
   // ============================================================================================
-  // misc methods
-  // ============================================================================================
-  public RaceStats seasonStatsOf(StatsMonitorable sm) throws NoSuchElementException {
-    return (sm instanceof Pilot) ? this.seasonStatsOf((Pilot)sm):this.seasonStatsOf((Team)sm);
-  }
-  
-  // ============================================================================================
   // pilot related methods
   // ============================================================================================
   public Set<Pilot> pilots() {
@@ -47,6 +40,10 @@ public class Season implements Serializable {
 
   public RaceStats seasonStatsOf(Pilot p) throws NoSuchElementException {
     return Arrays.stream(season).filter(g -> g.statsOf(p) != null).findFirst().get().statsOf(p);
+  }
+  
+  public RaceStats pplayoffStatsOf(Pilot p) {
+    return pPlayoff.statsOf(p);
   }
 
   public Group seasonGroupOf(Pilot p) throws NoSuchElementException {
@@ -65,6 +62,10 @@ public class Season implements Serializable {
         .findFirst().get().statsOf(t, this.year);
   }
 
+  public RaceStats tplayoffStatsOf(Team t) {
+    return tPlayoff.statsOf(t, this.year);
+  }
+  
   public List<Team> pPlayoffTeams() {
     return pPlayoff.teams(this.year);
   }

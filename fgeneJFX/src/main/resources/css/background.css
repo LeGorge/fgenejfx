@@ -2,3 +2,10 @@
   /* -fx-background-color:#EDEDED; */
   -fx-padding: 20;
 }
+
+.pane{
+    -fx-background-image: url("/graphics/background.jpg");
+    -fx-background-repeat: repeat repeat;  
+    -fx-background-size: 1920 1200;
+    -fx-background-position: top top;
+}

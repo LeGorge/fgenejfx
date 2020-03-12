@@ -1,4 +1,4 @@
-package fgenejfx.view;
+package fgenejfx.view.engine;
 
 import java.util.List;
 
@@ -15,10 +15,16 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class Structure extends BorderPane {
@@ -65,12 +71,17 @@ public class Structure extends BorderPane {
   public void set(Node content, SideType side) {
     HiddenSidesPane pane = new HiddenSidesPane();
     pane.setLeft(this.leftMenu(side.list()));
+    content.getStyleClass().add("pane");
     
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
     scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
     scrollPane.setFitToWidth(true);
     scrollPane.setContent(content);
+    
+    pane.getStyleClass().add("pane");
+    scrollPane.getStyleClass().add("pane");
+    this.getStyleClass().add("pane");
     
     pane.setContent(scrollPane);
     this.setCenter(pane);

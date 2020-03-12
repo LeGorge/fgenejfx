@@ -4,10 +4,11 @@ import fgenejfx.controllers.League;
 import fgenejfx.models.enums.SideType;
 import fgenejfx.utils.Utils;
 import fgenejfx.view.SeasonView;
-import fgenejfx.view.Structure;
+import fgenejfx.view.engine.Structure;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -23,6 +24,7 @@ public class App extends Application {
     
     App.view = new Structure();
     App.view.set(new SeasonView(1), SideType.TEAMSIDE);
+    
     Scene scene = new Scene(App.view);
     
     scene.getStylesheets().add(getClass().getResource("/css/text.css").toString());
