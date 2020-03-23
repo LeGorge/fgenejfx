@@ -2,6 +2,7 @@ package fgenejfx.view.engine;
 
 import fgenejfx.controllers.League;
 import fgenejfx.models.enums.LeagueTime;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,6 +22,17 @@ public class CustomTableView<A> extends TableView<A>{
     TableColumn<A, String> nameCol = new TableColumn<>("Name");
     nameCol.setPrefWidth(100);
     nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+    nameCol.setCellFactory(col -> new TableCell<A, String>() {
+		@Override
+		protected void updateItem(String item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty) {
+                setGraphic(null);
+            } else {
+                setGraphic(new CustomHyperlink(item, "name"));
+            }
+		}
+    });
     this.getColumns().add(nameCol);
     return this;
   }

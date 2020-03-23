@@ -3,15 +3,11 @@ package fgenejfx.view.engine;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
-import fgenejfx.controllers.League;
-import fgenejfx.interfaces.StatsMonitorable;
-import fgenejfx.models.Pilot;
-import fgenejfx.models.RaceStats;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
@@ -87,27 +83,27 @@ public class Callbacks<A,B> {
 //  }
   
   public Callback<CellDataFeatures<A, B>, ObservableValue<B>> stringCol(
-      Object altData, LinkedHashMap<String, Object[]> exec){
-    return new Callback<CellDataFeatures<A, B>, ObservableValue<B>>() {
-      @Override
-      public ObservableValue<B> call(CellDataFeatures<A, B> data) {
-        Object o = data.getValue();
-        LinkedHashMap<String, Object[]> newExec = updateMap(o, exec);
-        
-        result = o;
-        boolean flagStart = true;
-        
-        if(altData != null && flagStart) {
-          result = altData;
-          flagStart = false;
-        }
-        
-        newExec.keySet().stream().forEachOrdered(method ->{
-          result = methodResultWithParams(result, method, newExec.get(method));
-        });
-        
-        return new SimpleObjectProperty(result);
-      }
-    };
+		  Object altData, LinkedHashMap<String, Object[]> exec){
+	  return new Callback<CellDataFeatures<A, B>, ObservableValue<B>>() {
+		  @Override
+		  public ObservableValue<B> call(CellDataFeatures<A, B> data) {
+			  Object o = data.getValue();
+			  LinkedHashMap<String, Object[]> newExec = updateMap(o, exec);
+			  
+			  result = o;
+			  boolean flagStart = true;
+			  
+			  if(altData != null && flagStart) {
+				  result = altData;
+				  flagStart = false;
+			  }
+			  
+			  newExec.keySet().stream().forEachOrdered(method ->{
+				  result = methodResultWithParams(result, method, newExec.get(method));
+			  });
+			  
+			  return new SimpleObjectProperty(result);
+		  }
+	  };
   }
 }

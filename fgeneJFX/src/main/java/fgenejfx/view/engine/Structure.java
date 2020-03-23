@@ -59,9 +59,7 @@ public class Structure extends BorderPane {
     scrollPane.setContent(bar);
     
     list.stream().forEachOrdered(s -> {
-      Hyperlink h = new Hyperlink(s);
-      h.setBorder(null);
-      h.getStyleClass().add("hyperlink");
+      CustomHyperlink h = new CustomHyperlink(s, "hyperlink");
       bar.getItems().add(h);
     });
     

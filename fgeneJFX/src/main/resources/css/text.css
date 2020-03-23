@@ -2,3 +2,8 @@
   -fx-font-weight:bold;
   -fx-font-size:14px;
 }
+.name{
+  -fx-font-weight:inherit;
+  -fx-font-size:inherit;
+  -fx-padding: -1px;
+}
