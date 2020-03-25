@@ -82,6 +82,26 @@ public class Callbacks<A,B> {
 //    };
 //  }
   
+  /**
+   * <p>This creates a Callback object intended for javafx TableView usage. It maps nested properties
+   * that are not available by the common means of cellValueFactory linkage. It expects an object from 
+   * which it will start and a LinkedHasMap<String, Object[]> containing, in order, the names of 
+   * the methods as keys and its arguments as values.
+   * </p>
+   * If said arguments are not known at this time, than this method is no good for you.
+   * The string "this" maps the line(object of the table)
+   * </p>
+   * If the starting point is the line(object of the table), pass null
+   * </p>
+   * @param altData starting point of the mapping process; null means starting at the object-line 
+   * aka one of the objects being shown in the TableView;
+   * @param exec maps the path. key: name of the method, value: its params; String "this" maps 
+   * object-line
+   * @return Callback object intended for javafx TableView usage. The Generic types are set when
+   * creating the enclosing class.
+   * @since 1.0
+   * @author Gorge(MOURA, ANDERSON GUIMARÃES)
+   */
   public Callback<CellDataFeatures<A, B>, ObservableValue<B>> stringCol(
 		  Object altData, LinkedHashMap<String, Object[]> exec){
 	  return new Callback<CellDataFeatures<A, B>, ObservableValue<B>>() {

@@ -7,6 +7,8 @@ import fgenejfx.controllers.League;
 import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Team;
+import fgenejfx.models.enums.LeagueTime;
+import fgenejfx.models.enums.MethodSelector;
 import fgenejfx.view.engine.CustomGridPane;
 import fgenejfx.view.engine.CustomTableView;
 import javafx.geometry.Pos;
@@ -31,15 +33,16 @@ public class SeasonView extends CustomGridPane {
     if(c.equals(Pilot.class)) {
       table.addTeamColumn();
     }
+    LeagueTime t = LeagueTime.SEASON;
     table.addNameColumn()
-        .addPtsColumn()
-        .addP1stColumn()
-        .addP2ndColumn()
-        .addP3rdColumn()
-        .addP4thColumn()
-        .addP5thColumn()
-        .addP6thColumn()
-        .addPerColumn();
+        .addBySeasonStatColumn(t, MethodSelector.PTS)
+        .addBySeasonStatColumn(t, MethodSelector.P1ST)
+        .addBySeasonStatColumn(t, MethodSelector.P2ND)
+        .addBySeasonStatColumn(t, MethodSelector.P3RD)
+        .addBySeasonStatColumn(t, MethodSelector.P4TH)
+        .addBySeasonStatColumn(t, MethodSelector.P5TH)
+        .addBySeasonStatColumn(t, MethodSelector.P6TH)
+        .addBySeasonStatColumn(t, MethodSelector.PER);
     
     if(c.equals(Pilot.class)) {
       table.getItems().addAll((Collection<? extends A>) League.get().season(year).pilots());
@@ -61,7 +64,8 @@ public class SeasonView extends CustomGridPane {
       table.addTeamColumn()
           .addNameColumn()
           .addAgeColumn()
-          .addPtsColumn();
+          .addlifeStatColumn(LeagueTime.SEASON, MethodSelector.PTR)
+          .addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS);
       
       table.getItems().addAll(gs[i].pilots());
       table.getSortOrder().add(table.getColumns().get(0));
