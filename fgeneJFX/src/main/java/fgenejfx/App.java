@@ -1,15 +1,20 @@
 package fgenejfx;
 
+import java.lang.reflect.Field;
+
 import fgenejfx.controllers.League;
+import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.SideType;
 import fgenejfx.utils.Utils;
 import fgenejfx.view.SeasonView;
 import fgenejfx.view.engine.Structure;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class App extends Application {
   public static Stage stage;
@@ -21,6 +26,7 @@ public class App extends Application {
     League.get();
     Utils.begin();
     App.stage = primaryStage;
+    
     
     App.view = new Structure();
     App.view.set(new SeasonView(1), SideType.TEAMSIDE);
@@ -34,8 +40,15 @@ public class App extends Application {
     primaryStage.show();
   }
   
-  public static void navigate(Pane to) {
-//    App.view.set(null);
+  public static void navigate(Front view) {
+    switch (view) {
+    case SEASON:
+      App.view.set(new SeasonView(1), SideType.TEAMSIDE);
+      break;
+
+    default:
+      break;
+    }
   }
   
   public static void main(String[] args) {

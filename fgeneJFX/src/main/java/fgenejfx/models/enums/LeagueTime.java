@@ -2,9 +2,9 @@ package fgenejfx.models.enums;
 
 public enum LeagueTime {
 
-  SEASON("seasonStatsOf", "getSeason"),
-  PPLAYOFF("pplayoffStatsOf", "getpPlayoff"),
-  TPLAYOFF("tplayoffStatsOf","gettPlayoff");
+  SEASON("statsOf", "getSeason"),
+  PPLAYOFF("statsOf", "getpPlayoff"),
+  TPLAYOFF("statsOf","gettPlayoff");
 	
 	private String cmd;
 	private String cmd2;

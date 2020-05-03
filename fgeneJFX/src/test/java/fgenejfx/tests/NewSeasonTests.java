@@ -114,7 +114,7 @@ public class NewSeasonTests {
 	  assertFalse(s.ended());
 	  assertTrue(s.playoffReady());
 	  
-	  s.update();
+	  s.sync();
 	  assertTrue(s.inPlayoffs());
 	 
 	  Group g = s.gettPlayoff();

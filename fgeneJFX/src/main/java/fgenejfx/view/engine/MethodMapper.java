@@ -46,7 +46,7 @@ public class MethodMapper {
     LinkedHashMap<String, Object[]> statOf = new LinkedHashMap<>();
 	  Object[] ptrParams1 = {year};
 	  statOf.put("season", ptrParams1);
-	  Object[] ptrParams2 = {"this"};
+	  Object[] ptrParams2 = {"this", time};
 	  statOf.put(time.getCmd(), ptrParams2);
 	  return statOf;
   }
