@@ -5,6 +5,7 @@ import java.util.List;
 import org.controlsfx.control.HiddenSidesPane;
 
 import fgenejfx.App;
+import fgenejfx.models.enums.BackgroundSelector;
 import fgenejfx.models.enums.SideType;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Orientation;
@@ -40,8 +41,8 @@ public class Structure extends BorderPane {
     
     ImageView dashboardIcon = new ImageView(
         "file:src\\main\\resources\\graphics\\generally-icon.png");
-    dashboardIcon.setFitHeight(50);
-    dashboardIcon.setFitWidth(50);
+    dashboardIcon.setFitHeight(25);
+    dashboardIcon.setFitWidth(25);
     Menu dashboardMenu = new Menu("", dashboardIcon);
     
     bar.getMenus().add(dashboardMenu);
@@ -59,7 +60,7 @@ public class Structure extends BorderPane {
     scrollPane.setContent(bar);
     
     list.stream().forEachOrdered(s -> {
-      CustomHyperlink h = new CustomHyperlink(s, "hyperlink");
+      CustomHyperlink h = new CustomHyperlink(s, "myHyperlink");
       bar.getItems().add(h);
     });
     
@@ -69,13 +70,19 @@ public class Structure extends BorderPane {
   public void set(Node content, SideType side) {
     HiddenSidesPane pane = new HiddenSidesPane();
     pane.setLeft(this.leftMenu(side.list()));
-    content.getStyleClass().add("pane");
+    content.getStyleClass().add("backgroundtexture");
+    content.getStyleClass().add(BackgroundSelector.getRandom().toString());
     
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
     scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
     scrollPane.setFitToWidth(true);
     scrollPane.setContent(content);
+    final double SPEED = 0.003;
+    scrollPane.getContent().setOnScroll(scrollEvent -> {
+        double deltaY = scrollEvent.getDeltaY() * SPEED;
+        scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
+    });
     
     pane.getStyleClass().add("pane");
     scrollPane.getStyleClass().add("pane");

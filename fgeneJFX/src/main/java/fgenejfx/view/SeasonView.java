@@ -1,5 +1,6 @@
 package fgenejfx.view;
 
+import java.awt.Label;
 import java.util.Collection;
 
 import fgenejfx.App;
@@ -16,6 +17,9 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class SeasonView extends CustomGridPane {
   
@@ -27,14 +31,27 @@ public class SeasonView extends CustomGridPane {
     this.year = year;
     this.minHeightProperty().bind(App.stage.heightProperty().subtract(98));
     
-    this.add(statGrid(LeagueTime.SEASON, 420.0, 440.0, true, false, l.season(year).pilots()), 0, 0, 1, 2);
-    this.add(statGrid(LeagueTime.SEASON, 460.0, 300.0, false, false, l.season(year).teams()), 0, 2, 1, 2);
-    
-    this.add(groups(), 1, 0, 1, 2);
-    this.add(tplayoffGrid(), 1, 2, 1, 1);
-    this.add(pplayoffGrid(), 1,  3, 1, 1);
+    this.add(mainPane(), 0, 0, 1, 1);
+    this.add(statGrid(LeagueTime.SEASON, 420.0, 440.0, true, false, l.season(year).pilots()), 0, 1, 1, 1);
+    this.add(statGrid(LeagueTime.SEASON, 460.0, 300.0, false, false, l.season(year).teams()), 0, 2, 1, 1);
   }
 
+  private CustomGridPane mainPane() {
+    CustomGridPane pane = new CustomGridPane(Pos.CENTER);
+    
+    CustomGridPane titlePane = new CustomGridPane(Pos.CENTER);
+    Text title = new Text("Season "+ year);
+    title.getStyleClass().add("title");
+    titlePane.add(title, 0, 0);
+    
+    pane.add(titlePane, 0, 0);
+    pane.add(groups(), 0, 1, 1, 1);
+    pane.add(tplayoffGrid(), 0, 2, 1, 1);
+    pane.add(pplayoffGrid(), 0, 3, 1, 1);
+    
+    return pane;
+  }
+  
   private <A> CustomTableView statGrid(LeagueTime t, Double prefHeight, Double prefWidth,
       boolean addTeamCol, boolean addUpdateButton, Collection<?> children) {
     CustomTableView<A> table = new CustomTableView<>(year);
