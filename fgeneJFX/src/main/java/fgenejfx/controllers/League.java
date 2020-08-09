@@ -2,6 +2,7 @@ package fgenejfx.controllers;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,6 +17,7 @@ import fgenejfx.exceptions.NotValidException;
 import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
+import fgenejfx.models.Powers;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.TeamsEnum;
@@ -60,6 +62,39 @@ public class League implements Serializable {
 		}else{
 			return HistoryAgent.get().season(year);
 		}
+	}
+	public String scoutReportOf(Integer year, Pilot p){
+	  Integer aiDiff;
+	  if(year.equals(this.year)){
+	    aiDiff = p.getAi() - HistoryAgent.get().history(year - 1).ai(p);
+	  }else{
+	    aiDiff = HistoryAgent.get().history(year).ai(p) - HistoryAgent.get().history(year - 1).ai(p);
+	  }
+	  
+	  if(aiDiff < 3) {
+	    return "||";
+	  }
+	  if(aiDiff >= 3 && aiDiff < 6) {
+	    return ">";
+	  }
+	  if(aiDiff >= 6 && aiDiff < 9) {
+	    return ">>";
+	  }
+	  if(aiDiff >= 9) {
+	    return ">>>";
+	  }
+	  return null;
+	}
+	
+	public EnumMap<Powers,Double> powers(Integer year, Team t) {
+	  if(year == this.year){
+      return t.getPowers();
+    }else{
+      return HistoryAgent.get().history(year).powers(t);
+    }
+	}
+	public Integer carPower(Integer year, Team t) {
+	  return Powers.carPower(this.powers(year, t));
 	}
 
 	// ============================================================================================

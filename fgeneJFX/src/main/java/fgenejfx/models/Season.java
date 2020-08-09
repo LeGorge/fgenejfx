@@ -72,6 +72,22 @@ public class Season implements Serializable {
   public Group seasonGroupOf(Pilot p) throws NoSuchElementException {
     return Arrays.stream(season).filter(g -> g.contains(p)).findFirst().get();
   }
+  
+  public Integer posOf(Pilot p) {
+    if(this.pPlayoff.contains(p)) {
+      return this.pPlayoff.posOf(p);
+    }else {
+      return this.seasonGroupOf(p).posOf(p) + 5;
+    }
+  }
+  
+  public String topPosOf(Pilot p) {
+    Integer pos = posOf(p);
+    if(pos > 6) {
+      pos = (pos-6) * 6 + 6;
+    }
+    return "Top "+pos;
+  }
 
   // ============================================================================================
   // team related methods

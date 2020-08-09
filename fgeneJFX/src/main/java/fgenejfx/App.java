@@ -1,35 +1,34 @@
 package fgenejfx;
 
-import java.lang.reflect.Field;
-
 import fgenejfx.controllers.League;
+import fgenejfx.models.enums.BackgroundSelector;
 import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.SideType;
 import fgenejfx.utils.Utils;
 import fgenejfx.view.SeasonView;
 import fgenejfx.view.engine.Structure;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class App extends Application {
   public static Stage stage;
   
   private static Structure view;
+  
+  public static Front currentPage;
+  public static BackgroundSelector theme;
 
   @Override
   public void start(Stage primaryStage) throws Exception {
     League.get();
     Utils.begin();
+    App.theme = BackgroundSelector.getRandom();
     App.stage = primaryStage;
     
-    
     App.view = new Structure();
-    App.view.set(new SeasonView(1), SideType.TEAMSIDE);
+//    App.view.set(new SeasonView(1), SideType.TEAMSIDE);
+    App.navigate(Front.SEASON);
     
     Scene scene = new Scene(App.view);
     
@@ -40,10 +39,14 @@ public class App extends Application {
     primaryStage.show();
   }
   
+  public static void navigate() {
+    navigate(currentPage);
+  }
   public static void navigate(Front view) {
     switch (view) {
     case SEASON:
-      App.view.set(new SeasonView(1), SideType.TEAMSIDE);
+      App.currentPage = view;
+      App.view.set(new SeasonView(League.get().getYear()), SideType.TEAMSIDE);
       break;
 
     default:

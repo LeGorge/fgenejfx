@@ -67,7 +67,7 @@ public class SeasonChangeController {
 		t.updatePowers(1, OpEnum.SUBTRACT);
 
 		// update car files with powers in generally
-		GenerallyFilesController.updateCarFile();
+		//GenerallyFilesController.updateCarFile();
 	}
 
 	private void updateAI() {
@@ -95,7 +95,7 @@ public class SeasonChangeController {
 			p.updateAi(seasonPlacing, lastYearSeasonPlacing, pplayoffPlacing, lastYearPplayoffPlacing,
 					season.closeFight(p));
 
-			GenerallyFilesController.updateDriverAI(p);
+			//GenerallyFilesController.updateDriverAI(p);
 		}
 	}
 

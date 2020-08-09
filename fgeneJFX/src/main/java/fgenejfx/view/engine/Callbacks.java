@@ -2,6 +2,7 @@ package fgenejfx.view.engine;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -53,18 +54,29 @@ public class Callbacks<A,B> {
   
   private Object methodResultWithParams(Object obj, String method, Object[] params){
     try {
-      Method m = obj.getClass().getMethod(method, paramTypes(params));
+//      System.out.println(method + " - "+ params[0]);
+      Method m;
+      //for collections' methods such as enumMap.get, the param type is Object and not 
+      //whatever the collection contains, so we specifically try to fix such cases 
+      try {
+        m = obj.getClass().getMethod(method, paramTypes(params));
+      }catch (NoSuchMethodException e) {
+        m = obj.getClass().getMethod(method, Object.class);
+      }
       return m.invoke(obj, params);
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (SecurityException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+//      System.out.println("Provavelmente algo null em tabela: Callback");
+//      e.printStackTrace();
+//    } catch (SecurityException e) {
+//      e.printStackTrace();
+//    } catch (IllegalAccessException e) {
+//      e.printStackTrace();
+//    } catch (IllegalArgumentException e) {
+//      e.printStackTrace();
+//    } catch (InvocationTargetException e) {
+//      e.printStackTrace();
+//    } catch (NullPointerException e) {
+//      e.printStackTrace();
     }
     return null;
   }
@@ -120,8 +132,12 @@ public class Callbacks<A,B> {
 			  
 			  newExec.keySet().stream().forEachOrdered(method ->{
 				  result = methodResultWithParams(result, method, newExec.get(method));
+//				  System.out.println("result - "+result);
 			  });
 			  
+			  if(result == null) {
+			    result = "-";
+			  }
 			  return new SimpleObjectProperty(result);
 		  }
 	  };

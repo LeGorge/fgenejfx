@@ -1,32 +1,24 @@
 package fgenejfx.view.engine;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.controlsfx.control.HiddenSidesPane;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import fgenejfx.App;
 import fgenejfx.models.enums.BackgroundSelector;
 import fgenejfx.models.enums.SideType;
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.ToolBar;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 public class Structure extends BorderPane {
   
@@ -39,14 +31,29 @@ public class Structure extends BorderPane {
     MenuBar bar = new MenuBar();
     bar.prefWidthProperty().bind(App.stage.widthProperty());
     
-    ImageView dashboardIcon = new ImageView(
-        "file:src\\main\\resources\\graphics\\generally-icon.png");
-    dashboardIcon.setFitHeight(25);
-    dashboardIcon.setFitWidth(25);
-    Menu dashboardMenu = new Menu("", dashboardIcon);
+//    ImageView dashboardIcon = new ImageView(
+//        "file:src\\main\\resources\\graphics\\generally-icon.png");
+//    dashboardIcon.setFitHeight(25);
+//    dashboardIcon.setFitWidth(25);
+//    Menu dashboardMenu = new Menu("", dashboardIcon);
+    Menu dashboardMenu = new Menu("", new FontIcon("fa-automobile"));
     
     bar.getMenus().add(dashboardMenu);
+    bar.getMenus().add(themesMenu());
     return bar;
+  }
+  
+  private Menu themesMenu() {
+    Menu menu = new Menu("Themes");
+    Arrays.stream(BackgroundSelector.values()).forEach(back ->{
+      MenuItem item = new MenuItem(back.toString());
+      item.setOnAction(e ->{
+        App.theme = back;
+        App.navigate();
+      });
+      menu.getItems().add(item);
+    });
+    return menu;
   }
   
   private Node leftMenu(List<String> list) {
@@ -71,7 +78,7 @@ public class Structure extends BorderPane {
     HiddenSidesPane pane = new HiddenSidesPane();
     pane.setLeft(this.leftMenu(side.list()));
     content.getStyleClass().add("backgroundtexture");
-    content.getStyleClass().add(BackgroundSelector.getRandom().toString());
+    content.getStyleClass().add(App.theme.toString());
     
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
