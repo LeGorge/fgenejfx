@@ -1,5 +1,8 @@
 package fgenejfx;
 
+import java.util.Collections;
+import java.util.Map;
+
 import fgenejfx.controllers.League;
 import fgenejfx.models.enums.BackgroundSelector;
 import fgenejfx.models.enums.Front;
@@ -16,7 +19,7 @@ public class App extends Application {
   
   private static Structure view;
   
-  public static Front currentPage;
+  public static Map<Front,Object> currentPage;
   public static BackgroundSelector theme;
 
   @Override
@@ -39,18 +42,37 @@ public class App extends Application {
     primaryStage.show();
   }
   
+  //============================================================================================
+ // Navigation
+ // ============================================================================================
   public static void navigate() {
     navigate(currentPage);
   }
-  public static void navigate(Front view) {
-    switch (view) {
-    case SEASON:
-      App.currentPage = view;
-      App.view.set(new SeasonView(League.get().getYear()), SideType.TEAMSIDE);
-      break;
-
-    default:
-      break;
+  public static void navigate(Front to) {
+    navigate(to, null);
+  }
+  public static void navigate(Front to, Object o) {
+    Map<Front, Object> map = Collections.singletonMap(to, o);
+    navigate(map);
+  }
+//  public static void navigate(Front view, year) {
+  public static void navigate(Map<Front, Object> to) {
+    if(!to.isEmpty()) {
+      Front view = to.keySet().iterator().next();
+      switch (view) {
+      case SEASON:
+        App.currentPage = to;
+        Integer param = (Integer)to.get(Front.SEASON);
+        if(param != null) {
+          App.view.set(new SeasonView(param), SideType.TEAMSIDE);
+        }else {
+          App.view.set(new SeasonView(League.get().getYear()), SideType.TEAMSIDE);
+        }
+        break;
+        
+      default:
+        break;
+      }
     }
   }
   

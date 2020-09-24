@@ -1,7 +1,8 @@
 package fgenejfx.view;
 
-import java.awt.Label;
 import java.util.Collection;
+
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import fgenejfx.App;
 import fgenejfx.controllers.League;
@@ -19,9 +20,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 public class SeasonView extends CustomGridPane {
   
@@ -44,17 +43,48 @@ public class SeasonView extends CustomGridPane {
   private CustomGridPane mainPane() {
     CustomGridPane pane = new CustomGridPane(Pos.CENTER);
     
-    CustomGridPane titlePane = new CustomGridPane(Pos.CENTER);
-    Text title = new Text("Season "+ year);
-    title.getStyleClass().add("title");
-    titlePane.add(title, 0, 0);
+//    CustomGridPane titlePane = new CustomGridPane(Pos.CENTER);
+//    Text title = new Text("Season "+ year);
+//    title.getStyleClass().add("title");
+//    titlePane.add(title, 0, 0);
     
-    pane.add(titlePane, 0, 0);
+    pane.add(titlePane(), 0, 0);
     pane.add(groups(), 0, 1, 1, 1);
     pane.add(tplayoffGrid(), 0, 2, 1, 1);
     pane.add(pplayoffGrid(), 0, 3, 1, 1);
     
     return pane;
+  }
+  
+  private CustomGridPane titlePane() {
+    CustomGridPane titlePane = new CustomGridPane(Pos.CENTER);
+    Text title = new Text("Season "+ year);
+    title.getStyleClass().add("title");
+    
+    Button before = new Button("", new FontIcon("fa-arrow-left"));
+    before.setPrefSize(25,40);
+    if(this.year != 1) {
+      before.setOnAction(e ->{
+        App.navigate(Front.SEASON, this.year-1);
+      });
+    }else {
+      before.setDisable(true);
+    }
+    
+    Button after = new Button("", new FontIcon("fa-arrow-right"));
+    after.setPrefSize(25,40);
+    if(this.year != this.l.getYear()) {
+      after.setOnAction(e ->{
+        App.navigate(Front.SEASON, this.year+1);
+      });
+    }else {
+      after.setDisable(true);
+    }
+    
+    titlePane.add(before, 0, 0);
+    titlePane.add(title, 1, 0);
+    titlePane.add(after, 2, 0);
+    return titlePane;
   }
   
   private CustomGridPane tplayoffGrid() {
