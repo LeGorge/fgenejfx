@@ -39,8 +39,8 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	}
 	
 	@JsonIgnore
-	public Integer getYearsInTheLeague() {
-	  return League.get().getYear() - rookieYear + 1;
+	public Integer getYearsInTheLeague(Integer relativeYear) {
+	  return relativeYear - rookieYear + 1;
 	}
 
 	// ===========================================================================================

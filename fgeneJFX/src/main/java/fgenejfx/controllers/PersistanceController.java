@@ -43,7 +43,7 @@ public class PersistanceController {
 		save(ContractsAgent.get(), contractsPath);
 	}
 
-	public static void load() {
+	public static Boolean load() {
 		try {
 			String json = FileUtils.readFileToString(new File(leaguePath), StandardCharsets.UTF_8);
 			League.set((League) loadJSON(json, League.class));
@@ -57,8 +57,11 @@ public class PersistanceController {
 			json = FileUtils.readFileToString(new File(contractsPath), StandardCharsets.UTF_8);
 			ContractsAgent.set((ContractsAgent) loadJSON(json, ContractsAgent.class));
 
+			return true;
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+		  System.out.println("Nada no load");
+		  return false;
 		}
 	}
 

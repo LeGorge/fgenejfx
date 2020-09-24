@@ -49,7 +49,7 @@ public class Structure extends BorderPane {
       MenuItem item = new MenuItem(back.toString());
       item.setOnAction(e ->{
         App.theme = back;
-        App.navigate();
+        App.update();
       });
       menu.getItems().add(item);
     });

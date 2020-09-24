@@ -89,7 +89,9 @@ public class ContractsAgent implements Serializable {
 	}
 
 	public void updateContracts(Set<Pilot> rookies) throws NotValidException {
-
+	  //register rookies in League
+	  League.get().getPilots().addAll(rookies);
+	  
 		// reduce one year on all contacts
 		for (Contract c : contracts) {
 			c.passYear();

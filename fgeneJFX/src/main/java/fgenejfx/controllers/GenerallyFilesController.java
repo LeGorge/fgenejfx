@@ -16,8 +16,8 @@ import fgenejfx.models.RaceStats;
 import fgenejfx.models.Team;
 
 public class GenerallyFilesController {
-	private static final String carsPath = "Cars\\cars.car";
-	private static final String pilotsPath = "Drivers\\";
+	private static final String carsPath = "cars\\cars.car";
+	private static final String pilotsPath = "drivers\\";
 
 	public static RaceStats readDriver(String pilotName) {
 		RaceStats result = new RaceStats();

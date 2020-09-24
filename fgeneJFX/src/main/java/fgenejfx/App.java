@@ -2,8 +2,10 @@ package fgenejfx;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 import fgenejfx.controllers.League;
+import fgenejfx.controllers.PersistanceController;
 import fgenejfx.models.enums.BackgroundSelector;
 import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.SideType;
@@ -11,8 +13,14 @@ import fgenejfx.utils.Utils;
 import fgenejfx.view.SeasonView;
 import fgenejfx.view.engine.Structure;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class App extends Application {
   public static Stage stage;
@@ -24,8 +32,11 @@ public class App extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    League.get();
-    Utils.begin();
+    Boolean ok = PersistanceController.load();
+    if(!ok) {
+      League.get();
+      Utils.begin();
+    }
     App.theme = BackgroundSelector.getRandom();
     App.stage = primaryStage;
     
@@ -40,12 +51,35 @@ public class App extends Application {
     primaryStage.setScene(scene);
     primaryStage.setMaximized(true);
     primaryStage.show();
+    
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      public void handle(WindowEvent we) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("Would you like to save any changes?");
+//        alert.setContentText("Choose your option.");
+
+        ButtonType buttonTypeOne = new ButtonType("Yes");
+        ButtonType buttonTypeTwo = new ButtonType("No");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+          PersistanceController.save();
+        } else if (result.get() == buttonTypeTwo) {
+        } else {
+          we.consume();
+        }
+      }
+  });
   }
   
   //============================================================================================
  // Navigation
  // ============================================================================================
-  public static void navigate() {
+  public static void update() {
     navigate(currentPage);
   }
   public static void navigate(Front to) {

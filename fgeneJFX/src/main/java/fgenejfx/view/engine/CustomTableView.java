@@ -1,5 +1,9 @@
 package fgenejfx.view.engine;
 
+import java.util.Collections;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import fgenejfx.controllers.League;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
@@ -72,7 +76,9 @@ public class CustomTableView<A> extends TableView<A>{
   public CustomTableView<A> addAgeColumn() {
     TableColumn<A, Number> ageCol = new TableColumn<>("Age");
     ViewUtils.tooltip(ageCol);
-    ageCol.setCellValueFactory(new PropertyValueFactory<>("yearsInTheLeague"));
+//    ageCol.setCellValueFactory(new PropertyValueFactory<>("yearsInTheLeague"));
+    ageCol.setCellValueFactory(new Callbacks<A,Number>().stringCol(null,
+        MethodMapper.age(year)));
     ageCol.setSortType(SortType.DESCENDING);
     this.getColumns().add(ageCol);
     return this;

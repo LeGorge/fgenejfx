@@ -9,6 +9,7 @@ import fgenejfx.controllers.League;
 import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
+import fgenejfx.models.Season;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.LeagueTime;
@@ -26,10 +27,12 @@ public class SeasonView extends CustomGridPane {
   
   private League l = League.get();
   private Integer year;
+  private Season season;
   
   public SeasonView(int year) {
     super(Pos.TOP_CENTER);
     this.year = year;
+    this.season = l.season(year);
     this.minHeightProperty().bind(App.stage.heightProperty().subtract(98));
     
     this.add(mainPane(), 0, 0, 1, 1);
@@ -77,6 +80,11 @@ public class SeasonView extends CustomGridPane {
       after.setOnAction(e ->{
         App.navigate(Front.SEASON, this.year+1);
       });
+    }else if(season.isEnded()){
+      after.setOnAction(e ->{
+        League.get().changeSeason();
+        App.navigate(Front.SEASON, this.year+1);
+      });
     }else {
       after.setDisable(true);
     }
@@ -91,7 +99,7 @@ public class SeasonView extends CustomGridPane {
     LeagueTime time = LeagueTime.TPLAYOFF;
     CustomGridPane tplayoffPane = new CustomGridPane(Pos.CENTER);
     tplayoffPane.add(updateBut(time), 0, 0, 3, 1);
-    tplayoffPane.add(statTable(time, 170.0, 420.0, false, true, l.season(year).pilots(time)), 0, 1, 2, 1);
+    tplayoffPane.add(statTable(time, 170.0, 420.0, true, true, season.pilots(time)), 0, 1, 2, 1);
     
     CustomTableView<Team> table = new CustomTableView<>(year);
     table.setPrefHeight(100);
@@ -100,7 +108,7 @@ public class SeasonView extends CustomGridPane {
         .addBySeasonStatColumn(time, MethodSelector.PTS)
         .addBySeasonStatColumn(time, MethodSelector.P1ST);
     
-    table.getItems().addAll(l.season(year).teams(time));
+    table.getItems().addAll(season.teams(time));
     table.sortByColumns(1,2);
     tplayoffPane.add(table, 2, 1, 1, 1);
     return tplayoffPane;
@@ -110,19 +118,19 @@ public class SeasonView extends CustomGridPane {
     LeagueTime time = LeagueTime.PPLAYOFF;
     CustomGridPane pplayoffPane = new CustomGridPane(Pos.CENTER);
     pplayoffPane.add(updateBut(time), 0,0);
-    pplayoffPane.add(statTable(time, 170.0, 420.0, false, true, l.season(year).pilots(time)), 0, 1);
+    pplayoffPane.add(statTable(time, 170.0, 420.0, true, true, season.pilots(time)), 0, 1);
     return pplayoffPane;
   }
   
   private CustomGridPane pSeasonGrid() {
     CustomGridPane pane = new CustomGridPane(Pos.CENTER);
-    pane.add(statTable(LeagueTime.SEASON, 420.0, 840.0, true, false, l.season(year).pilots()), 0, 1);
+    pane.add(statTable(LeagueTime.SEASON, 420.0, 840.0, true, false, season.pilots()), 0, 1);
     return pane;
   }
   
   private CustomGridPane groups() {
     CustomGridPane grid = new CustomGridPane(Pos.CENTER);
-    Group[] gs = l.season(year).getSeason();
+    Group[] gs = season.getSeason();
     
     Separator sep = new Separator();
     sep.setOrientation(Orientation.HORIZONTAL);
@@ -155,8 +163,9 @@ public class SeasonView extends CustomGridPane {
       if(gs[i].isEmpty()) {
         int f = i;
         but.setOnAction(e ->{
-          l.season(year).simulate(LeagueTime.SEASON, f);
-          App.navigate(Front.SEASON);
+//          l.season(year).simulate(LeagueTime.SEASON, f);
+          season.sync(f);
+          App.update();
         });
       }else {
         but.setDisable(true);
@@ -183,7 +192,7 @@ public class SeasonView extends CustomGridPane {
         .addPowersColumn(Powers.GRIP)
         .addPowersColumn(null);
     
-    table.getItems().addAll(l.season(year).teams());
+    table.getItems().addAll(season.teams());
 //    table.sortByColumns(4);
     pane.add(statTable(LeagueTime.SEASON, 460.0, 840.0, false, false, l.season(year).teams()), 0, 0);
     pane.add(table, 1, 0);
@@ -222,15 +231,16 @@ public class SeasonView extends CustomGridPane {
   private Button updateBut(LeagueTime time) {
     Button but = new Button("Update");
     but.setMaxWidth(Double.MAX_VALUE);
-    if(l.season(year).readySync(time, null)) {
+    if(season.readySync(time, null)) {
       but.setOnAction(e ->{
-        l.season(year).simulate(time, null);
+//        l.season(year).simulate(time, null);
+        season.sync(time);
         
-        if(time.equals(LeagueTime.PPLAYOFF)) {
-          League.get().changeSeason();
-        }
+//        if(time.equals(LeagueTime.PPLAYOFF)) {
+//          League.get().changeSeason();
+//        }
         
-        App.navigate(Front.SEASON);
+        App.update();
       });
     }else{
       but.setDisable(true);

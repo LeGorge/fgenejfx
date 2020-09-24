@@ -10,6 +10,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fgenejfx.controllers.GenerallyFilesController;
 import fgenejfx.controllers.League;
 import fgenejfx.exceptions.NotValidException;
@@ -111,6 +113,9 @@ public class Season implements Serializable {
   public RaceStats statsOf(Team t, LeagueTime time) {
     switch (time) {
     case SEASON:
+      if(year == 1) {
+        System.out.println(season);
+      }
       return Arrays.stream(season).filter(g -> g.contains(t, this.year))
           .findFirst().get().statsOf(t, this.year);
     case PPLAYOFF:
@@ -149,9 +154,17 @@ public class Season implements Serializable {
       switch (time) {
       case PPLAYOFF:
         syncPplayoffStats();
+        if(!readySync(LeagueTime.TPLAYOFF, null)) {
+          this.state = State.ENDED;
+        }
         break;
       case TPLAYOFF:
         syncTplayoffStats();
+        if(!readySync(LeagueTime.PPLAYOFF, null)) {
+          this.state = State.ENDED;
+        }
+        break;
+      default:
         break;
       }
     }
@@ -283,6 +296,11 @@ public class Season implements Serializable {
 
   public State getState() {
     return state;
+  }
+  
+  @JsonIgnore
+  public Boolean isEnded() {
+    return state == State.ENDED;
   }
 
   public void setState(State state) {

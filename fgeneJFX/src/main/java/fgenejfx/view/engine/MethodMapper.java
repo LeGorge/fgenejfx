@@ -58,6 +58,13 @@ public class MethodMapper {
     return mapping;
   }
   
+  public static LinkedHashMap<String, Object[]> age(Integer year){
+    LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
+    Object[] posParams1 = {year};
+    mapping.put("getYearsInTheLeague", posParams1);
+    return mapping;
+  }
+  
   // ============================================================================================
   // Life Stats
   // ============================================================================================
