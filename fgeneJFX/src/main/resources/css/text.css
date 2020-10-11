@@ -1,0 +1,17 @@
+.name{
+  -fx-font-size:14px;
+  -fx-padding: -1px;
+}
+
+.title{
+  -fx-text-alignment:center;
+  -fx-font-size:36px;
+  -fx-font-weight:bold;
+  -fx-fill:white;
+}
+
+.myHyperlink{
+  -fx-font-weight:bold;
+  -fx-font-size:14px;
+}
+

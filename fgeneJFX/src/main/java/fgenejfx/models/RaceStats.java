@@ -1,8 +1,14 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
-public class RaceStats implements Serializable,Comparable<RaceStats> {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import fgenejfx.models.enums.OpEnum;
+import fgenejfx.utils.Utils;
+
+public class RaceStats implements Serializable, Comparable<RaceStats> {
 
 	protected static final long serialVersionUID = 1L;
 
@@ -12,16 +18,18 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 	protected Integer p4th = 0;
 	protected Integer p5th = 0;
 	protected Integer p6th = 0;
-	
-	//pts
-	//WinRate
-	//PtRate
+	protected Double per = 0.0;
+
+	// pts
+	// WinRate
+	// PtRate
 
 	public RaceStats() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public RaceStats(Integer p1st, Integer p2nd, Integer p3rd, Integer p4th, Integer p5th, Integer p6th) {
+
+	public RaceStats(Integer p1st, Integer p2nd, Integer p3rd, Integer p4th, Integer p5th,
+			Integer p6th) {
 		super();
 		this.p1st = p1st;
 		this.p2nd = p2nd;
@@ -31,22 +39,35 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		this.p6th = p6th;
 	}
 
-
+	@JsonIgnore
 	public Integer getTotalRaces() {
 		return p1st + p2nd + p3rd + p4th + p5th + p6th;
 	}
 
+	@JsonIgnore
 	public Integer getPts() {
 		return p1st * 8 + p2nd * 5 + p3rd * 3 + p4th * 2 + p5th * 1 + p6th * 0;
 	}
-	
+
+	@JsonIgnore
 	public Double getWinRate() {
-		return getTotalRaces() != 0 ? new Double(p1st/getTotalRaces()) : 0.0d ;
-	}
-	public Double getPtRate() {
-		return getTotalRaces() != 0 ? new Double(getPts()/getTotalRaces()/8) : 0.0d ;
+		return getTotalRaces() != 0 ? new Double(p1st) / new Double(getTotalRaces()) : 0.0d;
 	}
 
+	@JsonIgnore
+	public Double getPtRate() {
+//	  if(getTotalRaces() != 0) {
+//	    System.out.println(getPts());
+//	    System.out.println(getTotalRaces());
+//	    System.out.println(getPts()/getTotalRaces());
+//	    System.out.println(new Double(getPts()/getTotalRaces()));
+//	    System.out.println();
+//	    
+//	  }
+		return getTotalRaces() != 0 ? new Double(getPts()) / new Double(getTotalRaces()) / 8.0d : 0.0d;
+	}
+
+	@JsonIgnore
 	public boolean isEmpty() {
 		if ((p1st == 0) && (p2nd == 0) && (p3rd == 0) && (p4th == 0) && (p5th == 0) && (p6th == 0)) {
 			return true;
@@ -55,15 +76,25 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		}
 	}
 
-	public static RaceStats somarStats(RaceStats st1, RaceStats st2, boolean isSoma) {
+	// ============================================================================================
+	// static methods
+	// ============================================================================================
+	public static RaceStats sum(RaceStats st1, RaceStats st2) {
+		return joinStats(st1, st2, OpEnum.SUM);
+	}
+	public static RaceStats subtract(RaceStats st1, RaceStats st2) {
+		return joinStats(st1, st2, OpEnum.SUBTRACT);
+	}
+	private static RaceStats joinStats(RaceStats st1, RaceStats st2, OpEnum op) {
 		RaceStats res = new RaceStats();
-		if (isSoma) {
+		if (OpEnum.isSum(op)) {
 			res.p1st = st1.p1st + st2.p1st;
 			res.p2nd = st1.p2nd + st2.p2nd;
 			res.p3rd = st1.p3rd + st2.p3rd;
 			res.p4th = st1.p4th + st2.p4th;
 			res.p5th = st1.p5th + st2.p5th;
 			res.p6th = st1.p6th + st2.p6th;
+			res.per = st1.per + st2.per;
 		} else {
 			res.p1st = st1.p1st - st2.p1st;
 			res.p2nd = st1.p2nd - st2.p2nd;
@@ -75,6 +106,9 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		return res;
 	}
 
+	// ============================================================================================
+	// getters & setters
+	// ============================================================================================
 	public Integer getP1st() {
 		return p1st;
 	}
@@ -123,16 +157,36 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		this.p6th = p6th;
 	}
 
-	public int compareTo(RaceStats o) {
+	public Double getPer() {
+    return Double.parseDouble(Utils.perFormat.format(per));
+  }
+
+  public void setPer(Double per) {
+    this.per = per;
+  }
+
+  public int compareTo(RaceStats o) {
 		int result = 0;
 		result = this.getPts().compareTo(o.getPts());
-        if (result == 0) {result = p1st.compareTo(o.p1st);}
-        if (result == 0) {result = p2nd.compareTo(o.p2nd);}
-        if (result == 0) {result = p3rd.compareTo(o.p3rd);}
-        if (result == 0) {result = p4th.compareTo(o.p4th);}
-        if (result == 0) {result = p5th.compareTo(o.p5th);}
-        if (result == 0) {result = p6th.compareTo(o.p6th);}
-        return result;
+		if (result == 0) {
+			result = p1st.compareTo(o.p1st);
+		}
+		if (result == 0) {
+			result = p2nd.compareTo(o.p2nd);
+		}
+		if (result == 0) {
+			result = p3rd.compareTo(o.p3rd);
+		}
+		if (result == 0) {
+			result = p4th.compareTo(o.p4th);
+		}
+		if (result == 0) {
+			result = p5th.compareTo(o.p5th);
+		}
+		if (result == 0) {
+			result = p6th.compareTo(o.p6th);
+		}
+		return result;
 	}
 
 	@Override
@@ -147,7 +201,7 @@ public class RaceStats implements Serializable,Comparable<RaceStats> {
 		result = prime * result + ((p6th == null) ? 0 : p6th.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

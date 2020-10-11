@@ -1,78 +1,79 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import fgenejfx.controllers.League;
-import fgenejfx.exceptions.CopyException;
-import fgenejfx.exceptions.NaoEncontradoException;
-import fgenejfx.interfaces.StatsMonitorable;
+import fgenejfx.jackson.MapDeserializer;
 
-public class HistoryAgent implements Serializable{
+public class HistoryAgent implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static HistoryAgent history;
+	private static HistoryAgent historyAgent;
 
-	private Map<Pilot, PilotHistory> pilotHistory = new HashMap<>();
-	private Map<Team, TeamHistory> teamHistory = new HashMap<>();
-	private Map<Integer, ContractsHistory> contractHistory = new HashMap<>();
-	
-	//=========================================================================================== to save
-	public void save(Pilot p, Stats s) throws CopyException {
-		pilotHistory.computeIfAbsent(p, value -> new PilotHistory());
-		pilotHistory.get(p).save(p, s);
+	private List<Season> seasons = new ArrayList<>();
+
+	@JsonDeserialize(using = MapDeserializer.class, keyAs = Season.class, contentAs = History.class)
+	private Map<Season, History> historyMap = new LinkedHashMap<>();
+
+	// ===========================================================================================
+	// seasons
+	public void save(Season s) {
+		this.seasons.add(s);
+		this.historyMap.put(s, new History(s));
 	}
-	public void save(Team t, Stats s) throws CopyException {
-		teamHistory.computeIfAbsent(t, value -> new TeamHistory());
-		teamHistory.get(t).save(t, s);
+
+	public Season season(int year) throws NoSuchElementException {
+		return seasons.stream().filter(s -> s.getYear() == year).findFirst().get();
 	}
-	public void save(Set<Contract> contracts) {
-		int year = League.get().getYear();
-		contractHistory.computeIfAbsent(year, value -> new ContractsHistory());
-		contractHistory.get(year).save(contracts);
+
+	// ===========================================================================================
+	// history
+	public History history(Season s) {
+		return historyMap.get(s);
 	}
-	
-	//=========================================================================================== stats
-	public Stats getStatByYear(StatsMonitorable obj, Integer year) throws NaoEncontradoException {
-		if(obj instanceof Pilot) {
-			return pilotHistory.get(obj).getStatByYear(year);
-		}
-		if(obj instanceof Team) {
-			return teamHistory.get(obj).getStatByYear(year);
-		}
-		throw new NaoEncontradoException();
+
+	public History history(Integer year) throws NoSuchElementException {
+		Season se = historyMap.keySet().stream().filter(s -> s.getYear().equals(year)).findFirst()
+				.get();
+		return this.history(se);
 	}
-	
-	//=========================================================================================== pilot
-	public Integer getAiByYear(Pilot p, Integer year) throws NaoEncontradoException {
-		return pilotHistory.get(p).getAiByYear(year);
-	}
-	public Set<Pilot> getAllPilots(){
-		return this.pilotHistory.keySet();
-	}
-	//=========================================================================================== team
-	public EnumMap<Powers, Double> getPowersByYear(Team t, Integer year) throws NaoEncontradoException {
-		return teamHistory.get(t).getPowersByYear(year);
-	}
-	//=========================================================================================== contracts
-	public Team getTeamOf(Integer year, Pilot p) throws NoSuchElementException {
-		return contractHistory.get(year).getTeamOf(p);
-	}
-	public List<Pilot> getPilotsOf(Integer year, Team t) throws NoSuchElementException {
-		return contractHistory.get(year).getPilotsOf(t);
-	}
-	//=========================================================================================== get singleton
+
+	// ===========================================================================================
+	// get singletons
 	private HistoryAgent() {
-		HistoryAgent.history = this;
+		HistoryAgent.historyAgent = this;
 	}
+
 	public static HistoryAgent get() {
-		if(history == null) {
+		if (historyAgent == null) {
 			new HistoryAgent();
 		}
-		return history;
+		return historyAgent;
+	}
+
+	public static void set(HistoryAgent ag) {
+		if (historyAgent == null) {
+			historyAgent = ag;
+		}
+	}
+
+	public static void reset() {
+		new HistoryAgent();
+	}
+
+	// ===========================================================================================
+	// getters & setters
+	public List<Season> getSeasons() {
+		return this.seasons;
+	}
+
+	public Map<Season, History> getHistoryMap() {
+		return this.historyMap;
 	}
 }

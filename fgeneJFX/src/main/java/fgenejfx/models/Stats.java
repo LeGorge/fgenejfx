@@ -2,6 +2,8 @@ package fgenejfx.models;
 
 import java.io.Serializable;
 
+import fgenejfx.models.enums.OpEnum;
+
 public class Stats implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -9,16 +11,15 @@ public class Stats implements Serializable {
 	private RaceStats season = new RaceStats();
 	private RaceStats pPlayoff = new RaceStats();
 	private RaceStats tPlayoff = new RaceStats();
-	
+
 	public Stats() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public RaceStats getStatsTotals() {
-		RaceStats r = RaceStats.somarStats(season, pPlayoff, true);
-		return RaceStats.somarStats(r, tPlayoff, true);
-	}
 
+	public RaceStats getStatsTotals() {
+		RaceStats r = RaceStats.sum(season, pPlayoff);
+		return RaceStats.sum(r, tPlayoff);
+	}
 
 	public RaceStats getSeason() {
 		return season;
@@ -43,7 +44,7 @@ public class Stats implements Serializable {
 	public void settPlayoff(RaceStats tPlayoff) {
 		this.tPlayoff = tPlayoff;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -53,7 +54,7 @@ public class Stats implements Serializable {
 		result = prime * result + ((tPlayoff == null) ? 0 : tPlayoff.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
