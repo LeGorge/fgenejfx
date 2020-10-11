@@ -37,6 +37,11 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	public Integer getYearsUntilRetirement() {
 		return MAX_YEARS_ON_CAREER - (League.get().getYear() - rookieYear);
 	}
+	
+	@JsonIgnore
+	public Integer getYearsInTheLeague(Integer relativeYear) {
+	  return relativeYear - rookieYear + 1;
+	}
 
 	// ===========================================================================================
 	// operations

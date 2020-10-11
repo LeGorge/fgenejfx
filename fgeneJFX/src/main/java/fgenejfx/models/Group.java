@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -206,6 +207,19 @@ public class Group implements Serializable {
 		return pilotsMap.entrySet().stream()
 				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).map(e -> e.getKey())
 				.collect(Collectors.toList());
+	}
+	
+	//============================================================================================
+	// simulation
+	// ============================================================================================
+	public void simulate() {
+	  Iterator<RaceStats> i = this.pilotsMap.values().iterator();
+	  i.next().setP1st(1);
+	  i.next().setP2nd(1);
+	  i.next().setP3rd(1);
+	  i.next().setP4th(1);
+	  i.next().setP5th(1);
+	  i.next().setP6th(1);
 	}
 
 	// =============================================================================================

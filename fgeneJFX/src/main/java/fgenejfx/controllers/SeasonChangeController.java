@@ -12,7 +12,9 @@ import fgenejfx.models.RaceStats;
 import fgenejfx.models.RaceStatsTeam;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
+import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.OpEnum;
+import fgenejfx.models.enums.State;
 
 public class SeasonChangeController {
 	private League l = League.get();
@@ -20,7 +22,7 @@ public class SeasonChangeController {
 	private ContractsAgent cag = ContractsAgent.get();
 
 	public SeasonChangeController() throws NotValidException {
-		if (!l.getSeason().ended()) {
+		if (l.getSeason().getState() != State.ENDED) {
 			throw new NotValidException();
 		}
 
@@ -49,15 +51,15 @@ public class SeasonChangeController {
 
 	private void updatePowers() {
 		// -2 for pplayoff teams
-		l.getSeason().pPlayoffTeams().forEach(t -> {
+		l.getSeason().teams(LeagueTime.PPLAYOFF).forEach(t -> {
 			t.updatePowers(2, OpEnum.SUBTRACT);
 		});
 
 		// +1 for tplayoff champion
-		l.getSeason().tChamp().updatePowers(1, OpEnum.SUM);
+		l.getSeason().champ(LeagueTime.TPLAYOFF).updatePowers(1, OpEnum.SUM);
 
 		// +1 for non-pplayoff teams
-		cag.teams().stream().filter(t -> !l.getSeason().pPlayoffTeams().contains(t))
+		cag.teams().stream().filter(t -> !l.getSeason().teams(LeagueTime.PPLAYOFF).contains(t))
 				.forEach(t -> t.updatePowers(1, OpEnum.SUM));
 
 		// -1 for random team
@@ -65,7 +67,7 @@ public class SeasonChangeController {
 		t.updatePowers(1, OpEnum.SUBTRACT);
 
 		// update car files with powers in generally
-		GenerallyFilesController.updateCarFile();
+		//GenerallyFilesController.updateCarFile();
 	}
 
 	private void updateAI() {
@@ -93,7 +95,7 @@ public class SeasonChangeController {
 			p.updateAi(seasonPlacing, lastYearSeasonPlacing, pplayoffPlacing, lastYearPplayoffPlacing,
 					season.closeFight(p));
 
-			GenerallyFilesController.updateDriverAI(p);
+			//GenerallyFilesController.updateDriverAI(p);
 		}
 	}
 
@@ -105,7 +107,7 @@ public class SeasonChangeController {
 		for (Pilot p : s.pilots()) {
 			p.getLifeStats().incrementSeasons();
 
-			RaceStats st = s.seasonStatsOf(p);
+			RaceStats st = s.statsOf(p, LeagueTime.SEASON);
 			RaceStats newSt = RaceStats.sum(p.getStats().getSeason(), st);
 			p.getStats().setSeason(newSt);
 

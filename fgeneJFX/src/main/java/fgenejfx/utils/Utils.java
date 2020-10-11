@@ -8,11 +8,13 @@ import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import fgenejfx.controllers.League;
@@ -24,7 +26,7 @@ import fgenejfx.models.Season;
 
 public class Utils {
   
-  public static NumberFormat perFormat = new DecimalFormat("#0.0");
+  public static NumberFormat perFormat = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
 
   public static double round(double value, int places) {
     if (places < 0) throw new IllegalArgumentException();

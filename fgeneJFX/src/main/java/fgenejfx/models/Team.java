@@ -38,7 +38,7 @@ public class Team implements Serializable, StatsMonitorable, Comparable<Team> {
 	// ===========================================================================================
 	// get team
 	public static Team get(TeamsEnum name) throws NoSuchElementException {
-		return League.get().getTeams().stream().filter(t -> t.getName() == name).findFirst().get();
+		return League.get().getTeams().stream().filter(t -> t.name == name).findFirst().get();
 	}
 
 	public static Team get(String name) throws NoSuchElementException {
@@ -57,9 +57,12 @@ public class Team implements Serializable, StatsMonitorable, Comparable<Team> {
 
 	// ===========================================================================================
 	// getters & setters
-	public TeamsEnum getName() {
-		return name;
+	public String getName() {
+		return name.toString();
 	}
+//	public TeamsEnum getName() {
+//		return name.toString();
+//	}
 
 	public LifeStats getLifeStats() {
 		return lifeStats;

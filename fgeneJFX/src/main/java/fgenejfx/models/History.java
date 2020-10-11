@@ -59,7 +59,7 @@ public class History implements Serializable {
 	}
 
 	public List<Pilot> pilotsOf(Team t) throws NoSuchElementException {
-		return relations.keySet().stream().filter(p -> relations.get(p) == t.getName().toString())
+	  return relations.keySet().stream().filter(p -> relations.get(p).equals(t.getName().toString()))
 				.map(p -> Pilot.get(p))
 				// .sorted()
 				.collect(Collectors.toList());
