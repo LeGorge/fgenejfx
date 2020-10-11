@@ -1,11 +1,8 @@
 package fgenejfx.view.engine;
 
-import java.util.Collections;
-
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.Map;
 
 import fgenejfx.controllers.League;
-import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.LeagueTime;
@@ -14,6 +11,7 @@ import fgenejfx.utils.ViewUtils;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
@@ -29,6 +27,29 @@ public class CustomTableView<A> extends TableView<A>{
     setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
   }
 
+  // ============================================================================================
+  // Row
+  // ============================================================================================
+  public void colorRow(Map<Integer, String> map){
+    this.setRowFactory(table ->{
+      TableRow<A> row = new TableRow<A>() {
+        @Override
+        protected void updateItem(A item, boolean empty){
+          super.updateItem(item, empty);
+          for (Integer i : map.keySet()) {
+            if(getIndex() == i) {
+              setStyle("-fx-background-color: "+map.get(i)+";");
+//              System.out.println(getIndex() + " - "+ getStyle());
+            }
+          }
+        }
+      };
+//      row.setStyle("-fx-background-color: red;");
+      
+      return row;
+    });
+  }
+  
   // ============================================================================================
   // Info
   // ============================================================================================

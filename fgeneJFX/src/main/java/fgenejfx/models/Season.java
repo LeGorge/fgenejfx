@@ -113,9 +113,6 @@ public class Season implements Serializable {
   public RaceStats statsOf(Team t, LeagueTime time) {
     switch (time) {
     case SEASON:
-      if(year == 1) {
-        System.out.println(season);
-      }
       return Arrays.stream(season).filter(g -> g.contains(t, this.year))
           .findFirst().get().statsOf(t, this.year);
     case PPLAYOFF:

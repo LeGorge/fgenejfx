@@ -1,6 +1,7 @@
 package fgenejfx.view;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -14,6 +15,7 @@ import fgenejfx.models.Team;
 import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
+import fgenejfx.models.enums.State;
 import fgenejfx.view.engine.CustomGridPane;
 import fgenejfx.view.engine.CustomTableView;
 import javafx.geometry.Insets;
@@ -21,6 +23,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TableRow;
 import javafx.scene.text.Text;
 
 public class SeasonView extends CustomGridPane {
@@ -156,6 +159,10 @@ public class SeasonView extends CustomGridPane {
         table.sortByColumns(0);
       }else {
         table.sortByColumns(6);
+      }
+      
+      if(this.season.getState() != State.SEASON) {
+        table.colorRow(Collections.singletonMap(0, "gold"));
       }
       
       Button but = new Button("Update");

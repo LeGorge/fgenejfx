@@ -1,10 +1,12 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fgenejfx.models.enums.OpEnum;
+import fgenejfx.utils.Utils;
 
 public class RaceStats implements Serializable, Comparable<RaceStats> {
 
@@ -156,7 +158,7 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 	}
 
 	public Double getPer() {
-    return per;
+    return Double.parseDouble(Utils.perFormat.format(per));
   }
 
   public void setPer(Double per) {

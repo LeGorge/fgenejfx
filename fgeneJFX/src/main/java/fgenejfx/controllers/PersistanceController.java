@@ -19,10 +19,10 @@ import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 
 public class PersistanceController {
-	private static final String leaguePath = "saves\\league.json";
-	private static final String seasonPath = "saves\\season.json";
-	private static final String historyPath = "saves\\history.json";
-	private static final String contractsPath = "saves\\contracts.json";
+	private static final String leaguePath = "..\\..\\saves\\league.json";
+	private static final String seasonPath = "..\\..\\saves\\season.json";
+	private static final String historyPath = "..\\..\\saves\\history.json";
+	private static final String contractsPath = "..\\..\\saves\\contracts.json";
 
 	private static void save(Object obj, String path) {
 		try {
