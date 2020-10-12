@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import fgenejfx.controllers.ContractsController;
 import fgenejfx.controllers.GenerallyFilesController;
+import fgenejfx.controllers.HistoryController;
 import fgenejfx.controllers.League;
 import fgenejfx.exceptions.NotValidException;
 import fgenejfx.interfaces.StatsMonitorable;
@@ -25,7 +27,7 @@ public class Season implements Serializable {
 
   public static Season get(Integer year) {
     return League.get().getYear().equals(year) ? League.get().getSeason()
-        : HistoryAgent.get().getSeasons().stream().filter(s -> s.getYear().equals(year))
+        : HistoryController.get().getSeasons().stream().filter(s -> s.getYear().equals(year))
             .findFirst().get();
   }
 
@@ -253,7 +255,7 @@ public class Season implements Serializable {
   private void buildGroups(List<Team> teams) {
     for (int i = 0; i < season.length; i++) {
       season[i] = new Group(
-          teams.subList(i * 3, i * 3 + 3).stream().map(t -> ContractsAgent.get().pilotsOf(t))
+          teams.subList(i * 3, i * 3 + 3).stream().map(t -> ContractsController.get().pilotsOf(t))
               .flatMap(l -> l.stream()).collect(Collectors.toSet()));
     }
   }

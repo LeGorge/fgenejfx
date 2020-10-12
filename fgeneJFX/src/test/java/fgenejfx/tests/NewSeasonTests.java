@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fgenejfx.controllers.ContractsController;
 import fgenejfx.controllers.GenerallyFilesController;
+import fgenejfx.controllers.HistoryController;
 import fgenejfx.controllers.League;
 import fgenejfx.controllers.PersistanceController;
 import fgenejfx.exceptions.NotValidException;
 import fgenejfx.models.Contract;
-import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Group;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
 import fgenejfx.models.RaceStats;
@@ -38,8 +38,8 @@ public class NewSeasonTests {
 	@BeforeEach
 	public void reset() {
 		League.reset();
-		HistoryAgent.reset();
-		ContractsAgent.reset();
+		HistoryController.reset();
+		ContractsController.reset();
 	}
 	
 	@Test
@@ -50,8 +50,8 @@ public class NewSeasonTests {
 		for (Group g : s.getSeason()) {
 			for (Pilot p : g.pilots()) {
 				assertTrue(s.seasonGroupOf(p) == g);
-				Team t = ContractsAgent.get().teamOf(p);
-				Pilot p2 = ContractsAgent.get().pilotsOf(t).stream().filter(pp -> pp != p).findFirst().get();
+				Team t = ContractsController.get().teamOf(p);
+				Pilot p2 = ContractsController.get().pilotsOf(t).stream().filter(pp -> pp != p).findFirst().get();
 				assertTrue(s.seasonGroupOf(p2) == g);
 			}
 		}
@@ -60,7 +60,7 @@ public class NewSeasonTests {
 	@Test
 	public void updatePowers() throws NotValidException {
 		PersistanceController.load();
-		ContractsAgent cag = ContractsAgent.get();
+		ContractsController cag = ContractsController.get();
 		Season s = League.get().getSeason();
 
 		cag.teams().forEach(t -> {
@@ -140,8 +140,8 @@ public class NewSeasonTests {
 		Utils.begin();
 		League l = League.get();
 		Season s = l.getSeason();
-		ContractsAgent cag = ContractsAgent.get();
-		HistoryAgent hag = HistoryAgent.get();
+		ContractsController cag = ContractsController.get();
+		HistoryController hag = HistoryController.get();
 		Arrays.stream(s.getSeason()).forEach(g -> g.statsOf(g.firstPilot()).setP1st(1));
 		s.startPlayoffs();
 		

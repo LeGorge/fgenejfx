@@ -10,11 +10,11 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fgenejfx.controllers.ContractsController;
+import fgenejfx.controllers.HistoryController;
 import fgenejfx.controllers.League;
 import fgenejfx.models.Contract;
-import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Group;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.RaceStats;
 import fgenejfx.models.Team;
@@ -42,8 +42,8 @@ public class GroupTests {
 	@BeforeEach
 	public void setup() {
 		League.reset();
-		HistoryAgent.reset();
-		ContractsAgent.reset();
+		HistoryController.reset();
+		ContractsController.reset();
 		
 		l = League.get();
 		
@@ -72,7 +72,7 @@ public class GroupTests {
 		cs.add(new Contract(p4, t2, false));
 		cs.add(new Contract(p5, t3, true));
 		cs.add(new Contract(p6, t3, false));
-		ContractsAgent.get().setContracts(cs);
+		ContractsController.get().setContracts(cs);
 		
 		g = new Group(ps);
 	}

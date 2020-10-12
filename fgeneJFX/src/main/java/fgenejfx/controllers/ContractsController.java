@@ -1,4 +1,4 @@
-package fgenejfx.models;
+package fgenejfx.controllers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,28 +7,31 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import fgenejfx.controllers.League;
-import fgenejfx.controllers.PersistanceController;
 import fgenejfx.exceptions.NotValidException;
 import fgenejfx.exceptions.PilotInactivationException;
+import fgenejfx.models.Contract;
+import fgenejfx.models.Pilot;
+import fgenejfx.models.Team;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
-public class ContractsAgent implements Serializable {
+public class ContractsController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static final Integer CONTRACTS_PER_SEASON = 36;
 	public static final Integer PILOTS_PER_TEAM = 2;
 
-	private static ContractsAgent agent;
+	private static ContractsController agent;
 
 	private Set<Contract> contracts = new HashSet<>();
 
-	// ===========================================================================================
-	// get all
+  // ============================================================================================
+  // Info
+  // ============================================================================================
 	public Set<Pilot> pilots() {
 		Set<Pilot> all = this.contracts.stream().map(c -> c.getPilot()).collect(Collectors.toSet());
 		return all;
@@ -39,8 +42,13 @@ public class ContractsAgent implements Serializable {
 		return all;
 	}
 
-	// ===========================================================================================
-	// get relations
+	public Set<Pilot> upcomingFreeAgents(){
+	  Set<Pilot> ps = pilots().stream().filter(p -> remainingYearsOfContract(p) == 1)
+	      .collect(Collectors.toSet());
+	  ps.removeAll(willRetire());
+	  return ps;
+	}
+
 	private Contract contract(Pilot p) {
 		return contracts.stream().filter(c -> c.getPilot() == p).findFirst().get();
 	}
@@ -72,8 +80,9 @@ public class ContractsAgent implements Serializable {
 				.collect(Collectors.toSet());
 	}
 
-	// ===========================================================================================
-	// operations
+	// ============================================================================================
+	// Operations
+	// ============================================================================================
 	public void validateRookies(Set<Pilot> rookies) throws NotValidException {
 		// verify if rookies are rookies
 //		if(rookies.stream().filter(p -> !p.getRookieYear().equals(League.get().getYear())).findAny().isPresent()){
@@ -126,7 +135,7 @@ public class ContractsAgent implements Serializable {
 			List<Team> entries = new ArrayList<>(teams);
 			if (League.get().getYear() != 1) {
 				try {
-					Team last = HistoryAgent.get().history(League.get().getYear() - 1).teamOf(p);
+					Team last = HistoryController.get().history(League.get().getYear() - 1).teamOf(p);
 					if (entries.contains(last)) {
 						entries.add(last);
 					}
@@ -169,25 +178,25 @@ public class ContractsAgent implements Serializable {
 
 	// ===========================================================================================
 	// get singleton
-	private ContractsAgent() {
-		ContractsAgent.agent = this;
+	private ContractsController() {
+		ContractsController.agent = this;
 	}
 
-	public static ContractsAgent get() {
+	public static ContractsController get() {
 		if (agent == null) {
-			new ContractsAgent();
+			new ContractsController();
 		}
 		return agent;
 	}
 
-	public static void set(ContractsAgent ag) {
+	public static void set(ContractsController ag) {
 		if (agent == null) {
 			agent = ag;
 		}
 	}
 
 	public static void reset() {
-		new ContractsAgent();
+		new ContractsController();
 	}
 
 	// ===========================================================================================

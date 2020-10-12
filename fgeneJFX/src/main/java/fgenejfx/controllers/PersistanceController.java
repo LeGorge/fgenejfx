@@ -13,8 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 
 import fgenejfx.exceptions.PilotInactivationException;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 
@@ -23,6 +21,13 @@ public class PersistanceController {
 	private static final String seasonPath = "..\\..\\saves\\season.json";
 	private static final String historyPath = "..\\..\\saves\\history.json";
 	private static final String contractsPath = "..\\..\\saves\\contracts.json";
+	private static final String newsPath = "..\\..\\saves\\news.json";
+	
+//	private static final String leaguePath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\league.json";
+//	private static final String seasonPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\season.json";
+//	private static final String historyPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\history.json";
+//	private static final String contractsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\contracts.json";
+//	private static final String newsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\news.json";
 
 	private static void save(Object obj, String path) {
 		try {
@@ -39,8 +44,9 @@ public class PersistanceController {
 	public static void save() {
 		save(League.get(), leaguePath);
 		save(League.get().getSeason(), seasonPath);
-		save(HistoryAgent.get(), historyPath);
-		save(ContractsAgent.get(), contractsPath);
+		save(HistoryController.get(), historyPath);
+		save(ContractsController.get(), contractsPath);
+		save(NewsController.get(), newsPath);
 	}
 
 	public static Boolean load() {
@@ -52,11 +58,14 @@ public class PersistanceController {
 			League.get().setSeason((Season) loadJSON(json, Season.class));
 
 			json = FileUtils.readFileToString(new File(historyPath), StandardCharsets.UTF_8);
-			HistoryAgent.set((HistoryAgent) loadJSON(json, HistoryAgent.class));
+			HistoryController.set((HistoryController) loadJSON(json, HistoryController.class));
 
 			json = FileUtils.readFileToString(new File(contractsPath), StandardCharsets.UTF_8);
-			ContractsAgent.set((ContractsAgent) loadJSON(json, ContractsAgent.class));
-
+			ContractsController.set((ContractsController) loadJSON(json, ContractsController.class));
+			
+			json = FileUtils.readFileToString(new File(newsPath), StandardCharsets.UTF_8);
+			NewsController.set((NewsController) loadJSON(json, NewsController.class));
+			
 			return true;
 		} catch (IOException e) {
 //			e.printStackTrace();
@@ -66,10 +75,8 @@ public class PersistanceController {
 	}
 
 	public static void inactivatePilotFile(Pilot p) throws PilotInactivationException {
-		File fileSource = new File(
-				System.getProperty("user.dir") + "\\Drivers\\" + p.getName() + ".drv");
-		File fileTarget = new File(
-				System.getProperty("user.dir") + "\\History\\Drivers\\" + p.getName() + ".drv");
+		File fileSource = new File("..\\..\\drivers\\" + p.getName() + ".drv");
+		File fileTarget = new File("..\\..\\history\\drivers\\" + p.getName() + ".drv");
 		try {
 			Files.move(fileSource.toPath(), fileTarget.toPath(), StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {

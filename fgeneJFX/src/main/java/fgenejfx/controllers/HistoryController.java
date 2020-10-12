@@ -1,4 +1,4 @@
-package fgenejfx.models;
+package fgenejfx.controllers;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,12 +9,13 @@ import java.util.NoSuchElementException;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import fgenejfx.controllers.League;
 import fgenejfx.jackson.MapDeserializer;
+import fgenejfx.models.History;
+import fgenejfx.models.Season;
 
-public class HistoryAgent implements Serializable {
+public class HistoryController implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static HistoryAgent historyAgent;
+	private static HistoryController historyAgent;
 
 	private List<Season> seasons = new ArrayList<>();
 
@@ -46,25 +47,25 @@ public class HistoryAgent implements Serializable {
 
 	// ===========================================================================================
 	// get singletons
-	private HistoryAgent() {
-		HistoryAgent.historyAgent = this;
+	private HistoryController() {
+		HistoryController.historyAgent = this;
 	}
 
-	public static HistoryAgent get() {
+	public static HistoryController get() {
 		if (historyAgent == null) {
-			new HistoryAgent();
+			new HistoryController();
 		}
 		return historyAgent;
 	}
 
-	public static void set(HistoryAgent ag) {
+	public static void set(HistoryController ag) {
 		if (historyAgent == null) {
 			historyAgent = ag;
 		}
 	}
 
 	public static void reset() {
-		new HistoryAgent();
+		new HistoryController();
 	}
 
 	// ===========================================================================================

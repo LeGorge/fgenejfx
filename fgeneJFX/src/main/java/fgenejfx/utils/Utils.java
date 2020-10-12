@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import fgenejfx.controllers.ContractsController;
 import fgenejfx.controllers.League;
 import fgenejfx.exceptions.CopyException;
 import fgenejfx.exceptions.NotValidException;
-import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 
@@ -73,7 +73,7 @@ public class Utils {
 	public static void begin() {
 		League l = League.get();
 
-		ContractsAgent cag = ContractsAgent.get();
+		ContractsController cag = ContractsController.get();
 
 		l.setPilots(l.createNewPilots(36));
 		List<Pilot> list = new ArrayList<>(l.getPilots());
@@ -84,8 +84,8 @@ public class Utils {
 		}
 
 		try {
-			ContractsAgent.get().setContracts(new HashSet<>());
-			ContractsAgent.get().updateContracts(l.getPilots());
+			ContractsController.get().setContracts(new HashSet<>());
+			ContractsController.get().updateContracts(l.getPilots());
 		} catch (NotValidException e) {
 			e.printStackTrace();
 		}

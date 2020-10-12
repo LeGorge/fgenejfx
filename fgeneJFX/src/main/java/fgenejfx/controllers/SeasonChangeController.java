@@ -2,11 +2,10 @@ package fgenejfx.controllers;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import fgenejfx.exceptions.NotValidException;
-import fgenejfx.models.ContractsAgent;
 import fgenejfx.models.Group;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.RaceStats;
 import fgenejfx.models.RaceStatsTeam;
@@ -18,13 +17,18 @@ import fgenejfx.models.enums.State;
 
 public class SeasonChangeController {
 	private League l = League.get();
-	private HistoryAgent hag = HistoryAgent.get();
-	private ContractsAgent cag = ContractsAgent.get();
+	private HistoryController hag = HistoryController.get();
+	private ContractsController cag = ContractsController.get();
+	private NewsController news = NewsController.get();
 
 	public SeasonChangeController() throws NotValidException {
 		if (l.getSeason().getState() != State.ENDED) {
 			throw new NotValidException();
 		}
+		
+		//news part I
+		oldSeasonNews();
+		Set<Pilot> upcomingFreeAgents = cag.upcomingFreeAgents();
 
 		// save history
 		hag.save(l.getSeason());
@@ -42,11 +46,14 @@ public class SeasonChangeController {
 		l.passYear();
 
 		// update contracts
-		int newPilots = ContractsAgent.get().willRetire().size();
+		int newPilots = ContractsController.get().willRetire().size();
 		cag.updateContracts(l.createNewPilots(newPilots));
 
 		// new season
 		l.setSeason(new Season());
+		
+		//news
+		newSeasonNews(upcomingFreeAgents);
 	}
 
 	private void updatePowers() {
@@ -182,5 +189,31 @@ public class SeasonChangeController {
 			}
 			cont++;
 		}
+	}
+	
+	private void oldSeasonNews() {
+	  Set<Pilot> retired = cag.willRetire();
+	  retired.stream().forEach(p ->{
+	    news.add(l.getYear()+1, "Retirings: "+cag.teamOf(p)+"'s "+p+" has retired from the League");
+	  });
+	}
+	
+	private void newSeasonNews(Set<Pilot> changedContracts) {
+	  Set<Pilot> rookies = cag.rookies();
+	  rookies.stream().forEach(p ->{
+	    news.add(l.getYear(), "Rookies: "+p+" was drafted by "+cag.teamOf(p));
+	  });
+	  
+	  changedContracts.stream().forEach(p->{
+	    Team oldT = hag.history(l.getYear()-1).teamOf(p);
+	    Team newT = cag.teamOf(p);
+	    if(oldT == newT) {
+	      news.add(l.getYear(), "New Contracts: "+newT+" re-signed "+p+" to a "
+            +cag.remainingYearsOfContract(p)+"-year deal");
+	    }else {
+	      news.add(l.getYear(), "New Contracts: "+newT+" signed "+oldT+"'s "+p+" to a "
+	          +cag.remainingYearsOfContract(p)+"-year deal");
+	    }
+	  });
 	}
 }
