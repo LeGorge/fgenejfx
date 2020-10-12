@@ -9,9 +9,9 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fgenejfx.controllers.ContractsController;
+import fgenejfx.controllers.HistoryController;
 import fgenejfx.controllers.League;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 
 public class NewPilotsTests {
@@ -19,8 +19,8 @@ public class NewPilotsTests {
 	@BeforeEach
 	public void reset() {
 		League.reset();
-		HistoryAgent.reset();
-		ContractsAgent.reset();
+		HistoryController.reset();
+		ContractsController.reset();
 	}
 	@Test
 	public void pilotCreation() {

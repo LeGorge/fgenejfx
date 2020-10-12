@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fgenejfx.exceptions.NameGeneratorException;
 import fgenejfx.exceptions.NotValidException;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
 import fgenejfx.models.Season;
@@ -43,32 +41,32 @@ public class League implements Serializable {
 	// ============================================================================================
 	public Team teamOf(Pilot p, Integer year) throws NoSuchElementException {
 		if (year == this.year) {
-			return ContractsAgent.get().teamOf(p);
+			return ContractsController.get().teamOf(p);
 		} else {
-			return HistoryAgent.get().history(year).teamOf(p);
+			return HistoryController.get().history(year).teamOf(p);
 		}
 	}
 
 	public List<Pilot> pilotsOf(Team t, Integer year) throws NoSuchElementException {
 		if (year == this.year) {
-			return ContractsAgent.get().pilotsOf(t);
+			return ContractsController.get().pilotsOf(t);
 		} else {
-			return HistoryAgent.get().history(year).pilotsOf(t);
+			return HistoryController.get().history(year).pilotsOf(t);
 		}
 	}
 	public Season season(Integer year){
 		if(year == this.year){
 			return this.season;
 		}else{
-			return HistoryAgent.get().season(year);
+			return HistoryController.get().season(year);
 		}
 	}
 	public String scoutReportOf(Integer year, Pilot p){
 	  Integer aiDiff;
 	  if(year.equals(this.year)){
-	    aiDiff = p.getAi() - HistoryAgent.get().history(year - 1).ai(p);
+	    aiDiff = p.getAi() - HistoryController.get().history(year - 1).ai(p);
 	  }else{
-	    aiDiff = HistoryAgent.get().history(year).ai(p) - HistoryAgent.get().history(year - 1).ai(p);
+	    aiDiff = HistoryController.get().history(year).ai(p) - HistoryController.get().history(year - 1).ai(p);
 	  }
 	  
 	  if(aiDiff < 3) {
@@ -90,7 +88,7 @@ public class League implements Serializable {
 	  if(year == this.year){
       return t.getPowers();
     }else{
-      return HistoryAgent.get().history(year).powers(t);
+      return HistoryController.get().history(year).powers(t);
     }
 	}
 	public Integer carPower(Integer year, Team t) {

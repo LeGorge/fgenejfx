@@ -9,10 +9,10 @@ import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Test;
 
+import fgenejfx.controllers.ContractsController;
+import fgenejfx.controllers.HistoryController;
 import fgenejfx.controllers.League;
 import fgenejfx.exceptions.NotValidException;
-import fgenejfx.models.ContractsAgent;
-import fgenejfx.models.HistoryAgent;
 import fgenejfx.models.Pilot;
 
 public class ContractsTests {

@@ -2,11 +2,13 @@ package fgenejfx.view;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import fgenejfx.App;
 import fgenejfx.controllers.League;
+import fgenejfx.controllers.NewsController;
 import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
@@ -16,14 +18,23 @@ import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
 import fgenejfx.models.enums.State;
+import fgenejfx.utils.ViewUtils;
 import fgenejfx.view.engine.CustomGridPane;
+import fgenejfx.view.engine.CustomHyperlink;
 import fgenejfx.view.engine.CustomTableView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 public class SeasonView extends CustomGridPane {
@@ -39,12 +50,13 @@ public class SeasonView extends CustomGridPane {
     this.minHeightProperty().bind(App.stage.heightProperty().subtract(98));
     
     this.add(mainPane(), 0, 0, 1, 1);
-    this.add(pSeasonGrid(), 0, 1, 1, 1);
-    this.add(this.carTable(), 0, 2, 1, 1);
+    this.add(newsPane(), 0, 1, 1, 1);
+    this.add(pSeasonGrid(), 0, 2, 1, 1);
+    this.add(carTable(), 0, 3, 1, 1);
   }
   
   // ============================================================================================
-  // Panels
+  // Main Panel - Groups and playoffs
   // ============================================================================================
   private CustomGridPane mainPane() {
     CustomGridPane pane = new CustomGridPane(Pos.CENTER);
@@ -184,6 +196,51 @@ public class SeasonView extends CustomGridPane {
     return grid;
   }
   
+ // ============================================================================================
+ // News Panel 
+ // ============================================================================================
+  private CustomGridPane newsPane() {
+    CustomGridPane pane = new CustomGridPane(Pos.CENTER);
+    List<String> news = NewsController.get().get(this.season);
+    if(news != null) {
+      CustomTableView<String> table = new CustomTableView<>(year);
+      table.setPrefWidth(1480.0);
+      
+//      ObservableList<String> details = FXCollections.observableArrayList(news);
+      
+      TableColumn<String, String> col = new TableColumn<>("News");
+      col.setPrefWidth(1480.0);
+      col.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
+      col.setCellFactory(c -> new TableCell<String, String>() {
+        @Override
+        protected void updateItem(String item, boolean empty) {
+          super.updateItem(item, empty);
+          if (item != null) {
+            Text text = new Text(item);
+            text.setStyle(" -fx-font-size: 12pt;" +
+                          " -fx-text-wrap: true;" +
+//                          " -fx-font-weight: bold;;" +
+                          " -fx-text-alignment:center;");
+            text.setWrappingWidth(col.getPrefWidth() - 15);
+            this.setPrefHeight(text.getLayoutBounds().getHeight()+10);
+            this.setGraphic(text);
+          }
+        }
+      });
+      
+      table.getColumns().add(col);
+      table.getItems().addAll(news);
+      
+      pane.add(table, 0, 0);
+    }else {
+      NewsController.get().add(this.season, "teste Season "+this.season.getYear());
+    }
+    return pane;
+  }
+  
+  // ============================================================================================
+  // Team Stats and Cars Panel 
+  // ============================================================================================
   private CustomGridPane carTable() {
     CustomGridPane pane = new CustomGridPane(Pos.CENTER);
     pane.setHgap(25);

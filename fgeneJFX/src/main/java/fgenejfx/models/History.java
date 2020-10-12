@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import fgenejfx.controllers.ContractsController;
 import fgenejfx.exceptions.CopyException;
 import fgenejfx.jackson.MapDeserializer;
 import fgenejfx.utils.Utils;
@@ -30,17 +31,17 @@ public class History implements Serializable {
 	}
 
 	public History(Season s) {
-		ContractsAgent.get().pilots().forEach(p -> {
+		ContractsController.get().pilots().forEach(p -> {
 			this.saveAi(p, p.getAi());
 		});
-		ContractsAgent.get().teams().forEach(t -> {
+		ContractsController.get().teams().forEach(t -> {
 			try {
 				this.savePowers(t, t.getPowers());
 			} catch (CopyException e) {
 				e.printStackTrace();
 			}
 		});
-		this.save(ContractsAgent.get().getContracts());
+		this.save(ContractsController.get().getContracts());
 	}
 
 	// ===========================================================================================
