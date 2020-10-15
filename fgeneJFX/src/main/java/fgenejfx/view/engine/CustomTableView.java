@@ -106,6 +106,16 @@ public class CustomTableView<A> extends TableView<A>{
     return this;
   }
   
+  public CustomTableView<A> addGroupColumn() {
+    TableColumn<A, Number> groupCol = new TableColumn<>("Group");
+    ViewUtils.tooltip(groupCol);
+    groupCol.setCellValueFactory(new Callbacks<A,Number>().stringCol(League.get().season(year),
+        MethodMapper.group(), null));
+    groupCol.setSortType(SortType.DESCENDING);
+    this.getColumns().add(groupCol);
+    return this;
+  }
+  
   // ============================================================================================
   // By Season Columns
   // ============================================================================================

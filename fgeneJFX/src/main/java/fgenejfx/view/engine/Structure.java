@@ -39,9 +39,21 @@ public class Structure extends BorderPane {
     Menu dashboardMenu = new Menu("", new FontIcon("fa-automobile"));
     
     bar.getMenus().add(dashboardMenu);
+//    bar.getMenus().add(actionsMenu());
     bar.getMenus().add(themesMenu());
     return bar;
   }
+  
+//  private Menu actionsMenu() {
+//    Menu menu = new Menu("Actions");
+//    MenuItem item = new MenuItem("Publish News");
+//    item.setOnAction(e ->{
+//      
+//      App.update();
+//    });
+//    menu.getItems().add(item);
+//    return menu;
+//  }
   
   private Menu themesMenu() {
     Menu menu = new Menu("Themes");

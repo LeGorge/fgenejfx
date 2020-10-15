@@ -330,7 +330,8 @@ public class SeasonView extends CustomGridPane {
         .addBySeasonStatColumn(t, MethodSelector.P4TH)
         .addBySeasonStatColumn(t, MethodSelector.P5TH)
         .addBySeasonStatColumn(t, MethodSelector.P6TH)
-        .addBySeasonStatColumn(t, MethodSelector.PER);
+        .addBySeasonStatColumn(t, MethodSelector.PER)
+        .addGroupColumn();
     
     table.getItems().addAll((Collection<? extends A>)children);
     table.sortByColumns(1+control,2+control,3+control,4+control,5+control,6+control,7+control);
