@@ -18,13 +18,25 @@ public class MethodMapper {
     return mapping;
   }
   
-  public static LinkedHashMap<String, Object[]> bySeasonPower(Integer year, Powers p){
+  public static LinkedHashMap<String, Object[]> bySeasonPowerAbsolute(Integer year, Powers p){
     LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
     if(p != null) {
       Object[] ptrParams1 = {year, "this"};
       mapping.put("powers", ptrParams1);
       Object[] ptrParams2 = {p};
       mapping.put("get", ptrParams2);
+    }else {
+      Object[] ptrParams1 = {year, "this"};
+      mapping.put("carPower", ptrParams1);
+    }
+    return mapping;
+  }
+  
+  public static LinkedHashMap<String, Object[]> bySeasonPowerRelative(Integer year, Powers p){
+    LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
+    if(p != null) {
+      Object[] ptrParams1 = {year, "this", p};
+      mapping.put("relativePower", ptrParams1);
     }else {
       Object[] ptrParams1 = {year, "this"};
       mapping.put("carPower", ptrParams1);
@@ -74,6 +86,12 @@ public class MethodMapper {
     mapping.put("getStats", null);
     mapping.put(time.getCmd2(), null);
     mapping.put(sel.getCmd(), null);
+    return mapping;
+  }
+  public static LinkedHashMap<String, Object[]> perRoundStat(LeagueTime time, MethodSelector sel ){
+    LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
+    Object[] posParams1 = {time};
+    mapping.put(sel.getCmd(), posParams1);
     return mapping;
   }
   

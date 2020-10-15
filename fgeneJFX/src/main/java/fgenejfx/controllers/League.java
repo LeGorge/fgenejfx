@@ -91,6 +91,10 @@ public class League implements Serializable {
       return HistoryController.get().history(year).powers(t);
     }
 	}
+	public Integer relativePower(Integer year, Team t, Powers p) {
+	  Double powerValue = powers(year,t).get(p);
+	  return p.relativePower(powerValue);
+	}
 	public Integer carPower(Integer year, Team t) {
 	  return Powers.carPower(this.powers(year, t));
 	}

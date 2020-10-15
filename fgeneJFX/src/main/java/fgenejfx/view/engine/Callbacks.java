@@ -2,6 +2,7 @@ package fgenejfx.view.engine;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
@@ -115,7 +116,7 @@ public class Callbacks<A,B> {
    * @author Gorge(MOURA, ANDERSON GUIMARÃES)
    */
   public Callback<CellDataFeatures<A, B>, ObservableValue<B>> stringCol(
-		  Object altData, LinkedHashMap<String, Object[]> exec){
+		  Object altData, LinkedHashMap<String, Object[]> exec, DecimalFormat format){
 	  return new Callback<CellDataFeatures<A, B>, ObservableValue<B>>() {
 		  @Override
 		  public ObservableValue<B> call(CellDataFeatures<A, B> data) {
@@ -138,6 +139,11 @@ public class Callbacks<A,B> {
 			  if(result == null) {
 			    result = "-";
 			  }
+			  
+			  if(format != null) {
+			    result = format.format(result);
+			  }
+			  
 			  return new SimpleObjectProperty(result);
 		  }
 	  };

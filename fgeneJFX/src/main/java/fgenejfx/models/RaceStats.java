@@ -56,17 +56,9 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 
 	@JsonIgnore
 	public Double getPtRate() {
-//	  if(getTotalRaces() != 0) {
-//	    System.out.println(getPts());
-//	    System.out.println(getTotalRaces());
-//	    System.out.println(getPts()/getTotalRaces());
-//	    System.out.println(new Double(getPts()/getTotalRaces()));
-//	    System.out.println();
-//	    
-//	  }
 		return getTotalRaces() != 0 ? new Double(getPts()) / new Double(getTotalRaces()) / 8.0d : 0.0d;
 	}
-
+	
 	@JsonIgnore
 	public boolean isEmpty() {
 		if ((p1st == 0) && (p2nd == 0) && (p3rd == 0) && (p4th == 0) && (p5th == 0) && (p6th == 0)) {
@@ -158,7 +150,7 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 	}
 
 	public Double getPer() {
-    return Double.parseDouble(Utils.perFormat.format(per));
+    return per;
   }
 
   public void setPer(Double per) {

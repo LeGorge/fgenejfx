@@ -114,7 +114,7 @@ public class SeasonView extends CustomGridPane {
     LeagueTime time = LeagueTime.TPLAYOFF;
     CustomGridPane tplayoffPane = new CustomGridPane(Pos.CENTER);
     tplayoffPane.add(updateBut(time), 0, 0, 3, 1);
-    tplayoffPane.add(statTable(time, 170.0, 420.0, true, true, season.pilots(time)), 0, 1, 2, 1);
+    tplayoffPane.add(playoffStatTable(time, season.pilots(time)), 0, 1, 2, 1);
     
     CustomTableView<Team> table = new CustomTableView<>(year);
     table.setPrefHeight(100);
@@ -133,7 +133,7 @@ public class SeasonView extends CustomGridPane {
     LeagueTime time = LeagueTime.PPLAYOFF;
     CustomGridPane pplayoffPane = new CustomGridPane(Pos.CENTER);
     pplayoffPane.add(updateBut(time), 0,0);
-    pplayoffPane.add(statTable(time, 170.0, 420.0, true, true, season.pilots(time)), 0, 1);
+    pplayoffPane.add(playoffStatTable(time, season.pilots(time)), 0, 1);
     return pplayoffPane;
   }
   
@@ -156,21 +156,33 @@ public class SeasonView extends CustomGridPane {
     for (int i=0; i < gs.length; i++) {
       CustomTableView<Pilot> table = new CustomTableView<>(year);
       table.setPrefHeight(170);
-      table.setPrefWidth(430);
+      table.setPrefWidth(500);
       
       table.addTeamColumn()
           .addNameColumn()
           .addTopPosColumn()
-          .addScoutReportColumn()
-          .addAgeColumn()
-          .addlifeStatColumn(LeagueTime.SEASON, MethodSelector.PTR)
-          .addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS);
+          .addScoutReportColumn();
+      
+      if(season.isEnded()) {
+        table.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS)
+            .addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.P1ST)
+            .addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PER);
+      }else {
+        table.addAgeColumn()
+            .addPerRoundColumn(LeagueTime.SEASON, MethodSelector.PPR)
+            .addPerRoundColumn(LeagueTime.SEASON, MethodSelector.PERPR)
+            .addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS);
+      }
       
       table.getItems().addAll(gs[i].pilots());
       if(gs[i].isEmpty()) {
         table.sortByColumns(0);
       }else {
-        table.sortByColumns(6);
+        if(season.isEnded()) {
+          table.sortByColumns(4);
+        }else{
+          table.sortByColumns(7);
+        }
       }
       
       if(this.season.getState() != State.SEASON) {
@@ -257,7 +269,7 @@ public class SeasonView extends CustomGridPane {
         .addPowersColumn(null);
     
     table.getItems().addAll(season.teams());
-//    table.sortByColumns(4);
+    table.sortByColumns(5,0);
     pane.add(statTable(LeagueTime.SEASON, 460.0, 840.0, false, false, l.season(year).teams()), 0, 0);
     pane.add(table, 1, 0);
     return pane;
@@ -266,14 +278,48 @@ public class SeasonView extends CustomGridPane {
   // ============================================================================================
   // privates
   // ============================================================================================
+  private <A> CustomTableView playoffStatTable(LeagueTime t, Collection<?> children) {
+    CustomTableView<A> table = new CustomTableView<>(year);
+    table.setPrefHeight(170.0);
+    table.setPrefWidth(600.0);
+    
+    table.addTeamColumn()
+    .addNameColumn();
+    
+    if(!season.isEnded()) {
+      table.addPerRoundColumn(t, MethodSelector.PPR)
+      .addPerRoundColumn(t, MethodSelector.PERPR);
+    }
+    
+    table.addBySeasonStatColumn(t, MethodSelector.PTS)
+    .addBySeasonStatColumn(t, MethodSelector.P1ST)
+    .addBySeasonStatColumn(t, MethodSelector.P2ND)
+    .addBySeasonStatColumn(t, MethodSelector.P3RD)
+    .addBySeasonStatColumn(t, MethodSelector.P4TH)
+    .addBySeasonStatColumn(t, MethodSelector.P5TH)
+    .addBySeasonStatColumn(t, MethodSelector.P6TH)
+    .addBySeasonStatColumn(t, MethodSelector.PER);
+    
+    table.getItems().addAll((Collection<? extends A>)children);
+    if(season.isEnded()) {
+      table.sortByColumns(2,3,4,5,6,7,8);
+    }else {
+      table.sortByColumns(4,5,6,7,8,9,10);
+    }
+    
+    return table;
+  }
+  
   private <A> CustomTableView statTable(LeagueTime t, Double prefHeight, Double prefWidth,
       boolean addTeamCol, boolean addUpdateButton, Collection<?> children) {
     CustomTableView<A> table = new CustomTableView<>(year);
     table.setPrefHeight(prefHeight);
     table.setPrefWidth(prefWidth);
     
+    int control = 0;
     if(addTeamCol) {
       table.addTeamColumn();
+      control++;
       table.setPrefWidth(prefWidth+100.0D);
     }
     table.addNameColumn()
@@ -287,7 +333,7 @@ public class SeasonView extends CustomGridPane {
         .addBySeasonStatColumn(t, MethodSelector.PER);
     
     table.getItems().addAll((Collection<? extends A>)children);
-    table.sortByColumns(2,3,4,5,6,7,8);
+    table.sortByColumns(1+control,2+control,3+control,4+control,5+control,6+control,7+control);
     
     return table;
   }
