@@ -72,9 +72,10 @@ public class SeasonChangeController {
 		// -1 for random team
 		Team t = (Team) cag.teams().toArray()[new Random().nextInt(cag.teams().size())];
 		t.updatePowers(1, OpEnum.SUBTRACT);
+		news.add(l.getYear()+1, "Cars: This year's penalised team was "+t);
 
 		// update car files with powers in generally
-		//GenerallyFilesController.updateCarFile();
+		GenerallyFilesController.updateCarFile();
 	}
 
 	private void updateAI() {
@@ -102,7 +103,7 @@ public class SeasonChangeController {
 			p.updateAi(seasonPlacing, lastYearSeasonPlacing, pplayoffPlacing, lastYearPplayoffPlacing,
 					season.closeFight(p));
 
-			//GenerallyFilesController.updateDriverAI(p);
+			GenerallyFilesController.updateDriverAI(p);
 		}
 	}
 

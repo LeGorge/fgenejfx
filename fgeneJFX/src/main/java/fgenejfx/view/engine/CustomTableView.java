@@ -7,6 +7,7 @@ import fgenejfx.models.Powers;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
+import fgenejfx.utils.Utils;
 import fgenejfx.utils.ViewUtils;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -78,7 +79,7 @@ public class CustomTableView<A> extends TableView<A>{
     ViewUtils.tooltip(teamCol);
     teamCol.setMinWidth(70);
     teamCol.setCellValueFactory(new Callbacks<A,Team>().stringCol(League.get(),
-        MethodMapper.teamOf(year)));
+        MethodMapper.teamOf(year),null));
     teamCol.setCellFactory(col -> new TableCell<A, Team>() {
 		@Override
 		protected void updateItem(Team item, boolean empty) {
@@ -99,7 +100,7 @@ public class CustomTableView<A> extends TableView<A>{
     ViewUtils.tooltip(ageCol);
 //    ageCol.setCellValueFactory(new PropertyValueFactory<>("yearsInTheLeague"));
     ageCol.setCellValueFactory(new Callbacks<A,Number>().stringCol(null,
-        MethodMapper.age(year)));
+        MethodMapper.age(year), null));
     ageCol.setSortType(SortType.DESCENDING);
     this.getColumns().add(ageCol);
     return this;
@@ -111,8 +112,9 @@ public class CustomTableView<A> extends TableView<A>{
   public CustomTableView<A> addTopPosColumn() {
     TableColumn<A, String> col = new TableColumn<>("#");
     ViewUtils.tooltip(col, "Position last season");
+    col.setMinWidth(25);
     col.setCellValueFactory(new Callbacks<A,String>().stringCol(League.get(),
-        MethodMapper.posOf(year-1)));
+        MethodMapper.posOf(year-1), null));
     col.setCellFactory(c -> new TableCell<A, String>() {
       @Override
       protected void updateItem(String item, boolean empty) {
@@ -140,7 +142,7 @@ public class CustomTableView<A> extends TableView<A>{
     TableColumn<A, String> col = new TableColumn<>("Scout Report");
     ViewUtils.tooltip(col);
     col.setCellValueFactory(new Callbacks<A,String>().stringCol(League.get(),
-        MethodMapper.scoutReportOf(year)));
+        MethodMapper.scoutReportOf(year), null));
     col.setCellFactory(c -> new TableCell<A, String>() {
       @Override
       protected void updateItem(String item, boolean empty) {
@@ -163,9 +165,14 @@ public class CustomTableView<A> extends TableView<A>{
   
   public CustomTableView<A> addBySeasonStatColumn(LeagueTime time, MethodSelector sel) {
     TableColumn<A, Number> col = new TableColumn<>(sel.getName());
-    ViewUtils.tooltip(col);
-    col.setCellValueFactory(new Callbacks<A,Number>().stringCol(League.get(),
-        MethodMapper.bySeasonStat(year, time, sel)));
+    ViewUtils.tooltip(col,sel.getTip());
+    if(sel == MethodSelector.PER) {
+      col.setCellValueFactory(new Callbacks<A,Number>().stringCol(League.get(),
+          MethodMapper.bySeasonStat(year, time, sel), Utils.perFormat));
+    }else {
+      col.setCellValueFactory(new Callbacks<A,Number>().stringCol(League.get(),
+          MethodMapper.bySeasonStat(year, time, sel), null));
+    }
     col.setSortType(SortType.DESCENDING);
     this.getColumns().add(col);
     return this;
@@ -180,7 +187,32 @@ public class CustomTableView<A> extends TableView<A>{
     }
     ViewUtils.tooltip(col);
     col.setCellValueFactory(new Callbacks<A,Number>().stringCol(League.get(),
-        MethodMapper.bySeasonPower(year, p)));
+        MethodMapper.bySeasonPowerRelative(year, p), null));
+    col.setCellFactory(c -> new TableCell<A, Number>() {
+      @Override
+      protected void updateItem(Number item, boolean empty) {
+        super.updateItem(item, empty);
+        if (!empty) {
+          if(p == null) {
+            setText(item.toString());
+            return;
+          }
+          if(item.intValue() == 0) {
+            this.setTextFill(Color.GRAY);
+            this.setFont(Font.font("Cooper Black", FontWeight.BOLD, 11));
+          }else {
+            if(item.intValue() > 0) {
+              this.setTextFill(Color.GREEN);
+              this.setFont(Font.font("Cooper Black", FontWeight.BOLD, 14));
+            }else {
+              this.setTextFill(Color.RED);
+              this.setFont(Font.font("Cooper Black", FontWeight.BOLD, 14));
+            }
+          }
+          setText(Utils.powerValueToStr(item.intValue()));
+        } 
+      }
+    });
     col.setSortType(SortType.DESCENDING);
     this.getColumns().add(col);
     return this;
@@ -191,9 +223,25 @@ public class CustomTableView<A> extends TableView<A>{
   // ============================================================================================
   public CustomTableView<A> addlifeStatColumn(LeagueTime time, MethodSelector sel) {
     TableColumn<A, Number> col = new TableColumn<>(sel.getName());
-    ViewUtils.tooltip(col);
+    ViewUtils.tooltip(col,sel.getTip());
     col.setCellValueFactory(new Callbacks<A,Number>().stringCol(null,
-        MethodMapper.lifeStat(year, time, sel)));
+        MethodMapper.lifeStat(year, time, sel), Utils.perFormat));
+    col.setSortType(SortType.DESCENDING);
+    this.getColumns().add(col);
+    return this;
+  }
+  
+  public CustomTableView<A> addPerRoundColumn(LeagueTime time, MethodSelector sel) {
+    TableColumn<A, Number> col = new TableColumn<>(sel.getName());
+    ViewUtils.tooltip(col,sel.getTip());
+    if(sel == MethodSelector.PERPR) {
+      col.setCellValueFactory(new Callbacks<A,Number>().stringCol(null,
+          MethodMapper.perRoundStat(time, MethodSelector.PERPR), Utils.perFormat));
+    }else {
+      col.setCellValueFactory(new Callbacks<A,Number>().stringCol(null,
+          MethodMapper.perRoundStat(time, MethodSelector.PPR), Utils.pprFormat));
+    }
+    
     col.setSortType(SortType.DESCENDING);
     this.getColumns().add(col);
     return this;

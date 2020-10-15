@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fgenejfx.controllers.League;
 import fgenejfx.interfaces.StatsMonitorable;
+import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.utils.Utils;
 
 public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> {
@@ -41,6 +42,36 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	@JsonIgnore
 	public Integer getYearsInTheLeague(Integer relativeYear) {
 	  return relativeYear - rookieYear + 1;
+	}
+	
+	@JsonIgnore
+  public Double getPPR(LeagueTime time) {
+	  if(lifeStats.getSeasons() != 0) {
+	    switch (time) {
+	    case SEASON:
+	      return new Double(stats.getSeason().getPts()) / new Double(lifeStats.getSeasons());
+	    case PPLAYOFF:
+	      return new Double(stats.getpPlayoff().getPts()) / new Double(lifeStats.getpPlayoffs());
+	    case TPLAYOFF:
+	      return new Double(stats.gettPlayoff().getPts()) / new Double(lifeStats.gettPlayoffs());
+	    }
+	  }
+	  return 0.0;
+  }
+	
+	@JsonIgnore
+	public Double getPerPR(LeagueTime time) {
+	  if(lifeStats.getSeasons() != 0) {
+	    switch (time) {
+	    case SEASON:
+	      return new Double(stats.getSeason().getPer()) / new Double(lifeStats.getSeasons());
+	    case PPLAYOFF:
+	      return new Double(stats.getpPlayoff().getPer()) / new Double(lifeStats.getpPlayoffs());
+	    case TPLAYOFF:
+	      return new Double(stats.gettPlayoff().getPer()) / new Double(lifeStats.gettPlayoffs());
+	    }
+	  }
+	  return 0.0;
 	}
 
 	// ===========================================================================================

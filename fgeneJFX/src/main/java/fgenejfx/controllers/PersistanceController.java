@@ -17,17 +17,17 @@ import fgenejfx.models.Pilot;
 import fgenejfx.models.Season;
 
 public class PersistanceController {
-	private static final String leaguePath = "..\\..\\saves\\league.json";
-	private static final String seasonPath = "..\\..\\saves\\season.json";
-	private static final String historyPath = "..\\..\\saves\\history.json";
-	private static final String contractsPath = "..\\..\\saves\\contracts.json";
-	private static final String newsPath = "..\\..\\saves\\news.json";
+//	private static final String leaguePath = "..\\..\\saves\\league.json";
+//	private static final String seasonPath = "..\\..\\saves\\season.json";
+//	private static final String historyPath = "..\\..\\saves\\history.json";
+//	private static final String contractsPath = "..\\..\\saves\\contracts.json";
+//	private static final String newsPath = "..\\..\\saves\\news.json";
 	
-//	private static final String leaguePath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\league.json";
-//	private static final String seasonPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\season.json";
-//	private static final String historyPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\history.json";
-//	private static final String contractsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\contracts.json";
-//	private static final String newsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\news.json";
+	private static final String leaguePath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\league.json";
+	private static final String seasonPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\season.json";
+	private static final String historyPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\history.json";
+	private static final String contractsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\contracts.json";
+	private static final String newsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\news.json";
 
 	private static void save(Object obj, String path) {
 		try {

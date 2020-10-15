@@ -26,7 +26,8 @@ import fgenejfx.models.Season;
 
 public class Utils {
   
-  public static NumberFormat perFormat = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
+  public static DecimalFormat perFormat = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
+  public static DecimalFormat pprFormat = new DecimalFormat("#0", new DecimalFormatSymbols(Locale.US));
 
   public static double round(double value, int places) {
     if (places < 0) throw new IllegalArgumentException();
@@ -42,6 +43,24 @@ public class Utils {
 
 	public static Integer genGaussian(Integer mean, Integer dev) {
 		return (int) (new Random().nextGaussian() * dev + mean);
+	}
+	
+	public static String powerValueToStr(Integer p) {
+	  StringBuilder b = new StringBuilder(5);
+	  if(p > 0) {
+	    for(int j=0; j < p; j++) {
+	      b.append(">");
+	    }
+	  }else {
+	    if(p == 0) {
+	      b.append("||");
+	    }else {
+	      for(int j=0; j < p*-1; j++) {
+	        b.append("<");
+	      }
+	    }
+	  }
+	  return b.toString();
 	}
 
 	public static <A> A copy(A obj) throws CopyException {
