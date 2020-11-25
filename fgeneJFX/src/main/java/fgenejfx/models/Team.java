@@ -42,7 +42,7 @@ public class Team implements Serializable, StatsMonitorable, Comparable<Team> {
 	}
 
 	public static Team get(String name) throws NoSuchElementException {
-		return Team.get(TeamsEnum.valueOf(name));
+		return Team.get(TeamsEnum.valueOf(name.toUpperCase()));
 	}
 
 	public Team() {

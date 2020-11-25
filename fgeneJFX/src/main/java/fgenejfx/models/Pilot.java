@@ -46,13 +46,17 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	
 	@JsonIgnore
   public Double getPPR(LeagueTime time) {
-	  if(lifeStats.getSeasons() != 0) {
-	    switch (time) {
-	    case SEASON:
+	  switch (time) {
+	  case SEASON:
+	    if(lifeStats.getSeasons() != 0) {
 	      return new Double(stats.getSeason().getPts()) / new Double(lifeStats.getSeasons());
-	    case PPLAYOFF:
+	    }
+	  case PPLAYOFF:
+	    if(lifeStats.getpPlayoffs() != 0) {
 	      return new Double(stats.getpPlayoff().getPts()) / new Double(lifeStats.getpPlayoffs());
-	    case TPLAYOFF:
+	    }
+	  case TPLAYOFF:
+	    if(lifeStats.gettPlayoffs() != 0) {
 	      return new Double(stats.gettPlayoff().getPts()) / new Double(lifeStats.gettPlayoffs());
 	    }
 	  }
@@ -61,13 +65,17 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	
 	@JsonIgnore
 	public Double getPerPR(LeagueTime time) {
-	  if(lifeStats.getSeasons() != 0) {
-	    switch (time) {
-	    case SEASON:
+	  switch (time) {
+	  case SEASON:
+	    if(lifeStats.getSeasons() != 0) {
 	      return new Double(stats.getSeason().getPer()) / new Double(lifeStats.getSeasons());
-	    case PPLAYOFF:
+	    }
+	  case PPLAYOFF:
+	    if(lifeStats.getpPlayoffs() != 0) {
 	      return new Double(stats.getpPlayoff().getPer()) / new Double(lifeStats.getpPlayoffs());
-	    case TPLAYOFF:
+	    }
+	  case TPLAYOFF:
+	    if(lifeStats.gettPlayoffs() != 0) {
 	      return new Double(stats.gettPlayoff().getPer()) / new Double(lifeStats.gettPlayoffs());
 	    }
 	  }
