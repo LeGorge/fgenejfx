@@ -262,6 +262,7 @@ public class SeasonView extends CustomGridPane {
     table.setPrefWidth(640);
     
     table.addNameColumn()
+        .addGroupColumn()
         .addPowersColumn(Powers.AIR)
         .addPowersColumn(Powers.POWER)
         .addPowersColumn(Powers.SLOWDOWN)
@@ -269,7 +270,7 @@ public class SeasonView extends CustomGridPane {
         .addPowersColumn(null);
     
     table.getItems().addAll(season.teams());
-    table.sortByColumns(5,0);
+    table.sortByColumns(6,0);
     pane.add(statTable(LeagueTime.SEASON, 460.0, 840.0, false, false, l.season(year).teams()), 0, 0);
     pane.add(table, 1, 0);
     return pane;
@@ -330,7 +331,8 @@ public class SeasonView extends CustomGridPane {
         .addBySeasonStatColumn(t, MethodSelector.P4TH)
         .addBySeasonStatColumn(t, MethodSelector.P5TH)
         .addBySeasonStatColumn(t, MethodSelector.P6TH)
-        .addBySeasonStatColumn(t, MethodSelector.PER);
+        .addBySeasonStatColumn(t, MethodSelector.PER)
+        .addGroupColumn();
     
     table.getItems().addAll((Collection<? extends A>)children);
     table.sortByColumns(1+control,2+control,3+control,4+control,5+control,6+control,7+control);

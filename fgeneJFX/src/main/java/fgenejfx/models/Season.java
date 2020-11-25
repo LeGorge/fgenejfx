@@ -40,6 +40,17 @@ public class Season implements Serializable {
   private Group tPlayoff;
 
   // ============================================================================================
+  // Info methods
+  // ============================================================================================
+  public Integer groupIndexOf(Pilot p) throws NoSuchElementException {
+    return Arrays.asList(this.season).indexOf(seasonGroupOf(p)) + 1;
+  }
+  
+  public Integer groupIndexOf(Team t) throws NoSuchElementException {
+    return Arrays.asList(this.season).indexOf(seasonGroupOf(t)) + 1;
+  }
+  
+  // ============================================================================================
   // pilot related methods
   // ============================================================================================
   public Set<Pilot> pilots() {
@@ -135,6 +146,10 @@ public class Season implements Serializable {
       }
     }
     return null;
+  }
+  
+  public Group seasonGroupOf(Team t) throws NoSuchElementException {
+    return Arrays.stream(season).filter(g -> g.contains(t, this.year)).findFirst().get();
   }
 
   // ============================================================================================

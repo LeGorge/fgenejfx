@@ -2,7 +2,9 @@ package fgenejfx.view.engine;
 
 import java.util.LinkedHashMap;
 
+import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.Powers;
+import fgenejfx.models.Team;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
 
@@ -74,6 +76,13 @@ public class MethodMapper {
     LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
     Object[] posParams1 = {year};
     mapping.put("getYearsInTheLeague", posParams1);
+    return mapping;
+  }
+  
+  public static LinkedHashMap<String, Object[]> group(){
+    LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
+    Object[] posParams1 = {"this"};
+    mapping.put("groupIndexOf", posParams1);
     return mapping;
   }
   

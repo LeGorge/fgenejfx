@@ -171,6 +171,8 @@ public class SeasonChangeController {
 		for (Team t : s.gettPlayoff().teams(s.getYear())) {
 			t.getLifeStats().incrementtPlayoffs();
 			List<Pilot> ps = l.pilotsOf(t, s.getYear());
+			ps.get(0).getLifeStats().incrementtPlayoffs();
+			ps.get(1).getLifeStats().incrementtPlayoffs();
 			switch (cont) {
 			case 0:
 				ps.get(0).getLifeStats().incrementtGold();
