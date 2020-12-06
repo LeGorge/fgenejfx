@@ -3,6 +3,8 @@ package fgenejfx.view.engine;
 import java.util.Map;
 
 import fgenejfx.controllers.League;
+import fgenejfx.dtos.CardDto;
+import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
 import fgenejfx.models.Team;
 import fgenejfx.models.enums.LeagueTime;
@@ -55,10 +57,13 @@ public class CustomTableView<A> extends TableView<A>{
   // Info
   // ============================================================================================
   public CustomTableView<A> addNameColumn() {
-    TableColumn<A, String> nameCol = new TableColumn<>("Name");
+	  return addNameColumn("Name", "name");
+  }
+  public CustomTableView<A> addNameColumn(String colTitle, String field) {
+    TableColumn<A, String> nameCol = new TableColumn<>(colTitle);
     ViewUtils.tooltip(nameCol);
     nameCol.setMinWidth(70);
-    nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+    nameCol.setCellValueFactory(new PropertyValueFactory<>(field));
     nameCol.setCellFactory(col -> new TableCell<A, String>() {
 		@Override
 		protected void updateItem(String item, boolean empty) {
@@ -115,6 +120,34 @@ public class CustomTableView<A> extends TableView<A>{
     this.getColumns().add(groupCol);
     return this;
   }
+  
+  public CustomTableView<A> addYearColumn() {
+	  TableColumn<A, Number> yearCol = new TableColumn<>("Year");
+	  ViewUtils.tooltip(yearCol);
+	  yearCol.setStyle("-fx-alignment: CENTER;");
+	  yearCol.setCellValueFactory(new PropertyValueFactory<>("year"));
+	  this.getColumns().add(yearCol);
+	  return this;
+  }
+  
+  public CustomTableView<A> addCardColumn(String colTitle, String field, LeagueTime time) {
+	    TableColumn<A, CardDto> cardCol = new TableColumn<>(colTitle);
+	    ViewUtils.tooltip(cardCol);
+	    cardCol.setCellValueFactory(new PropertyValueFactory<>(field));
+	    cardCol.setCellFactory(col -> new TableCell<A, CardDto>() {
+			@Override
+			protected void updateItem(CardDto item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty) {
+	                setGraphic(null);
+	            } else {
+	            	setGraphic(new Card(item, time));
+	            }
+			}
+	    });
+	    this.getColumns().add(cardCol);
+	    return this;
+	  }
   
   // ============================================================================================
   // By Season Columns
