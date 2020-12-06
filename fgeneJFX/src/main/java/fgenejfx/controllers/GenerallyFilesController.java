@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
 
-import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
 import fgenejfx.models.RaceStats;

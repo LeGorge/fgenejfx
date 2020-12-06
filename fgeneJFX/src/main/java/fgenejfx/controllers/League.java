@@ -69,18 +69,10 @@ public class League implements Serializable {
 	    aiDiff = HistoryController.get().history(year).ai(p) - HistoryController.get().history(year - 1).ai(p);
 	  }
 	  
-	  if(aiDiff < 3) {
-	    return "||";
-	  }
-	  if(aiDiff >= 3 && aiDiff < 6) {
-	    return ">";
-	  }
-	  if(aiDiff >= 6 && aiDiff < 9) {
-	    return ">>";
-	  }
-	  if(aiDiff >= 9) {
-	    return ">>>";
-	  }
+	  if(aiDiff < 3) return "||";
+	  if(aiDiff >= 3 && aiDiff < 6) return ">";
+	  if(aiDiff >= 6 && aiDiff < 9) return ">>";
+	  if(aiDiff >= 9) return ">>>";
 	  return null;
 	}
 	

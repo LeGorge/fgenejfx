@@ -8,9 +8,11 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 import fgenejfx.App;
 import fgenejfx.models.enums.BackgroundSelector;
+import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.SideType;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -30,17 +32,28 @@ public class Structure extends BorderPane {
     MenuBar bar = new MenuBar();
     bar.prefWidthProperty().bind(App.stage.widthProperty());
     
-//    ImageView dashboardIcon = new ImageView(
-//        "file:src\\main\\resources\\graphics\\generally-icon.png");
-//    dashboardIcon.setFitHeight(25);
-//    dashboardIcon.setFitWidth(25);
-//    Menu dashboardMenu = new Menu("", dashboardIcon);
-    Menu dashboardMenu = new Menu("", new FontIcon("fa-automobile"));
+    var p = menuPane(new Label("",new FontIcon("fa-automobile")));
+    p.setOnMouseClicked(m -> App.navigate(Front.SEASON));
+    bar.getMenus().add(menu(p));
     
-    bar.getMenus().add(dashboardMenu);
+    p = menuPane(new Label("",new FontIcon("fa-trophy")));
+    p.setOnMouseClicked(e -> App.navigate(Front.CHAMPS));
+    bar.getMenus().add(menu(p));
+    
 //    bar.getMenus().add(actionsMenu());
     bar.getMenus().add(themesMenu());
     return bar;
+  }
+  
+  private BorderPane menuPane(Label label) {
+	  BorderPane p = new BorderPane(label);
+	  p.setPrefSize(30, 25);
+	  return p;
+  }
+  private Menu menu(Node n) {
+	  Menu m = new Menu("", n);
+	  m.setStyle("-fx-padding : 0 0 0 0");
+	  return m;
   }
   
 //  private Menu actionsMenu() {
@@ -109,5 +122,5 @@ public class Structure extends BorderPane {
     pane.setContent(scrollPane);
     this.setCenter(pane);
   }
-
+  
 }

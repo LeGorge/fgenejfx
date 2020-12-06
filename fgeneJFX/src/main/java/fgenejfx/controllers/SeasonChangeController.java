@@ -218,5 +218,10 @@ public class SeasonChangeController {
 	          +cag.remainingYearsOfContract(p)+"-year deal");
 	    }
 	  });
+	  
+	  cag.upcomingFreeAgents().stream().forEach(fa -> {
+		  news.add(l.getYear(), "Upcoming Free-Agent: "+fa+" is on his last year of contract with "+
+				  cag.teamOf(fa));
+	  });
 	}
 }

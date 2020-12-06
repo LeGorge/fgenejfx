@@ -18,13 +18,9 @@ import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
 import fgenejfx.models.enums.State;
-import fgenejfx.utils.ViewUtils;
 import fgenejfx.view.engine.CustomGridPane;
-import fgenejfx.view.engine.CustomHyperlink;
 import fgenejfx.view.engine.CustomTableView;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -32,9 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 public class SeasonView extends CustomGridPane {
