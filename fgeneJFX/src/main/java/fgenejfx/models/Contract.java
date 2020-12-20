@@ -90,6 +90,6 @@ public class Contract implements Serializable, Comparable<Contract> {
 
 	@Override
 	public int compareTo(Contract c) {
-		return this.getIsFirst().compareTo(!c.getIsFirst());
+		return this.getIsFirst().compareTo(c.getIsFirst()) * -1;
 	}
 }

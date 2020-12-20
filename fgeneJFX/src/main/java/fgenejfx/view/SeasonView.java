@@ -166,8 +166,6 @@ public class SeasonView extends CustomGridPane {
 
 			gs[i].teams(year).stream().forEach(t -> 
 					table.getItems().addAll(l.pilotsOf(t, year)));
-			
-//			table.getItems().addAll(gs[i].pilots());
 			switch (season.getState()) {
 			case SEASON:
 				table.sortByColumns(7);
