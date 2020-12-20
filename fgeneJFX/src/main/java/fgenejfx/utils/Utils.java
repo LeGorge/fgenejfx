@@ -104,7 +104,7 @@ public class Utils {
 
 		try {
 			ContractsController.get().setContracts(new HashSet<>());
-			ContractsController.get().updateContracts(l.getPilots());
+			ContractsController.get().updateContracts(l.getPilots(), null);
 		} catch (NotValidException e) {
 			e.printStackTrace();
 		}

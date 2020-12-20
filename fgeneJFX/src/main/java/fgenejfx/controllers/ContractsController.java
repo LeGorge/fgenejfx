@@ -97,7 +97,7 @@ public class ContractsController implements Serializable {
 		}
 	}
 
-	public void updateContracts(Set<Pilot> rookies) throws NotValidException {
+	public void updateContracts(Set<Pilot> rookies, Pilot pchamp) throws NotValidException {
 	  //register rookies in League
 	  League.get().getPilots().addAll(rookies);
 	  
@@ -107,9 +107,16 @@ public class ContractsController implements Serializable {
 		}
 		// contracts.stream().forEach(Contract::passYear); ATTENTION: can't
 		// change contents of iterating stream
+		
+		//pchampion cannot change teams
+		contracts.stream().filter(c-> c.getPilot().equals(pchamp) && c.isDone()).forEach(c-> {
+			if(c.getPilot().isActive()) {
+				c.setYears(1);	
+			}
+		});
 
 		// remove terminated contracts
-		Set<Contract> ended = contracts.stream().filter(c -> c.isDone()).collect(Collectors.toSet());
+		Set<Contract> ended = contracts.stream().filter(Contract::isDone).collect(Collectors.toSet());
 		contracts.removeAll(ended);
 
 		// get Pilots with no contract

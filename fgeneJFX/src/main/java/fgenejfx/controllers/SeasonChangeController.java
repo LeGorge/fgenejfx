@@ -47,7 +47,8 @@ public class SeasonChangeController {
 
 		// update contracts
 		int newPilots = ContractsController.get().willRetire().size();
-		cag.updateContracts(l.createNewPilots(newPilots));
+		cag.updateContracts(l.createNewPilots(newPilots), 
+				(Pilot)l.getSeason().champ(LeagueTime.PPLAYOFF, Pilot.class));
 
 		// new season
 		l.setSeason(new Season());
@@ -63,7 +64,7 @@ public class SeasonChangeController {
 		});
 
 		// +1 for tplayoff champion
-		l.getSeason().champ(LeagueTime.TPLAYOFF).updatePowers(1, OpEnum.SUM);
+		((Team)l.getSeason().champ(LeagueTime.TPLAYOFF, Team.class)).updatePowers(1, OpEnum.SUM);
 
 		// +1 for non-pplayoff teams
 		cag.teams().stream().filter(t -> !l.getSeason().teams(LeagueTime.PPLAYOFF).contains(t))
