@@ -2,9 +2,7 @@ package fgenejfx.view.engine;
 
 import java.util.LinkedHashMap;
 
-import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.Powers;
-import fgenejfx.models.Team;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
 

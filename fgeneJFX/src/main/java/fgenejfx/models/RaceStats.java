@@ -51,12 +51,12 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 
 	@JsonIgnore
 	public Double getWinRate() {
-		return getTotalRaces() != 0 ? new Double(p1st) / new Double(getTotalRaces()) : 0.0d;
+		return getTotalRaces() != 0 ? Double.valueOf(p1st) / Double.valueOf(getTotalRaces()) : 0.0d;
 	}
 
 	@JsonIgnore
 	public Double getPtRate() {
-		return getTotalRaces() != 0 ? new Double(getPts()) / new Double(getTotalRaces()) / 8.0d : 0.0d;
+		return getTotalRaces() != 0 ? Double.valueOf(getPts()) / Double.valueOf(getTotalRaces()) / 8.0d : 0.0d;
 	}
 	
 	@JsonIgnore

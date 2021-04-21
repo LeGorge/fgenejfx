@@ -1,6 +1,7 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ public class History implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Map<String, String> relations = new HashMap<>();
+	
+	private List<Draft> drafts = new ArrayList<>();
 
 	@JsonDeserialize(using = MapDeserializer.class, keyAs = Pilot.class, contentAs = Integer.class)
 	private Map<Pilot, Integer> ais = new HashMap<>();
@@ -30,7 +33,11 @@ public class History implements Serializable {
 	public History() {
 	}
 
-	public History(Season s) {
+	public History(List<Draft> drafts) {
+		this.drafts = drafts;
+	}
+	
+	public void completeHistory(Season s) {
 		ContractsController.get().pilots().forEach(p -> {
 			this.saveAi(p, p.getAi());
 		});
@@ -43,9 +50,11 @@ public class History implements Serializable {
 		});
 		this.save(ContractsController.get().getContracts());
 	}
+	
 
 	// ===========================================================================================
 	// relations
+	// ===========================================================================================
 	public void save(Set<Contract> contracts) {
 		contracts.stream()
 				.forEach(c -> this.relations.put(c.getPilot().getName(), c.getTeam().getName().toString()));
@@ -65,9 +74,21 @@ public class History implements Serializable {
 				// .sorted()
 				.collect(Collectors.toList());
 	}
-
+	
+	// ===========================================================================================
+	// drafts
+	// ===========================================================================================
+	public void save(Draft draft) {
+		this.drafts.add(draft);
+	}
+	
+	public Set<Pilot> draftedPilots() {
+		return this.drafts.stream().map(d-> d.getPilot()).collect(Collectors.toSet());
+	}
+	
 	// ===========================================================================================
 	// ai
+	// ===========================================================================================
 	public void saveAi(Pilot p, Integer ai) {
 		ais.put(p, ai);
 	}
@@ -78,6 +99,7 @@ public class History implements Serializable {
 
 	// ===========================================================================================
 	// powers
+	// ===========================================================================================
 	public void savePowers(Team t, EnumMap<Powers, Double> powers) throws CopyException {
 		this.powers.put(t, Utils.copy(powers));
 	}
@@ -88,8 +110,13 @@ public class History implements Serializable {
 
 	// ===========================================================================================
 	// getter & setters
+	// ===========================================================================================
 	public Map<String, String> getRelations() {
 		return this.relations;
+	}
+	
+	public List<Draft> getDrafts() {
+		return this.drafts;
 	}
 
 	public Map<Pilot, Integer> getAis() {

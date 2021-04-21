@@ -3,14 +3,8 @@ package fgenejfx.view;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
-
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import fgenejfx.App;
-import fgenejfx.controllers.ContractsController;
-import fgenejfx.controllers.League;
-import fgenejfx.controllers.NewsController;
 import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
@@ -20,8 +14,9 @@ import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
 import fgenejfx.models.enums.State;
-import fgenejfx.view.engine.CustomGridPane;
-import fgenejfx.view.engine.CustomTableView;
+import fgenejfx.view.components.CustomGridPane;
+import fgenejfx.view.components.CustomTableView;
+import fgenejfx.view.components.panes.TitlePaneBySeason;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -33,8 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.text.Text;
 
 public class SeasonView extends CustomGridPane {
-
-	private League l = League.get();
 	private Integer year;
 	private Season season;
 
@@ -43,7 +36,7 @@ public class SeasonView extends CustomGridPane {
 		this.year = year;
 		this.season = l.season(year);
 		this.minHeightProperty().bind(App.stage.heightProperty().subtract(98));
-
+		
 		this.add(mainPane(), 0, 0, 1, 1);
 		this.add(newsPane(), 0, 1, 1, 1);
 		this.add(pSeasonGrid(), 0, 2, 1, 1);
@@ -55,54 +48,11 @@ public class SeasonView extends CustomGridPane {
 	// ============================================================================================
 	private CustomGridPane mainPane() {
 		CustomGridPane pane = new CustomGridPane(Pos.CENTER);
-
-//    CustomGridPane titlePane = new CustomGridPane(Pos.CENTER);
-//    Text title = new Text("Season "+ year);
-//    title.getStyleClass().add("title");
-//    titlePane.add(title, 0, 0);
-
-		pane.add(titlePane(), 0, 0);
+		pane.add(new TitlePaneBySeason(this.year, Front.SEASON), 0, 0);
 		pane.add(groups(), 0, 1, 1, 1);
 		pane.add(tplayoffGrid(), 0, 2, 1, 1);
 		pane.add(pplayoffGrid(), 0, 3, 1, 1);
-
 		return pane;
-	}
-
-	private CustomGridPane titlePane() {
-		CustomGridPane titlePane = new CustomGridPane(Pos.CENTER);
-		Text title = new Text("Season " + year);
-		title.getStyleClass().add("title");
-
-		Button before = new Button("", new FontIcon("fa-arrow-left"));
-		before.setPrefSize(25, 40);
-		if (this.year != 1) {
-			before.setOnAction(e -> {
-				App.navigate(Front.SEASON, this.year - 1);
-			});
-		} else {
-			before.setDisable(true);
-		}
-
-		Button after = new Button("", new FontIcon("fa-arrow-right"));
-		after.setPrefSize(25, 40);
-		if (this.year != this.l.getYear()) {
-			after.setOnAction(e -> {
-				App.navigate(Front.SEASON, this.year + 1);
-			});
-		} else if (season.isEnded()) {
-			after.setOnAction(e -> {
-				l.changeSeason();
-				App.navigate(Front.SEASON, this.year + 1);
-			});
-		} else {
-			after.setDisable(true);
-		}
-
-		titlePane.add(before, 0, 0);
-		titlePane.add(title, 1, 0);
-		titlePane.add(after, 2, 0);
-		return titlePane;
 	}
 
 	private CustomGridPane tplayoffGrid() {
@@ -167,7 +117,8 @@ public class SeasonView extends CustomGridPane {
 			gs[i].teams(year).stream().forEach(t -> 
 					table.getItems().addAll(l.pilotsOf(t, year)));
 			switch (season.getState()) {
-			case SEASON:
+			case INSEASON:
+			case INPLAYOFF:
 				table.sortByColumns(7);
 				break;
 			case ENDED:
@@ -175,7 +126,7 @@ public class SeasonView extends CustomGridPane {
 				break;
 			}
 
-			if (this.season.getState() != State.SEASON) {
+			if (this.season.getState() != State.INSEASON) {
 				table.colorRow(Collections.singletonMap(0, "gold"));
 			}
 
@@ -203,7 +154,7 @@ public class SeasonView extends CustomGridPane {
 	// ============================================================================================
 	private CustomGridPane newsPane() {
 		CustomGridPane pane = new CustomGridPane(Pos.CENTER);
-		List<String> news = NewsController.get().get(this.season);
+		List<String> news = newsController.get(this.season);
 		if (news != null) {
 			CustomTableView<String> table = new CustomTableView<>(year);
 			table.setPrefWidth(1480.0);
@@ -234,7 +185,7 @@ public class SeasonView extends CustomGridPane {
 
 			pane.add(table, 0, 0);
 		} else {
-			NewsController.get().add(this.season, "teste Season " + this.season.getYear());
+			newsController.add(this.season, "teste Season " + this.season.getYear());
 		}
 		return pane;
 	}
@@ -281,7 +232,7 @@ public class SeasonView extends CustomGridPane {
 
 		table.getItems().addAll((Collection<? extends A>) children);
 		switch (season.getState()) {
-		case SEASON:
+		case INSEASON:
 			table.sortByColumns(4, 5, 6, 7, 8, 9, 10);
 			break;
 		case ENDED:

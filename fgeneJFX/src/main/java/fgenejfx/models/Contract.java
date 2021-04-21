@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import fgenejfx.jackson.ContractDeserializer;
+import fgenejfx.utils.Utils;
 
 @JsonDeserialize(using = ContractDeserializer.class)
 public class Contract implements Serializable, Comparable<Contract> {
@@ -48,7 +49,7 @@ public class Contract implements Serializable, Comparable<Contract> {
 		int maxContract = pilot.getYearsUntilRetirement() > MAX_YEARS_ON_CONTRACT
 				? MAX_YEARS_ON_CONTRACT
 				: pilot.getYearsUntilRetirement();
-		this.years = new Random().nextInt(maxContract) + 1;
+		this.years = Utils.rand.nextInt(maxContract) + 1;
 	}
 
 	public Pilot getPilot() {

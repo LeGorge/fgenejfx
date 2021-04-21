@@ -2,5 +2,5 @@ package fgenejfx.models.enums;
 
 public enum Front {
 
-  SEASON, CHAMPS;
+  SEASON, CHAMPS, DRAFT;
 }

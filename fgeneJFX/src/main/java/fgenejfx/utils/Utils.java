@@ -26,8 +26,11 @@ import fgenejfx.models.Season;
 
 public class Utils {
   
-  public static DecimalFormat perFormat = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
-  public static DecimalFormat pprFormat = new DecimalFormat("#0", new DecimalFormatSymbols(Locale.US));
+  public static DecimalFormat onePlaceFormat = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
+  public static DecimalFormat integerFormat = new DecimalFormat("#0", new DecimalFormatSymbols(Locale.US));
+  public static DecimalFormat twoPlacesFormat = new DecimalFormat("#0.00", new DecimalFormatSymbols(Locale.US));
+  
+  public static Random rand = new Random();
 
   public static double round(double value, int places) {
     if (places < 0) throw new IllegalArgumentException();
@@ -38,11 +41,11 @@ public class Utils {
   }
   
 	public static Double genGaussian(Double mean, Double dev) {
-		return new Random().nextGaussian() * dev + mean;
+		return rand.nextGaussian() * dev + mean;
 	}
 
 	public static Integer genGaussian(Integer mean, Integer dev) {
-		return (int) (new Random().nextGaussian() * dev + mean);
+		return (int) (rand.nextGaussian() * dev + mean);
 	}
 	
 	public static String powerValueToStr(Integer p) {

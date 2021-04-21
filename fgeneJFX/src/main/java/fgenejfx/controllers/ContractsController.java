@@ -15,6 +15,7 @@ import fgenejfx.exceptions.PilotInactivationException;
 import fgenejfx.models.Contract;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Team;
+import fgenejfx.view.DraftView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -128,34 +129,41 @@ public class ContractsController implements Serializable {
 		Set<Team> teamsWithRoom = League.get().getTeams().stream()
 				.filter(t -> this.pilotsOf(t).size() != PILOTS_PER_TEAM).collect(Collectors.toSet());
 
-		executeFreeAgency(noContract, teamsWithRoom);
+		DraftView.setDraftData(noContract, teamsWithRoom);
+//		executeFreeAgency(noContract, teamsWithRoom);
 
-		Set<Pilot> retired = this.pilots().stream().filter(p -> !p.isActive())
-				.collect(Collectors.toSet());
-		cleanPilotFolder(retired);
+		Set<Pilot> retired = this.pilots().stream().filter(p -> !p.isActive()).collect(Collectors.toSet());
+//		cleanPilotFolder(retired);
+	}
+	
+	// registers the new contract and return if that team is full
+	public Boolean newContract(Pilot p, Team t) {
+		contracts.add(new Contract(p, t, canSignFirst(t)));
+		return (pilotsOf(t).size() == PILOTS_PER_TEAM);
 	}
 
-	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
-		List<Pilot> pilotsOrdered = pilots.stream().sorted((p2, p1) -> p1.getAi().compareTo(p2.getAi()))
-				.collect(Collectors.toList());
-		pilotsOrdered.stream().forEachOrdered(p -> {
-			List<Team> entries = new ArrayList<>(teams);
-			if (League.get().getYear() != 1) {
-				try {
-					Team last = HistoryController.get().history(League.get().getYear() - 1).teamOf(p);
-					if (entries.contains(last)) {
-						entries.add(last);
-					}
-				} catch (NoSuchElementException e) {
-				}
-			}
-			Team sorted = entries.get(new Random().nextInt(entries.size()));
-			contracts.add(new Contract(p, sorted, canSignFirst(sorted)));
-			if (pilotsOf(sorted).size() == PILOTS_PER_TEAM) {
-				teams.remove(sorted);
-			}
-		});
-	}
+	//deprecated
+//	private void executeFreeAgency(Set<Pilot> pilots, Set<Team> teams) {
+//		List<Pilot> pilotsOrdered = pilots.stream().sorted((p2, p1) -> p1.getAi().compareTo(p2.getAi()))
+//				.collect(Collectors.toList());
+//		pilotsOrdered.stream().forEachOrdered(p -> {
+//			List<Team> entries = new ArrayList<>(teams);
+//			if (League.get().getYear() != 1) {
+//				try {
+//					Team last = HistoryController.get().history(League.get().getYear() - 1).teamOf(p);
+//					if (entries.contains(last)) {
+//						entries.add(last);
+//					}
+//				} catch (NoSuchElementException e) {
+//				}
+//			}
+//			Team sorted = entries.get(new Random().nextInt(entries.size()));
+//			contracts.add(new Contract(p, sorted, canSignFirst(sorted)));
+//			if (pilotsOf(sorted).size() == PILOTS_PER_TEAM) {
+//				teams.remove(sorted);
+//			}
+//		});
+//	}
 
 	private Boolean canSignFirst(Team t) {
 		Set<Contract> set = this.contracts(t);

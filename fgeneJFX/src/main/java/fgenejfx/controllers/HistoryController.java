@@ -25,8 +25,14 @@ public class HistoryController implements Serializable {
 	// ===========================================================================================
 	// seasons
 	public void save(Season s) {
-		this.seasons.add(s);
-		this.historyMap.put(s, new History(s));
+		if(seasons.contains(s)) {
+			this.historyMap.get(s).completeHistory(s);
+		}else {
+			this.seasons.add(s);
+			var h = new History();
+			h.completeHistory(s);
+			this.historyMap.put(s, h);
+		}
 	}
 
 	public Season season(int year) throws NoSuchElementException {

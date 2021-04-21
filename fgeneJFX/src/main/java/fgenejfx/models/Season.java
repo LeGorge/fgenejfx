@@ -29,7 +29,7 @@ public class Season implements Serializable {
 	}
 
 	private Integer year;
-	private State state = State.SEASON;
+	private State state = State.INDRAFT;
 
 	private Group[] season = new Group[6];
 
@@ -153,7 +153,7 @@ public class Season implements Serializable {
 	// state machine
 	// ============================================================================================
 	public void sync(Integer index) throws NotValidException {
-		if (state == State.SEASON) {
+		if (state == State.INSEASON) {
 			this.syncGroupStats(index);
 			if (!Arrays.stream(this.season).anyMatch(g -> g.isEmpty())) {
 				this.startPlayoffs();
@@ -256,11 +256,14 @@ public class Season implements Serializable {
 	// season creation
 	// ============================================================================================
 	public Season() {
-		League l = League.get();
-		this.year = l.getYear();
-		List<Team> teams = new ArrayList<>(l.getTeams());
+		this.year = League.get().getYear();
+	}
+	
+	public void startSeason() {
+		List<Team> teams = new ArrayList<>(League.get().getTeams());
 		Collections.shuffle(teams);
 		buildGroups(teams);
+		setState(State.INSEASON);
 	}
 
 	private void buildGroups(List<Team> teams) {
@@ -311,6 +314,18 @@ public class Season implements Serializable {
 	@JsonIgnore
 	public Boolean isEnded() {
 		return state == State.ENDED;
+	}
+	@JsonIgnore
+	public Boolean isInSeason() {
+		return state == State.INSEASON;
+	}
+	@JsonIgnore
+	public Boolean isInDraft() {
+		return state == State.INDRAFT;
+	}
+	@JsonIgnore
+	public Boolean isInPlayoffs() {
+		return state == State.INPLAYOFF;
 	}
 
 	public void setState(State state) {

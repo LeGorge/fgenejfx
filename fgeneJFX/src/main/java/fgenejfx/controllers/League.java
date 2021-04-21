@@ -18,6 +18,7 @@ import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
 import fgenejfx.models.Season;
 import fgenejfx.models.Team;
+import fgenejfx.models.enums.State;
 import fgenejfx.models.enums.TeamsEnum;
 import fgenejfx.utils.InternetDependantUtils;
 import javafx.scene.control.TextInputDialog;
@@ -34,6 +35,9 @@ public class League implements Serializable {
 
 	public void passYear() {
 		this.year++;
+		Season newSeason = new Season();
+		setSeason(newSeason);
+		HistoryController.get().save(newSeason);
 	}
 
 	// ============================================================================================
@@ -97,6 +101,44 @@ public class League implements Serializable {
 	public void changeSeason() throws NotValidException {
 		new SeasonChangeController();
 	}
+	public void startSeason() throws NotValidException {
+		Season s = getSeason();
+		if(s.isInDraft()) {
+			s.startSeason();
+		}
+		newSeasonNews(HistoryController.get().history(s).draftedPilots());
+	}
+	
+	private void newSeasonNews(Set<Pilot> changedContracts) {
+		var cag = ContractsController.get();
+		var hag = HistoryController.get();
+		var news = NewsController.get();
+		
+		  Set<Pilot> rookies = cag.rookies();
+		  rookies.stream().forEach(p ->{
+		    news.add(getYear(), "Rookies: "+p+" was drafted by "+cag.teamOf(p));
+		  });
+		  
+		  changedContracts.stream().forEach(p->{
+			  try {
+				  Team oldT = hag.history(getYear()-1).teamOf(p);
+				  Team newT = cag.teamOf(p);
+				  if(oldT == newT) {
+					  news.add(getYear(), "New Contracts: "+newT+" re-signed "+p+" to a "
+							  +cag.remainingYearsOfContract(p)+"-year deal");
+				  }else {
+					  news.add(getYear(), "New Contracts: "+newT+" signed "+oldT+"'s "+p+" to a "
+							  +cag.remainingYearsOfContract(p)+"-year deal");
+				  }
+			} catch (NoSuchElementException e) {
+			}
+		  });
+		  
+		  cag.upcomingFreeAgents().stream().forEach(fa -> {
+			  news.add(getYear(), "Upcoming Free-Agent: "+fa+" is on his last year of contract with "+
+					  cag.teamOf(fa));
+		  });
+		}
 
 	// ============================================================================================
 	// new pilots

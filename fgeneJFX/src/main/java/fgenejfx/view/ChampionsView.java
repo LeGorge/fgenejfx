@@ -6,11 +6,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import fgenejfx.App;
-import fgenejfx.controllers.League;
 import fgenejfx.dtos.ChampionsDto;
 import fgenejfx.models.enums.LeagueTime;
-import fgenejfx.view.engine.CustomGridPane;
-import fgenejfx.view.engine.CustomTableView;
+import fgenejfx.view.components.CustomGridPane;
+import fgenejfx.view.components.tableViews.ChampsTableView;
 import javafx.geometry.Pos;
 import javafx.scene.text.Text;
 
@@ -45,7 +44,7 @@ public class ChampionsView extends CustomGridPane {
   private CustomGridPane ChampionsPane(LeagueTime time) {
 	  CustomGridPane pane = new CustomGridPane(Pos.CENTER);
 	  
-	  CustomTableView<ChampionsDto> table = new CustomTableView<>(0);
+	  ChampsTableView table = new ChampsTableView(0);
 	  table.setPrefHeight(500);
 	  table.setPrefWidth(750);
 	  table.addYearColumn()
@@ -60,7 +59,7 @@ public class ChampionsView extends CustomGridPane {
 			  .addCardColumn("6th", "c6", time);
 	  }
 	  
-	  Integer year = League.get().getYear();
+	  Integer year = l.getYear();
 	  var counter = new AtomicInteger(year);
 	  List<ChampionsDto> dtos = IntStream.generate(counter::decrementAndGet).limit(year-1).boxed()
 			  .map(i-> new ChampionsDto(i, time))

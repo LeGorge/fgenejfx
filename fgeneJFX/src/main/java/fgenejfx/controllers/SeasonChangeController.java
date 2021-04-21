@@ -42,19 +42,13 @@ public class SeasonChangeController {
 		// update stats
 		updateStats();
 
-		// pass year
+		// pass year and new season
 		l.passYear();
-
+		
 		// update contracts
 		int newPilots = ContractsController.get().willRetire().size();
 		cag.updateContracts(l.createNewPilots(newPilots), 
 				(Pilot)l.getSeason().champ(LeagueTime.PPLAYOFF, Pilot.class));
-
-		// new season
-		l.setSeason(new Season());
-		
-		//news
-		newSeasonNews(upcomingFreeAgents);
 	}
 
 	private void updatePowers() {
@@ -202,27 +196,4 @@ public class SeasonChangeController {
 	  });
 	}
 	
-	private void newSeasonNews(Set<Pilot> changedContracts) {
-	  Set<Pilot> rookies = cag.rookies();
-	  rookies.stream().forEach(p ->{
-	    news.add(l.getYear(), "Rookies: "+p+" was drafted by "+cag.teamOf(p));
-	  });
-	  
-	  changedContracts.stream().forEach(p->{
-	    Team oldT = hag.history(l.getYear()-1).teamOf(p);
-	    Team newT = cag.teamOf(p);
-	    if(oldT == newT) {
-	      news.add(l.getYear(), "New Contracts: "+newT+" re-signed "+p+" to a "
-            +cag.remainingYearsOfContract(p)+"-year deal");
-	    }else {
-	      news.add(l.getYear(), "New Contracts: "+newT+" signed "+oldT+"'s "+p+" to a "
-	          +cag.remainingYearsOfContract(p)+"-year deal");
-	    }
-	  });
-	  
-	  cag.upcomingFreeAgents().stream().forEach(fa -> {
-		  news.add(l.getYear(), "Upcoming Free-Agent: "+fa+" is on his last year of contract with "+
-				  cag.teamOf(fa));
-	  });
-	}
 }

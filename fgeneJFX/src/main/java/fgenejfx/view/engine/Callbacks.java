@@ -113,7 +113,7 @@ public class Callbacks<A,B> {
    * @return Callback object intended for javafx TableView usage. The Generic types are set when
    * creating the enclosing class.
    * @since 1.0
-   * @author Gorge(MOURA, ANDERSON GUIMARÃES)
+   * @author LeGorge(MOURA, ANDERSON GUIMARÃES)
    */
   public Callback<CellDataFeatures<A, B>, ObservableValue<B>> stringCol(
 		  Object altData, LinkedHashMap<String, Object[]> exec, DecimalFormat format){
