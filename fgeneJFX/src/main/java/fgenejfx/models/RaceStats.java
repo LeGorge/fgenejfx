@@ -18,7 +18,7 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 	protected Integer p4th = 0;
 	protected Integer p5th = 0;
 	protected Integer p6th = 0;
-	protected Double per = 0.0;
+	protected Integer per = 0;
 
 	// pts
 	// WinRate
@@ -66,6 +66,10 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 		} else {
 			return false;
 		}
+	}
+	
+	public void addPer(Integer per) {
+		this.per += per;
 	}
 
 	// ============================================================================================
@@ -149,11 +153,11 @@ public class RaceStats implements Serializable, Comparable<RaceStats> {
 		this.p6th = p6th;
 	}
 
-	public Double getPer() {
+	public Integer getPer() {
     return per;
   }
 
-  public void setPer(Double per) {
+  public void setPer(Integer per) {
     this.per = per;
   }
 

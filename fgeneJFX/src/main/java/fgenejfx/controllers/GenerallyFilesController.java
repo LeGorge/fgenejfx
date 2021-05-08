@@ -17,8 +17,7 @@ public class GenerallyFilesController {
 	private static final String pilotsPath = "drivers\\";
 	
 //	private static final String carsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\cars.car";
-//	private static final String pilotsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\"
-//	    + "drivers\\";
+//	private static final String pilotsPath = "C:\\Users\\Gorge\\Desktop\\fgene_saves_teste\\drivers\\";
 
 	public static RaceStats readDriver(String pilotName) {
 		RaceStats result = new RaceStats();

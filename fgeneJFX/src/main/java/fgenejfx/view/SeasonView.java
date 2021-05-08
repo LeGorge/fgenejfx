@@ -135,7 +135,7 @@ public class SeasonView extends CustomGridPane {
 			if (gs[i].isEmpty()) {
 				int f = i;
 				but.setOnAction(e -> {
-//          l.season(year).simulate(LeagueTime.SEASON, f);
+//					l.season(year).simulate(LeagueTime.SEASON, f);
 					season.sync(f);
 					App.update();
 				});

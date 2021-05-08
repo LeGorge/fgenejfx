@@ -188,13 +188,8 @@ public class CustomTableView<A> extends TableView<A> {
 	public CustomTableView<A> addBySeasonStatColumn(LeagueTime time, MethodSelector sel) {
 		TableColumn<A, Number> col = new TableColumn<>(sel.getName());
 		ViewUtils.tooltip(col, sel.getTip());
-		if (sel == MethodSelector.PER) {
-			col.setCellValueFactory(new Callbacks<A, Number>().stringCol(League.get(),
-					MethodMapper.bySeasonStat(year, time, sel), Utils.onePlaceFormat));
-		} else {
-			col.setCellValueFactory(new Callbacks<A, Number>().stringCol(League.get(),
-					MethodMapper.bySeasonStat(year, time, sel), null));
-		}
+		col.setCellValueFactory(new Callbacks<A, Number>().stringCol(League.get(),
+				MethodMapper.bySeasonStat(year, time, sel), null));
 		col.setSortType(SortType.DESCENDING);
 		this.getColumns().add(col);
 		return this;
@@ -256,13 +251,8 @@ public class CustomTableView<A> extends TableView<A> {
 	public CustomTableView<A> addPerRoundColumn(LeagueTime time, MethodSelector sel) {
 		TableColumn<A, Number> col = new TableColumn<>(sel.getName());
 		ViewUtils.tooltip(col, sel.getTip());
-		if (sel == MethodSelector.PERPR) {
-			col.setCellValueFactory(new Callbacks<A, Number>().stringCol(null,
-					MethodMapper.perRoundStat(time, MethodSelector.PERPR), Utils.onePlaceFormat));
-		} else {
-			col.setCellValueFactory(new Callbacks<A, Number>().stringCol(null,
-					MethodMapper.perRoundStat(time, MethodSelector.PPR), Utils.integerFormat));
-		}
+		col.setCellValueFactory(new Callbacks<A, Number>().stringCol(null,
+				MethodMapper.perRoundStat(time, sel), Utils.integerFormat));
 
 		col.setSortType(SortType.DESCENDING);
 		this.getColumns().add(col);

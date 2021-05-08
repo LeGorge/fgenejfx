@@ -26,6 +26,7 @@ public class HistoryController implements Serializable {
 	// seasons
 	public void save(Season s) {
 		if(seasons.contains(s)) {
+			seasons.set(seasons.size()-1, s);
 			this.historyMap.get(s).completeHistory(s);
 		}else {
 			this.seasons.add(s);

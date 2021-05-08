@@ -46,10 +46,13 @@ public class Contract implements Serializable, Comparable<Contract> {
 		this.pilot = pilot;
 		this.team = team;
 		this.isFirst = isFirst;
-		int maxContract = pilot.getYearsUntilRetirement() > MAX_YEARS_ON_CONTRACT
-				? MAX_YEARS_ON_CONTRACT
-				: pilot.getYearsUntilRetirement();
-		this.years = Utils.rand.nextInt(maxContract) + 1;
+//		int maxContract = pilot.getYearsUntilRetirement() > MAX_YEARS_ON_CONTRACT
+//				? MAX_YEARS_ON_CONTRACT
+//				: pilot.getYearsUntilRetirement();
+		this.years = Utils.rand.nextInt(MAX_YEARS_ON_CONTRACT) + 1;
+		if(this.years > pilot.getYearsUntilRetirement()) {
+			this.years = pilot.getYearsUntilRetirement();
+		}
 	}
 
 	public Pilot getPilot() {

@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -133,7 +134,6 @@ public class Callbacks<A,B> {
 			  
 			  newExec.keySet().stream().forEachOrdered(method ->{
 				  result = methodResultWithParams(result, method, newExec.get(method));
-//				  System.out.println("result - "+result);
 			  });
 			  
 			  if(result == null) {
@@ -141,7 +141,7 @@ public class Callbacks<A,B> {
 			  }
 			  
 			  if(format != null) {
-			    result = format.format(result);
+				  result = format.format(result);
 			  }
 			  
 			  return new SimpleObjectProperty(result);
