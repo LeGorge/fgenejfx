@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import fgenejfx.controllers.ContractsController;
 import fgenejfx.controllers.League;
 import fgenejfx.models.Powers;
 import fgenejfx.models.Team;
@@ -14,15 +15,20 @@ import fgenejfx.utils.Utils;
 import fgenejfx.view.engine.Callbacks;
 import fgenejfx.view.engine.MethodMapper;
 import fgenejfx.view.engine.ViewUtils;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class CustomTableView<A> extends TableView<A> {
 
@@ -64,7 +70,7 @@ public class CustomTableView<A> extends TableView<A> {
 	}
 
 	public CustomTableView<A> addNameColumn(String colTitle, String field) {
-		TableColumn<A, String> nameCol = getSimpleCol(colTitle, field);
+		TableColumn<A, String> nameCol = getSimpleCol(colTitle, colTitle, field);
 		nameCol.setMinWidth(70);
 		nameCol.setCellFactory(col -> new TableCell<A, String>() {
 			@Override
@@ -194,6 +200,16 @@ public class CustomTableView<A> extends TableView<A> {
 		this.getColumns().add(col);
 		return this;
 	}
+	
+	public CustomTableView<A> addHiddenContractColumn() {
+		TableColumn<A, Number> col = new TableColumn<>("");
+		col.setVisible(false);
+		col.setCellValueFactory(new Callbacks<A, Number>().stringCol(ContractsController.get(),
+				MethodMapper.contractPosition(), null));
+		col.setSortType(SortType.ASCENDING);
+		this.getColumns().add(col);
+		return this;
+	}
 
 	public CustomTableView<A> addPowersColumn(Powers p) {
 		TableColumn<A, Number> col;
@@ -263,7 +279,11 @@ public class CustomTableView<A> extends TableView<A> {
 	// Engine
 	// ============================================================================================
 	public CustomTableView<A> addSimpleColumn(String colTitle, String field) {
-		this.getColumns().add(getSimpleCol(colTitle, field));
+		this.getColumns().add(getSimpleCol(colTitle, colTitle, field));
+		return this;
+	}
+	public CustomTableView<A> addSimpleColumn(String colTitle, String tooltip, String field) {
+		this.getColumns().add(getSimpleCol(colTitle, tooltip, field));
 		return this;
 	}
 	
@@ -282,9 +302,9 @@ public class CustomTableView<A> extends TableView<A> {
 	// ============================================================================================
 	// Privates
 	// ============================================================================================
-	private TableColumn<A, String> getSimpleCol(String colTitle, String field){
+	private TableColumn<A, String> getSimpleCol(String colTitle, String tooltip, String field){
 		TableColumn<A, String> col = new TableColumn<>(colTitle);
-		ViewUtils.tooltip(col);
+		ViewUtils.tooltip(col, tooltip);
 		if(field.contains(".")) {
 			LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
 			Arrays.stream(field.split("\\."))

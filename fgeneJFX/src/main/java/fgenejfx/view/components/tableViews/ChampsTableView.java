@@ -25,7 +25,7 @@ public class ChampsTableView extends CustomTableView<ChampionsDto> {
 		return this;
 	}
 
-	public ChampsTableView addCardColumn(String colTitle, String field, LeagueTime time) {
+	public ChampsTableView addCardColumn(String colTitle, String field, LeagueTime time, Boolean pilotName) {
 		TableColumn<ChampionsDto, CardDto> cardCol = new TableColumn<>(colTitle);
 		ViewUtils.tooltip(cardCol);
 		cardCol.setCellValueFactory(new PropertyValueFactory<>(field));
@@ -36,7 +36,7 @@ public class ChampsTableView extends CustomTableView<ChampionsDto> {
 				if (empty) {
 					setGraphic(null);
 				} else {
-					setGraphic(new ChampionsCard(item, time));
+					setGraphic(new ChampionsCard(item, time, pilotName));
 				}
 			}
 		});

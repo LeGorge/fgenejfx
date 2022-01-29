@@ -34,29 +34,30 @@ public class ChampionsView extends CustomGridPane {
     title.getStyleClass().add("title");
     titlePane.add(title, 0, 0);
     
-    pane.add(titlePane, 0, 0);
-    pane.add(ChampionsPane(LeagueTime.PPLAYOFF), 0, 1);
-    pane.add(ChampionsPane(LeagueTime.TPLAYOFF), 0, 2);
-    
+    pane.add(titlePane, 0, 0, 2, 1);
+    pane.add(championsTable(LeagueTime.PPLAYOFF, true, 800), 0, 1);
+    pane.add(championsTable(LeagueTime.PPLAYOFF, false, 800), 1, 1);
+    pane.add(championsTable(LeagueTime.TPLAYOFF, false, 500), 0, 2);
+    pane.add(championsTable(LeagueTime.TPLAYOFF, true, 500), 1, 2);
+
     return pane;
   }
   
-  private CustomGridPane ChampionsPane(LeagueTime time) {
+  private CustomGridPane championsTable(LeagueTime time, Boolean pilotName, Integer width) {
 	  CustomGridPane pane = new CustomGridPane(Pos.CENTER);
 	  
 	  ChampsTableView table = new ChampsTableView(0);
-	  table.setPrefHeight(500);
-	  table.setPrefWidth(750);
+	  table.setPrefHeight(1000);
+	  table.setPrefWidth(width);
 	  table.addYearColumn()
-		  .addCardColumn("Gold", "c1", time)
-		  .addCardColumn("Silver", "c2", time)
-		  .addCardColumn("Bronze", "c3", time);
+		  .addCardColumn("Gold", "c1", time, pilotName)
+		  .addCardColumn("Silver", "c2", time, pilotName)
+		  .addCardColumn("Bronze", "c3", time, pilotName);
 	  
 	  if(time.equals(LeagueTime.PPLAYOFF)) {
-		  table.setPrefWidth(1520);
-		  table.addCardColumn("4th", "c4", time)
-			  .addCardColumn("5th", "c5", time)
-			  .addCardColumn("6th", "c6", time);
+		  table.addCardColumn("4th", "c4", time, pilotName)
+			  .addCardColumn("5th", "c5", time, pilotName)
+			  .addCardColumn("6th", "c6", time, pilotName);
 	  }
 	  
 	  Integer year = l.getYear();

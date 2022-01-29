@@ -80,6 +80,10 @@ public class ContractsController implements Serializable {
 		return contracts.stream().filter(c -> c.getPilot().isRookie()).map(a -> a.getPilot())
 				.collect(Collectors.toSet());
 	}
+	
+	public Integer contractPosition(Pilot p) {
+		return contract(p).getIsFirst() ? 1 : 2;
+	}
 
 	// ============================================================================================
 	// Operations
@@ -111,17 +115,20 @@ public class ContractsController implements Serializable {
 		
 		//pchampion cannot change teams
 		contracts.stream().filter(c-> c.getPilot().equals(pchamp) && c.isDone()).forEach(c-> {
-			if(c.getPilot().isActive()) {
+			if(c.getPilot().getYearsUntilRetirement() > 1) {
 				c.setYears(1);	
 			}
 		});
+
+		Set<Pilot> retired = this.pilots().stream().filter(p -> p.getYearsUntilRetirement() == 1)
+				.collect(Collectors.toSet());
 
 		// remove terminated contracts
 		Set<Contract> ended = contracts.stream().filter(Contract::isDone).collect(Collectors.toSet());
 		contracts.removeAll(ended);
 
 		// get Pilots with no contract
-		Set<Pilot> noContract = ended.stream().filter(c -> c.getPilot().isActive())
+		Set<Pilot> noContract = ended.stream().filter(c -> c.getPilot().getYearsUntilRetirement() > 1)
 				.map(Contract::getPilot).collect(Collectors.toSet());
 		noContract.addAll(rookies);
 
@@ -132,8 +139,7 @@ public class ContractsController implements Serializable {
 		DraftView.setDraftData(noContract, teamsWithRoom);
 //		executeFreeAgency(noContract, teamsWithRoom);
 
-		Set<Pilot> retired = this.pilots().stream().filter(p -> !p.isActive()).collect(Collectors.toSet());
-//		cleanPilotFolder(retired);
+		cleanPilotFolder(retired);
 	}
 	
 	// registers the new contract and return if that team is full

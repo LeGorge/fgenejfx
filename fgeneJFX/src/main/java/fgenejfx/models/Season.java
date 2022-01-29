@@ -47,6 +47,16 @@ public class Season implements Serializable {
 		return Arrays.asList(this.season).indexOf(seasonGroupOf(t)) + 1;
 	}
 
+	public Group playoffGroup(LeagueTime time) {
+		switch (time) {
+			case PPLAYOFF:
+				return this.pPlayoff;
+			case TPLAYOFF:
+				return this.tPlayoff;
+		}
+		return null;
+	}
+
 	// ============================================================================================
 	// pilot related methods
 	// ============================================================================================

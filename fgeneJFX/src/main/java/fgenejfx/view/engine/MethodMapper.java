@@ -84,6 +84,13 @@ public class MethodMapper {
     return mapping;
   }
   
+  public static LinkedHashMap<String, Object[]> contractPosition(){
+	  LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
+	  Object[] posParams1 = {"this"};
+	  mapping.put("contractPosition", posParams1);
+	  return mapping;
+  }
+  
   // ============================================================================================
   // Life Stats
   // ============================================================================================

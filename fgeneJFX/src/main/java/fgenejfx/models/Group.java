@@ -1,15 +1,11 @@
 package fgenejfx.models;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import fgenejfx.interfaces.StatsMonitorable;
+import javafx.collections.transformation.SortedList;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
@@ -89,6 +85,12 @@ public class Group implements Serializable {
 
 	public List<Pilot> pilots() {
 		return this.pilotsOrdered();
+	}
+
+	public List<Pilot> pilotsSortedNaturally(Integer year){
+		List<Pilot> result = new ArrayList<>();
+		this.teams(year).stream().forEach(t -> result.addAll(League.get().pilotsOf(t, year)));
+		return result;
 	}
 
 	// =============================================================================================
@@ -183,5 +185,12 @@ public class Group implements Serializable {
 	// =============================================================================================
 	public Map<Pilot, RaceStats> getPilotsMap() {
 		return this.pilotsMap;
+	}
+
+	@Override
+	public String toString() {
+		return "Group{" +
+				"pilotsMap=" + pilotsMap +
+				'}';
 	}
 }

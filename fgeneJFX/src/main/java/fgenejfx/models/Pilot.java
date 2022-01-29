@@ -52,8 +52,8 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	      return Double.valueOf(stats.getSeason().getPts()) / Double.valueOf(lifeStats.getSeasons());
 	    }
 	  case PPLAYOFF:
-	    if(lifeStats.getpPlayoffs() != 0) {
-	      return Double.valueOf(stats.getpPlayoff().getPts()) / Double.valueOf(lifeStats.getpPlayoffs());
+	    if(lifeStats.getPPlayoffs() != 0) {
+	      return Double.valueOf(stats.getpPlayoff().getPts()) / Double.valueOf(lifeStats.getPPlayoffs());
 	    }
 	  case TPLAYOFF:
 	    if(lifeStats.gettPlayoffs() != 0) {
@@ -71,8 +71,8 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 				return Double.valueOf(stats.getSeason().getP1st()) / Double.valueOf(lifeStats.getSeasons());
 			}
 		case PPLAYOFF:
-			if(lifeStats.getpPlayoffs() != 0) {
-				return Double.valueOf(stats.getpPlayoff().getP1st()) / Double.valueOf(lifeStats.getpPlayoffs());
+			if(lifeStats.getPPlayoffs() != 0) {
+				return Double.valueOf(stats.getpPlayoff().getP1st()) / Double.valueOf(lifeStats.getPPlayoffs());
 			}
 		case TPLAYOFF:
 			if(lifeStats.gettPlayoffs() != 0) {
@@ -90,8 +90,8 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	      return Double.valueOf(stats.getSeason().getPer()) / Double.valueOf(lifeStats.getSeasons());
 	    }
 	  case PPLAYOFF:
-	    if(lifeStats.getpPlayoffs() != 0) {
-	      return Double.valueOf(stats.getpPlayoff().getPer()) / Double.valueOf(lifeStats.getpPlayoffs());
+	    if(lifeStats.getPPlayoffs() != 0) {
+	      return Double.valueOf(stats.getpPlayoff().getPer()) / Double.valueOf(lifeStats.getPPlayoffs());
 	    }
 	  case TPLAYOFF:
 	    if(lifeStats.gettPlayoffs() != 0) {

@@ -42,13 +42,13 @@ public class SeasonChangeController {
 		// update stats
 		updateStats();
 
-		// pass year and new season
-		l.passYear();
-		
 		// update contracts
 		int newPilots = ContractsController.get().willRetire().size();
-		cag.updateContracts(l.createNewPilots(newPilots), 
+		cag.updateContracts(l.createNewPilots(newPilots),
 				(Pilot)l.getSeason().champ(LeagueTime.PPLAYOFF, Pilot.class));
+
+		// pass year and new season
+		l.passYear();
 	}
 
 	private void updatePowers() {

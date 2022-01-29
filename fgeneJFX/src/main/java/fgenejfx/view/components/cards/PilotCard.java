@@ -25,8 +25,8 @@ public class PilotCard extends CustomGridPane {
 		add(statsPane(p, year), 0, 1);
 		
 		var life = p.getLifeStats();
-		add(new CustomTitledPane("For pilots",medalsPane(life.getpGold(), life.getpSilver(), life.getpBronze())),0,2);
-		add(new CustomTitledPane("For teams",medalsPane(life.gettGold(), life.gettSilver(), life.gettBronze())),0,3);
+		add(new CustomTitledPane("For pilots",medalsPane(life.getPGold(), life.getPSilver(), life.getPBronze())),0,2);
+		add(new CustomTitledPane("For teams",medalsPane(life.getTGold(), life.getTSilver(), life.getTBronze())),0,3);
 		
 		allignAllH();
 	}

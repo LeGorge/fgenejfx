@@ -31,7 +31,7 @@ public class HistoryController implements Serializable {
 		}else {
 			this.seasons.add(s);
 			var h = new History();
-			h.completeHistory(s);
+//			h.completeHistory(s);
 			this.historyMap.put(s, h);
 		}
 	}

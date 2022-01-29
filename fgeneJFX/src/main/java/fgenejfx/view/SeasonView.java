@@ -1,8 +1,10 @@
 package fgenejfx.view;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
+import fgenejfx.interfaces.StatsMonitorable;
+import fgenejfx.models.utils.RaceStatsComparator;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import fgenejfx.App;
 import fgenejfx.models.Group;
@@ -22,6 +24,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -58,18 +61,31 @@ public class SeasonView extends CustomGridPane {
 	private CustomGridPane tplayoffGrid() {
 		LeagueTime time = LeagueTime.TPLAYOFF;
 		CustomGridPane tplayoffPane = new CustomGridPane(Pos.CENTER);
-		tplayoffPane.add(updateBut(time), 0, 0, 3, 1);
-		tplayoffPane.add(playoffStatTable(time, season.pilots(time)), 0, 1, 2, 1);
+		tplayoffPane.add(updateBut(time), 0, 0, 4, 1);
+		tplayoffPane.add(playoffStatTable(time, season.playoffGroup(time)), 0, 1, 3, 1);
 
 		CustomTableView<Team> table = new CustomTableView<>(year);
 		table.setPrefHeight(100);
-		table.setPrefWidth(220);
-		table.addNameColumn().addBySeasonStatColumn(time, MethodSelector.PTS).addBySeasonStatColumn(time,
-				MethodSelector.P1ST);
+		table.setPrefWidth(320);
+
+		table.addNameColumn();
+
+		if(!season.isEnded()){
+			table.addSimpleColumn("G", "Golds", "lifeStats.tGold")
+					.addSimpleColumn("S", "Silvers", "lifeStats.tSilver")
+					.addSimpleColumn("B", "Bronzes", "lifeStats.tBronze");
+		}
+
+		table.addBySeasonStatColumn(time, MethodSelector.PTS)
+				.addBySeasonStatColumn(time, MethodSelector.P1ST);
 
 		table.getItems().addAll(season.teams(time));
-		table.sortByColumns(1, 2);
-		tplayoffPane.add(table, 2, 1, 1, 1);
+		if(!season.isEnded()){
+			table.sortByColumns(4, 5);
+		}else{
+			table.sortByColumns(1, 2);
+		}
+		tplayoffPane.add(table, 3, 1, 1, 1);
 		return tplayoffPane;
 	}
 
@@ -77,7 +93,7 @@ public class SeasonView extends CustomGridPane {
 		LeagueTime time = LeagueTime.PPLAYOFF;
 		CustomGridPane pplayoffPane = new CustomGridPane(Pos.CENTER);
 		pplayoffPane.add(updateBut(time), 0, 0);
-		pplayoffPane.add(playoffStatTable(time, season.pilots(time)), 0, 1);
+		pplayoffPane.add(playoffStatTable(time, season.playoffGroup(time)), 0, 1);
 		return pplayoffPane;
 	}
 
@@ -102,29 +118,30 @@ public class SeasonView extends CustomGridPane {
 			table.setPrefHeight(170);
 			table.setPrefWidth(500);
 
-			table.addTeamColumn().addNameColumn().addTopPosColumn().addScoutReportColumn();
+//			Start fields
+			table.addTeamColumn()
+					.addNameColumn()
+					.addAgeColumn()
+					.addTopPosColumn()
+					.addScoutReportColumn();
 
-			if (season.isEnded()) {
-				table.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS)
-						.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.P1ST)
-						.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PER);
-			} else {
-				table.addAgeColumn().addPerRoundColumn(LeagueTime.SEASON, MethodSelector.PPR)
-						.addPerRoundColumn(LeagueTime.SEASON, MethodSelector.PERPR)
-						.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS);
+//			Conditional Fields
+			if (!season.isEnded()) {
+				table.addSimpleColumn("SC", "Season Champ", "lifeStats.pPlayoffs")
+						.addPerRoundColumn(LeagueTime.SEASON, MethodSelector.PPR)
+						.addPerRoundColumn(LeagueTime.SEASON, MethodSelector.PERPR);
 			}
 
-			gs[i].teams(year).stream().forEach(t -> 
-					table.getItems().addAll(l.pilotsOf(t, year)));
-			switch (season.getState()) {
-			case INSEASON:
-			case INPLAYOFF:
-				table.sortByColumns(7);
-				break;
-			case ENDED:
-				table.sortByColumns(4);
-				break;
+//			End Fields
+			table.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PTS)
+					.addBySeasonStatColumn(LeagueTime.SEASON, MethodSelector.PER);
+
+			var sorting_container = gs[i].pilotsSortedNaturally(year);
+			if(!gs[i].isEmpty()){
+				Comparator byStats = new RaceStatsComparator(gs[i]);
+				sorting_container.sort(byStats);
 			}
+			table.getItems().addAll(sorting_container);
 
 			if (this.season.getState() != State.INSEASON) {
 				table.colorRow(Collections.singletonMap(0, "gold"));
@@ -214,32 +231,43 @@ public class SeasonView extends CustomGridPane {
 	// ============================================================================================
 	// privates
 	// ============================================================================================
-	private <A> CustomTableView playoffStatTable(LeagueTime t, Collection<?> children) {
-		CustomTableView<A> table = new CustomTableView<>(year);
+	private CustomTableView playoffStatTable(LeagueTime t, Group g) {
+		CustomTableView<StatsMonitorable> table = new CustomTableView<>(year);
 		table.setPrefHeight(170.0);
 		table.setPrefWidth(600.0);
 
 		table.addTeamColumn().addNameColumn();
 
 		if (!season.isEnded()) {
-			table.addPerRoundColumn(t, MethodSelector.PPR).addPerRoundColumn(t, MethodSelector.PERPR);
+			table.addSimpleColumn("RGold", "Round Golds", String.format("lifeStats.%sGold", LeagueTime.param(t)))
+					.addSimpleColumn("RSilver", "Round Silvers", String.format("lifeStats.%sSilver", LeagueTime.param(t)))
+					.addSimpleColumn("RBronze", "Round Bronzes", String.format("lifeStats.%sBronze", LeagueTime.param(t)))
+					.addPerRoundColumn(t, MethodSelector.PPR)
+					.addPerRoundColumn(t, MethodSelector.PERPR);
 		}
 
 		table.addBySeasonStatColumn(t, MethodSelector.PTS).addBySeasonStatColumn(t, MethodSelector.P1ST)
 				.addBySeasonStatColumn(t, MethodSelector.P2ND).addBySeasonStatColumn(t, MethodSelector.P3RD)
 				.addBySeasonStatColumn(t, MethodSelector.P4TH).addBySeasonStatColumn(t, MethodSelector.P5TH)
-				.addBySeasonStatColumn(t, MethodSelector.P6TH).addBySeasonStatColumn(t, MethodSelector.PER);
+				.addBySeasonStatColumn(t, MethodSelector.P6TH).addBySeasonStatColumn(t, MethodSelector.PER)
+				.addHiddenContractColumn();
 
-		table.getItems().addAll((Collection<? extends A>) children);
-		switch (season.getState()) {
-		case INSEASON:
-			table.sortByColumns(4, 5, 6, 7, 8, 9, 10);
-			break;
-		case ENDED:
-			table.sortByColumns(2, 3, 4, 5, 6, 7, 8);
-			break;
+		if(g != null){
+			List<Pilot> sorting_container = null;
+			switch (t) {
+				case PPLAYOFF:
+					sorting_container = g.pilots();
+					break;
+				case TPLAYOFF:
+					sorting_container = g.pilotsSortedNaturally(year);
+					break;
+			}
+			if(!g.isEmpty()){
+				Comparator byStats = new RaceStatsComparator(g);
+				sorting_container.sort(byStats);
+			}
+			table.getItems().addAll(sorting_container);
 		}
-
 		return table;
 	}
 
@@ -272,7 +300,7 @@ public class SeasonView extends CustomGridPane {
 		but.setMaxWidth(Double.MAX_VALUE);
 		if (season.readySync(time, null)) {
 			but.setOnAction(e -> {
-//        l.season(year).simulate(time, null);
+//        		l.season(year).simulate(time, null);
 				season.sync(time);
 
 //        if(time.equals(LeagueTime.PPLAYOFF)) {

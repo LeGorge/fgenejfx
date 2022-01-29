@@ -65,7 +65,7 @@ public class LifeStats implements Serializable {
 		this.seasons = seasons;
 	}
 
-	public Integer getpPlayoffs() {
+	public Integer getPPlayoffs() {
 		return pPlayoffs;
 	}
 
@@ -81,7 +81,7 @@ public class LifeStats implements Serializable {
 		this.tPlayoffs = tPlayoffs;
 	}
 
-	public Integer getpGold() {
+	public Integer getPGold() {
 		return pGold;
 	}
 
@@ -89,7 +89,7 @@ public class LifeStats implements Serializable {
 		this.pGold = pGold;
 	}
 
-	public Integer getpSilver() {
+	public Integer getPSilver() {
 		return pSilver;
 	}
 
@@ -97,7 +97,7 @@ public class LifeStats implements Serializable {
 		this.pSilver = pSilver;
 	}
 
-	public Integer getpBronze() {
+	public Integer getPBronze() {
 		return pBronze;
 	}
 
@@ -105,7 +105,7 @@ public class LifeStats implements Serializable {
 		this.pBronze = pBronze;
 	}
 
-	public Integer gettGold() {
+	public Integer getTGold() {
 		return tGold;
 	}
 
@@ -113,7 +113,7 @@ public class LifeStats implements Serializable {
 		this.tGold = tGold;
 	}
 
-	public Integer gettSilver() {
+	public Integer getTSilver() {
 		return tSilver;
 	}
 
@@ -121,7 +121,7 @@ public class LifeStats implements Serializable {
 		this.tSilver = tSilver;
 	}
 
-	public Integer gettBronze() {
+	public Integer getTBronze() {
 		return tBronze;
 	}
 

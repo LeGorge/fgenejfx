@@ -5,6 +5,16 @@ public enum LeagueTime {
   SEASON("statsOf", "getSeason"),
   PPLAYOFF("statsOf", "getpPlayoff"),
   TPLAYOFF("statsOf","gettPlayoff");
+
+  public static String param(LeagueTime time){
+	  switch (time) {
+		  case PPLAYOFF:
+			  return "p";
+		  case TPLAYOFF:
+			  return "t";
+	  }
+	  return null;
+  }
 	
 	private String cmd;
 	private String cmd2;

@@ -38,26 +38,29 @@ public class History implements Serializable {
 	}
 	
 	public void completeHistory(Season s) {
-		ContractsController.get().pilots().forEach(p -> {
+		var cag = ContractsController.get();
+
+		cag.pilots().forEach(p -> {
 			this.saveAi(p, p.getAi());
 		});
-		ContractsController.get().teams().forEach(t -> {
+
+		cag.teams().forEach(t -> {
 			try {
 				this.savePowers(t, t.getPowers());
 			} catch (CopyException e) {
 				e.printStackTrace();
 			}
 		});
-		this.save(ContractsController.get().getContracts());
+
+		this.saveContracts(cag.getContracts());
 	}
 	
 
 	// ===========================================================================================
 	// relations
 	// ===========================================================================================
-	public void save(Set<Contract> contracts) {
-		contracts.stream()
-				.forEach(c -> this.relations.put(c.getPilot().getName(), c.getTeam().getName().toString()));
+	public void saveContracts(Set<Contract> contracts) {
+		contracts.stream().forEach(c -> this.relations.put(c.getPilot().getName(), c.getTeam().getName()));
 	}
 
 	public Team teamOf(Pilot p) throws NoSuchElementException {

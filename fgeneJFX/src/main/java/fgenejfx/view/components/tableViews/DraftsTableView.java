@@ -22,6 +22,6 @@ public class DraftsTableView extends CustomTableView<Draft> {
 	}
 	
 	public DraftsTableView addYearsColumn() {
-		return (DraftsTableView)super.addSimpleColumn("Contract Lenght", "years");
+		return (DraftsTableView)super.addSimpleColumn("Contract Length", "years");
 	}
 }
