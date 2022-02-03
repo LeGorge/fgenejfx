@@ -308,7 +308,14 @@ public class CustomTableView<A> extends TableView<A> {
 		if(field.contains(".")) {
 			LinkedHashMap<String, Object[]> mapping = new LinkedHashMap<>();
 			Arrays.stream(field.split("\\."))
-					.map(f -> "get".concat(f.substring(0, 1).toUpperCase() + f.substring(1)))
+					.map(f -> {
+						var shouldUpperCase = !f.substring(1, 2).toUpperCase().equals(f.substring(1, 2));
+						if(shouldUpperCase){
+							return "get".concat(f.substring(0, 1).toUpperCase() + f.substring(1));
+						}else{
+							return "get".concat(f);
+						}
+					})
 					.forEach(f -> mapping.put(f, null));
 			col.setCellValueFactory(new Callbacks<A, String>().stringCol(null, mapping, null));
 		}else {

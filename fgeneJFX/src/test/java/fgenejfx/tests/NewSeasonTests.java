@@ -192,11 +192,11 @@ public class NewSeasonTests {
 		assertEquals(oldAi, pilotPchamp.getAi());
 		
 		//stats
-		assertEquals(1, pilotPchamp.getLifeStats().getPGold());
+		assertEquals(1, pilotPchamp.getLifeStats().getpGold());
 		assertEquals(1, pilotPchamp.getStats().getSeason().getP1st());
 		assertEquals(1, pilotPchamp.getStats().getpPlayoff().getP1st());
 		
-		assertEquals(1, teamTchamp.getLifeStats().getTGold());
+		assertEquals(1, teamTchamp.getLifeStats().gettGold());
 		assertEquals(1, teamTchamp.getStats().getSeason().getP1st());
 		
 		
