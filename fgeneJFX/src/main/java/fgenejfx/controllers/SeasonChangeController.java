@@ -25,6 +25,8 @@ public class SeasonChangeController {
 		if (l.getSeason().getState() != State.ENDED) {
 			throw new NotValidException();
 		}
+
+		PersistanceController.saveBackup();
 		
 		//news part I
 		oldSeasonNews();

@@ -18,7 +18,7 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	private String name;
 	private Integer ai;
 	private Double xp = 0.0;
-	private Integer rookieYear = League.get().getYear();
+	private Integer rookieYear = League.get().getYear() + 1;
 	private LifeStats lifeStats = new LifeStats();
 	private Stats stats = new Stats();
 
