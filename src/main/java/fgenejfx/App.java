@@ -36,7 +36,7 @@ public class App extends Application {
 	public static BackgroundSelector theme;
 	public static Map<String, Image> graphics = new HashMap<>();
 
-	public static Boolean prod = false;
+	public static Boolean prod = true;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
