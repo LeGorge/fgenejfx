@@ -1,0 +1,33 @@
+.bar{
+  /* -fx-background-color:#EDEDED; */
+  -fx-padding: 20;
+}
+
+.backgroundtexture{
+    -fx-background-repeat: repeat repeat;  
+    -fx-background-position: top top;
+}
+.darkleather{
+    -fx-background-image: url("/graphics/darkleather.png");
+    -fx-background-size: 398 484 ;
+}
+.fairydust{
+    -fx-background-image: url("/graphics/fairydust.png");
+    -fx-background-size: 296 300 ;
+}
+.grass{
+    -fx-background-image: url("/graphics/grass.png");
+    -fx-background-size: 256 256 ;
+}
+.natwhite{
+    -fx-background-image: url("/graphics/natwhite.png");
+    -fx-background-size: 400 400 ;
+}
+.vintage{
+    -fx-background-image: url("/graphics/vintage.png");
+    -fx-background-size: 400 400 ;
+}
+.wood{
+    -fx-background-image: url("/graphics/wood.png");
+    -fx-background-size: 400 400 ;
+}

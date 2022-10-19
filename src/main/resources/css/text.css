@@ -1,0 +1,64 @@
+.name{
+  -fx-font-size:14px;
+  -fx-padding: -1px;
+}
+
+.title{
+  -fx-text-alignment:center;
+  -fx-font-size:36px;
+  -fx-font-weight:bold;
+  -fx-fill:white;
+}
+
+.myHyperlink{
+  -fx-font-weight:bold;
+  -fx-font-size:14px;
+}
+
+.effect-title {
+  -fx-font-size: 38px;
+  -fx-font-family: "Arial Black";
+  -fx-fill: #818181;
+  -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+.effect-subtitle32 {
+  -fx-font-size: 32px;
+  -fx-font-family: "Arial Black";
+  -fx-fill: #818181;
+  -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+.effect-subtitle24 {
+  -fx-font-size: 24px;
+  -fx-font-family: "Arial Black";
+  -fx-fill: #818181;
+  -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.effect-text {
+  -fx-font-size: 16px;
+  -fx-font-family: "Arial Black";
+  -fx-fill: #818181;
+  -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.bordered-titled-title {
+  -fx-background-color: white;
+  -fx-translate-y: -10;
+  -fx-translate-x: 10;
+}
+
+.bordered-titled-border {
+  -fx-content-display: top;
+  -fx-border-insets: 15 15 15 15;
+  -fx-background-color: white;
+  -fx-border-color: black;
+  -fx-border-width: 2;
+  -fx-border-radius: 15px;
+  -fx-background-radius:15px;
+}
+
+.bordered-titled-content {
+  -fx-padding: 26 10 10 10;
+  -fx-background-color: transparent;
+}
+
