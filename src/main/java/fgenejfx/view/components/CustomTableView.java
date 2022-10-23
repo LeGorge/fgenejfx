@@ -1,11 +1,12 @@
 package fgenejfx.view.components;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import fgenejfx.controllers.ContractsController;
+import fgenejfx.controllers.HistoryController;
 import fgenejfx.controllers.League;
 import fgenejfx.models.Powers;
 import fgenejfx.models.Team;
@@ -15,27 +16,29 @@ import fgenejfx.utils.Utils;
 import fgenejfx.view.engine.Callbacks;
 import fgenejfx.view.engine.MethodMapper;
 import fgenejfx.view.engine.ViewUtils;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
 public class CustomTableView<A> extends TableView<A> {
+	protected static League l = League.get();
+	protected static ContractsController cag = ContractsController.get();
+	protected static HistoryController hag = HistoryController.get();
 
 	private int year;
 
 	public CustomTableView(int year) {
 		this.year = year;
+		setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
+	}
+
+	public CustomTableView() {
 		setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
 	}
 
@@ -70,7 +73,7 @@ public class CustomTableView<A> extends TableView<A> {
 	}
 
 	public CustomTableView<A> addNameColumn(String colTitle, String field) {
-		TableColumn<A, String> nameCol = getSimpleCol(colTitle, colTitle, field);
+		TableColumn<A, String> nameCol = getSimpleStringCol(colTitle, colTitle, field);
 		nameCol.setMinWidth(70);
 		nameCol.setCellFactory(col -> new TableCell<A, String>() {
 			@Override
@@ -254,7 +257,7 @@ public class CustomTableView<A> extends TableView<A> {
 	// ============================================================================================
 	// Life Columns
 	// ============================================================================================
-	public CustomTableView<A> addlifeStatColumn(LeagueTime time, MethodSelector sel) {
+	public CustomTableView<A> addLifeStatColumn(LeagueTime time, MethodSelector sel) {
 		TableColumn<A, Number> col = new TableColumn<>(sel.getName());
 		ViewUtils.tooltip(col, sel.getTip());
 		col.setCellValueFactory(
@@ -278,21 +281,32 @@ public class CustomTableView<A> extends TableView<A> {
 	// ============================================================================================
 	// Engine
 	// ============================================================================================
+	public CustomTableView<A> addSmallColumn(String colTitle, String tooltip, String field) {
+		return addSimpleColumn(colTitle, tooltip, field, true, 50, 50);
+	}
+
 	public CustomTableView<A> addHiddenColumn(String field) {
 		return addSimpleColumn(field, field, field, false, null, null);
 	}
+
+	public CustomTableView<A> addSimpleFloatColumn(String colTitle, String field) {
+		return addSimpleFloatColumn(colTitle, colTitle, field);
+	}
+	public CustomTableView<A> addSimpleFloatColumn(String colTitle, String tooltip, String field) {
+		var col = getSimpleFloatCol(colTitle, tooltip, field);
+		this.getColumns().add(col);
+		return this;
+	}
+
 	public CustomTableView<A> addSimpleColumn(String colTitle, String field) {
 		return addSimpleColumn(colTitle, colTitle, field, true, null, null);
-	}
-	public CustomTableView<A> addSmallColumn(String colTitle, String tooltip, String field) {
-		return addSimpleColumn(colTitle, tooltip, field, true, 50, 50);
 	}
 	public CustomTableView<A> addSimpleColumn(String colTitle, String tooltip, String field) {
 		return addSimpleColumn(colTitle, tooltip, field, true, null, null);
 	}
 	public CustomTableView<A> addSimpleColumn(String colTitle, String tooltip, String field, Boolean visible,
 																						Integer minWidth, Integer maxWidth) {
-		var col = getSimpleCol(colTitle, tooltip, field);
+		var col = getSimpleStringCol(colTitle, tooltip, field);
 		col.setVisible(visible);
 		if(minWidth != null) col.setMinWidth(minWidth);
 		if(maxWidth != null) col.setMaxWidth(maxWidth);
@@ -321,7 +335,14 @@ public class CustomTableView<A> extends TableView<A> {
 	// ============================================================================================
 	// Privates
 	// ============================================================================================
-	private TableColumn<A, String> getSimpleCol(String colTitle, String tooltip, String field){
+	private TableColumn<A, String> getSimpleStringCol(String colTitle, String tooltip, String field){
+		return getSimpleCol(colTitle, tooltip, field, null);
+	}
+	private TableColumn<A, String> getSimpleFloatCol(String colTitle, String tooltip, String field){
+		return getSimpleCol(colTitle, tooltip, field, Utils.threePlacesFormat);
+	}
+
+	private TableColumn<A, String> getSimpleCol(String colTitle, String tooltip, String field, DecimalFormat format){
 		TableColumn<A, String> col = new TableColumn<>(colTitle);
 		ViewUtils.tooltip(col, tooltip);
 		if(field.contains(".")) {
@@ -329,14 +350,10 @@ public class CustomTableView<A> extends TableView<A> {
 			Arrays.stream(field.split("\\."))
 					.map(f -> {
 						var shouldUpperCase = !f.substring(1, 2).toUpperCase().equals(f.substring(1, 2));
-						if(shouldUpperCase){
-							return "get".concat(f.substring(0, 1).toUpperCase() + f.substring(1));
-						}else{
-							return "get".concat(f);
-						}
+						return shouldUpperCase ? "get".concat(f.substring(0, 1).toUpperCase() + f.substring(1)) : "get".concat(f);
 					})
 					.forEach(f -> mapping.put(f, null));
-			col.setCellValueFactory(new Callbacks<A, String>().stringCol(null, mapping, null));
+			col.setCellValueFactory(new Callbacks<A, String>().stringCol(null, mapping, format));
 		}else {
 			col.setCellValueFactory(new PropertyValueFactory<>(field));
 		}

@@ -1,14 +1,12 @@
 package fgenejfx.view;
 
-import java.util.*;
-
-import fgenejfx.interfaces.StatsMonitorable;
-import fgenejfx.models.utils.RaceStatsComparator;
-import org.kordamp.ikonli.javafx.FontIcon;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import fgenejfx.App;
-import fgenejfx.controllers.ContractsController;
-import fgenejfx.models.Contract;
+import fgenejfx.interfaces.StatsMonitorable;
 import fgenejfx.models.Group;
 import fgenejfx.models.Pilot;
 import fgenejfx.models.Powers;
@@ -18,17 +16,16 @@ import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.LeagueTime;
 import fgenejfx.models.enums.MethodSelector;
 import fgenejfx.models.enums.State;
+import fgenejfx.models.utils.RaceStatsComparator;
 import fgenejfx.view.components.CustomGridPane;
 import fgenejfx.view.components.CustomTableView;
 import fgenejfx.view.components.panes.TitlePaneBySeason;
 import fgenejfx.view.components.tableViews.CurrentContractsTableView;
-import fgenejfx.view.components.tableViews.HistoryContractsTableView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -112,7 +109,7 @@ public class SeasonView extends CustomGridPane {
 		pane.add(statTable(LeagueTime.SEASON, 420.0, 840.0, true, false, season.pilots()), 0, 0);
 
 		if(isCurrentSeason()){
-			var table = CurrentContractsTableView.build(year);
+			var table = new CurrentContractsTableView(year);
 			table.setPrefHeight(460);
 			table.setPrefWidth(400);
 			pane.add(table, 1, 0);

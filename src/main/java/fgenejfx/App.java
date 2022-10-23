@@ -12,6 +12,8 @@ import fgenejfx.models.enums.Front;
 import fgenejfx.models.enums.SideType;
 import fgenejfx.models.enums.State;
 import fgenejfx.utils.Utils;
+import fgenejfx.view.AllPilotsView;
+import fgenejfx.view.AllTeamsView;
 import fgenejfx.view.ChampionsView;
 import fgenejfx.view.DraftView;
 import fgenejfx.view.SeasonView;
@@ -126,6 +128,12 @@ public class App extends Application {
 			case CHAMPS:
 				App.view.set(new ChampionsView(), SideType.TEAMSIDE);
 				break;
+			case ALL_TEAMS:
+				App.view.set(new AllTeamsView(), SideType.TEAMSIDE);
+				break;
+			case ALL_PILOTS:
+				App.view.set(new AllPilotsView(), SideType.TEAMSIDE);
+				break;
 			case DRAFT:
 				Integer paramDraft = (Integer) to.get(Front.DRAFT);
 				if (paramDraft != null) {
@@ -140,6 +148,7 @@ public class App extends Application {
 		}
 	}
 
+	// Run the launcher
 	public static void main(String[] args) {
 		launch(args);
 	}

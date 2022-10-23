@@ -2,6 +2,8 @@ package fgenejfx.models;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class LifeStats implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -127,6 +129,30 @@ public class LifeStats implements Serializable {
 
 	public void settBronze(Integer tBronze) {
 		this.tBronze = tBronze;
+	}
+
+	@JsonIgnore
+	public Integer getTeamScore() {
+		int tScore = this.tGold * 6 + this.tSilver * 4 + this.tBronze * 2;
+		int pScore = this.pGold * 3 + this.pSilver * 2 + this.pBronze * 1;
+		return tScore + pScore;
+	}
+
+	public Integer getPilotScore() {
+		int tScore = this.tGold * 3 + this.tSilver * 2 + this.tBronze * 1;
+		int pScore = this.pGold * 6 + this.pSilver * 4 + this.pBronze * 2;
+		return tScore + pScore;
+	}
+
+	@JsonIgnore
+	public Float gettWinRate() {
+		return this.tGold.floatValue() / this.tPlayoffs.floatValue();
+	}
+
+	@JsonIgnore
+	public Float getpMedalRate() {
+		float medals = this.pGold.floatValue() + this.pSilver.floatValue() + this.pBronze.floatValue();
+		return medals / this.pPlayoffs.floatValue();
 	}
 
 }

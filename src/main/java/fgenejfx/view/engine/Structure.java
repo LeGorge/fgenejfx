@@ -34,6 +34,8 @@ public class Structure extends BorderPane {
 	private MenuBar topMenu() {
 		addTopBarButton(Front.SEASON, "fa-automobile");
 		addTopBarButton(Front.CHAMPS, "fa-trophy");
+		addTopBarButton(Front.ALL_PILOTS, "fa-users");
+		addTopBarButton(Front.ALL_TEAMS, "fa-sitemap");
 		addTopBarButton(Front.DRAFT, "fa-random");
 
 		bar.getMenus().add(themesMenu());

@@ -76,57 +76,71 @@ public class Patcher {
 		var hag = HistoryController.get();
 
 		l.getPilots().stream().forEach(p -> {
-			p.setLifeStats(new LifeStats());
+			p.getLifeStats().settPlayoffs(0);
+			p.getLifeStats().settGold(0);
+			p.getLifeStats().settSilver(0);
+			p.getLifeStats().settBronze(0);
 		});
 
-		l.getTeams().stream().forEach(t -> {
-			t.setLifeStats(new LifeStats());
-		});
+		// l.getTeams().stream().forEach(t -> {
+		// 	t.setLifeStats(new LifeStats());
+		// });
 
 		hag.getSeasons().stream().forEach(s -> {
 			if(s.isEnded()) {
 
 				// pilots
-				s.pilots().stream().forEach(p -> {
-					p.getLifeStats().incrementSeasons();
-				});
+				// s.pilots().stream().forEach(p -> {
+				// 	p.getLifeStats().incrementSeasons();
+				// });
 
-				var group_pilots = s.getpPlayoff().pilots();
-				group_pilots.get(0).getLifeStats().incrementpGold();
-				group_pilots.get(1).getLifeStats().incrementpSilver();
-				group_pilots.get(2).getLifeStats().incrementpBronze();
-				group_pilots.stream().forEach(p -> {
-					p.getLifeStats().incrementpPlayoffs();
-				});
+				// var group_pilots = s.getpPlayoff().pilots();
+				// group_pilots.get(0).getLifeStats().incrementpGold();
+				// group_pilots.get(1).getLifeStats().incrementpSilver();
+				// group_pilots.get(2).getLifeStats().incrementpBronze();
+				// group_pilots.stream().forEach(p -> {
+				// 	p.getLifeStats().incrementpPlayoffs();
+				// });
 
-				group_pilots = s.gettPlayoff().pilots();
-				group_pilots.get(0).getLifeStats().incrementtGold();
-				group_pilots.get(1).getLifeStats().incrementtSilver();
-				group_pilots.get(2).getLifeStats().incrementtBronze();
-				group_pilots.stream().forEach(p -> {
-					p.getLifeStats().incrementtPlayoffs();
-				});
-
-				// teams
-				s.teams().stream().forEach(t -> {
-					t.getLifeStats().incrementSeasons();
-				});
-
-				var group_teams = s.getpPlayoff().teams(s.getYear());
-				group_teams.get(0).getLifeStats().incrementpGold();
-				group_teams.get(1).getLifeStats().incrementpSilver();
-				group_teams.get(2).getLifeStats().incrementpBronze();
-				group_teams.stream().forEach(t -> {
-					t.getLifeStats().incrementpPlayoffs();
-				});
-
-				group_teams = s.gettPlayoff().teams(s.getYear());
+				var group_teams = s.gettPlayoff().teams(s.getYear());
 				group_teams.get(0).getLifeStats().incrementtGold();
 				group_teams.get(1).getLifeStats().incrementtSilver();
 				group_teams.get(2).getLifeStats().incrementtBronze();
-				group_teams.stream().forEach(t -> {
-					t.getLifeStats().incrementtPlayoffs();
+				l.pilotsOf(group_teams.get(0), s.getYear()).forEach(p -> {
+					p.getLifeStats().incrementtPlayoffs();
+					p.getLifeStats().incrementtGold();
 				});
+
+				l.pilotsOf(group_teams.get(1), s.getYear()).forEach(p -> {
+					p.getLifeStats().incrementtPlayoffs();
+					p.getLifeStats().incrementtSilver();
+				});
+
+				l.pilotsOf(group_teams.get(2), s.getYear()).forEach(p -> {
+					p.getLifeStats().incrementtPlayoffs();
+					p.getLifeStats().incrementtBronze();
+				});
+
+				// teams
+				// s.teams().stream().forEach(t -> {
+				// 	t.getLifeStats().incrementSeasons();
+				// });
+
+				// var group_teams = s.getpPlayoff().teams(s.getYear());
+				// group_teams.get(0).getLifeStats().incrementpGold();
+				// group_teams.get(1).getLifeStats().incrementpSilver();
+				// group_teams.get(2).getLifeStats().incrementpBronze();
+				// group_teams.stream().forEach(t -> {
+				// 	t.getLifeStats().incrementpPlayoffs();
+				// });
+
+				// group_teams = s.gettPlayoff().teams(s.getYear());
+				// group_teams.get(0).getLifeStats().incrementtGold();
+				// group_teams.get(1).getLifeStats().incrementtSilver();
+				// group_teams.get(2).getLifeStats().incrementtBronze();
+				// group_teams.stream().forEach(t -> {
+				// 	t.getLifeStats().incrementtPlayoffs();
+				// });
 
 				
 

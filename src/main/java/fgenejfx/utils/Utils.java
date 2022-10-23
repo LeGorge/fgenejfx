@@ -29,6 +29,7 @@ public class Utils {
   public static DecimalFormat onePlaceFormat = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
   public static DecimalFormat integerFormat = new DecimalFormat("#0", new DecimalFormatSymbols(Locale.US));
   public static DecimalFormat twoPlacesFormat = new DecimalFormat("#0.00", new DecimalFormatSymbols(Locale.US));
+  public static DecimalFormat threePlacesFormat = new DecimalFormat(".000", new DecimalFormatSymbols(Locale.US));
   
   public static Random rand = new Random();
 
