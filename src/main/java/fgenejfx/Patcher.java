@@ -75,11 +75,18 @@ public class Patcher {
 		var l = League.get();
 		var hag = HistoryController.get();
 
-		l.getPilots().stream().forEach(p -> {
-			p.getLifeStats().settPlayoffs(0);
-			p.getLifeStats().settGold(0);
-			p.getLifeStats().settSilver(0);
-			p.getLifeStats().settBronze(0);
+		// l.getPilots().stream().forEach(p -> {
+		// 	p.getLifeStats().settPlayoffs(0);
+		// 	p.getLifeStats().settGold(0);
+		// 	p.getLifeStats().settSilver(0);
+		// 	p.getLifeStats().settBronze(0);
+		// });
+
+		l.getTeams().stream().forEach(t -> {
+			t.getLifeStats().settPlayoffs(0);
+			t.getLifeStats().settGold(0);
+			t.getLifeStats().settSilver(0);
+			t.getLifeStats().settBronze(0);
 		});
 
 		// l.getTeams().stream().forEach(t -> {
@@ -106,20 +113,20 @@ public class Patcher {
 				group_teams.get(0).getLifeStats().incrementtGold();
 				group_teams.get(1).getLifeStats().incrementtSilver();
 				group_teams.get(2).getLifeStats().incrementtBronze();
-				l.pilotsOf(group_teams.get(0), s.getYear()).forEach(p -> {
-					p.getLifeStats().incrementtPlayoffs();
-					p.getLifeStats().incrementtGold();
-				});
+				// l.pilotsOf(group_teams.get(0), s.getYear()).forEach(p -> {
+				// 	p.getLifeStats().incrementtPlayoffs();
+				// 	p.getLifeStats().incrementtGold();
+				// });
 
-				l.pilotsOf(group_teams.get(1), s.getYear()).forEach(p -> {
-					p.getLifeStats().incrementtPlayoffs();
-					p.getLifeStats().incrementtSilver();
-				});
+				// l.pilotsOf(group_teams.get(1), s.getYear()).forEach(p -> {
+				// 	p.getLifeStats().incrementtPlayoffs();
+				// 	p.getLifeStats().incrementtSilver();
+				// });
 
-				l.pilotsOf(group_teams.get(2), s.getYear()).forEach(p -> {
-					p.getLifeStats().incrementtPlayoffs();
-					p.getLifeStats().incrementtBronze();
-				});
+				// l.pilotsOf(group_teams.get(2), s.getYear()).forEach(p -> {
+				// 	p.getLifeStats().incrementtPlayoffs();
+				// 	p.getLifeStats().incrementtBronze();
+				// });
 
 				// teams
 				// s.teams().stream().forEach(t -> {
@@ -138,9 +145,9 @@ public class Patcher {
 				// group_teams.get(0).getLifeStats().incrementtGold();
 				// group_teams.get(1).getLifeStats().incrementtSilver();
 				// group_teams.get(2).getLifeStats().incrementtBronze();
-				// group_teams.stream().forEach(t -> {
-				// 	t.getLifeStats().incrementtPlayoffs();
-				// });
+				group_teams.stream().forEach(t -> {
+					t.getLifeStats().incrementtPlayoffs();
+				});
 
 				
 

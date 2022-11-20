@@ -1,16 +1,11 @@
 package fgenejfx.view.engine;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.util.Callback;
 
@@ -122,6 +117,16 @@ public class Callbacks<A,B> {
 		  @Override
 		  public ObservableValue<B> call(CellDataFeatures<A, B> data) {
 			  Object o = data.getValue();
+
+        // DEBUG
+        // try{
+        //   Pilot jaime = (Pilot)o;
+        //   if(jaime.getName().equals("Jaime") && exec.keySet().contains("getPPR")){
+        //     LeagueTime time = (LeagueTime)exec.get("getPPR")[0];
+        //   }
+        // } catch(Exception e){
+        // }
+
 			  LinkedHashMap<String, Object[]> newExec = updateMap(o, exec);
 			  
 			  result = o;

@@ -51,14 +51,17 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	    if(lifeStats.getSeasons() != 0) {
 	      return Double.valueOf(stats.getSeason().getPts()) / Double.valueOf(lifeStats.getSeasons());
 	    }
-	  case PPLAYOFF:
-	    if(lifeStats.getpPlayoffs() != 0) {
-	      return Double.valueOf(stats.getpPlayoff().getPts()) / Double.valueOf(lifeStats.getpPlayoffs());
-	    }
+			break;
+		case PPLAYOFF:
+			if(lifeStats.getpPlayoffs() != 0) {
+				return Double.valueOf(stats.getpPlayoff().getPts()) / Double.valueOf(lifeStats.getpPlayoffs());
+			}
+			break;
 	  case TPLAYOFF:
 	    if(lifeStats.gettPlayoffs() != 0) {
 	      return Double.valueOf(stats.gettPlayoff().getPts()) / Double.valueOf(lifeStats.gettPlayoffs());
 	    }
+			break;
 	  }
 	  return 0.0;
   }
@@ -70,14 +73,17 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 			if(lifeStats.getSeasons() != 0) {
 				return Double.valueOf(stats.getSeason().getP1st()) / Double.valueOf(lifeStats.getSeasons());
 			}
+			break;
 		case PPLAYOFF:
 			if(lifeStats.getpPlayoffs() != 0) {
 				return Double.valueOf(stats.getpPlayoff().getP1st()) / Double.valueOf(lifeStats.getpPlayoffs());
 			}
+			break;
 		case TPLAYOFF:
 			if(lifeStats.gettPlayoffs() != 0) {
 				return Double.valueOf(stats.gettPlayoff().getP1st()) / Double.valueOf(lifeStats.gettPlayoffs());
 			}
+			break;
 		}
 		return 0.0;
 	}
@@ -89,14 +95,17 @@ public class Pilot implements Serializable, StatsMonitorable, Comparable<Pilot> 
 	    if(lifeStats.getSeasons() != 0) {
 	      return Double.valueOf(stats.getSeason().getPer()) / Double.valueOf(lifeStats.getSeasons());
 	    }
+			break;
 	  case PPLAYOFF:
 	    if(lifeStats.getpPlayoffs() != 0) {
 	      return Double.valueOf(stats.getpPlayoff().getPer()) / Double.valueOf(lifeStats.getpPlayoffs());
 	    }
+			break;
 	  case TPLAYOFF:
 	    if(lifeStats.gettPlayoffs() != 0) {
 	      return Double.valueOf(stats.gettPlayoff().getPer()) / Double.valueOf(lifeStats.gettPlayoffs());
 	    }
+			break;
 	  }
 	  return 0.0;
 	}
